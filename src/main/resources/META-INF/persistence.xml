@@ -1,0 +1,10 @@
+<persistence-unit name="tcm-PU" transaction-type="JTA">
+    <jta-data-source>jdbc/tcm</jta-data-source>
+    <properties>
+<!--        <class>com.tcm.coreapp.entity.Customer</class>
+        <class>com.tcm.coreapp.entity.Product</class>-->
+        <property name="eclipselink.logging.level" value="FINE"/>
+        <property name="eclipselink.logging.level.sql" value="FINE"/>
+        <property name="eclipselink.logging.parameters" value="true"/>
+    </properties>
+</persistence-unit>
