@@ -4,6 +4,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
-    <include file="db/changelog/2022/08/19-01-create-table-usuario-changelog.xml"/>
+    <include file="db/changelog/2022/08/19-01-crea-usuarios-roles-changelog.xml"/>
+    <include file="db/changelog/2022/08/19-02-crea-paginas-accesos-changelog.xml"/>
+    <include file="db/changelog/2022/08/19-03-ajustes-usuarios-roles_paginas-changelog.xml"/>
 
 </databaseChangeLog>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1660945558738-1" author="Miguel_Figueroa2 (generated)">
+        <createTable tableName="seg_roles">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_roles"/>
+            </column>
+            <column name="usuario_crea" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha_crea" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="usuario_edita" type="VARCHAR(100)"/>
+            <column name="fecha_edita" type="DATETIME"/>
+            <column name="activo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nombre" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1660945558738-2" author="Miguel_Figueroa2 (generated)">
+        <createTable tableName="seg_usuarios">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_usuarios"/>
+            </column>
+            <column name="usuario_crea" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha_crea" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="usuario_edita" type="VARCHAR(100)"/>
+            <column name="fecha_edita" type="DATETIME"/>
+            <column name="activo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1660945558738-3" author="Miguel_Figueroa2 (generated)">
+        <createTable tableName="seg_usuarios_roles">
+            <column name="rol_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_usuarios_roles"/>
+            </column>
+            <column name="usuario_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_usuarios_roles"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1660945558738-4" author="Miguel_Figueroa2 (generated)">
+        <addUniqueConstraint columnNames="nombre" constraintName="uc_seg_roles_nombre" tableName="seg_roles"/>
+    </changeSet>
+    <changeSet id="1660945558738-5" author="Miguel_Figueroa2 (generated)">
+        <addForeignKeyConstraint baseColumnNames="rol_id" baseTableName="seg_usuarios_roles"
+                                 constraintName="fk_segusurol_on_rol" referencedColumnNames="id"
+                                 referencedTableName="seg_roles"/>
+    </changeSet>
+    <changeSet id="1660945558738-6" author="Miguel_Figueroa2 (generated)">
+        <addForeignKeyConstraint baseColumnNames="usuario_id" baseTableName="seg_usuarios_roles"
+                                 constraintName="fk_segusurol_on_usuario" referencedColumnNames="id"
+                                 referencedTableName="seg_usuarios"/>
+    </changeSet>
+
+</databaseChangeLog>

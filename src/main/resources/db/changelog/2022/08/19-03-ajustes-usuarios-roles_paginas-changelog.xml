@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1660949118908-1" author="Miguel_Figueroa2 (generated)">
+        <addColumn tableName="seg_roles_paginas">
+            <column name="activo" type="BOOLEAN"/>
+            <column name="fecha_crea" type="DATETIME"/>
+            <column name="fecha_edita" type="DATETIME"/>
+            <column name="usuario_crea" type="VARCHAR(100)"/>
+            <column name="usuario_edita" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1660949118908-2" author="Miguel_Figueroa2 (generated)">
+        <addNotNullConstraint columnDataType="BOOLEAN" columnName="activo" tableName="seg_roles_paginas"/>
+    </changeSet>
+    <changeSet id="1660949118908-4" author="Miguel_Figueroa2 (generated)">
+        <addNotNullConstraint columnDataType="DATETIME" columnName="fecha_crea" tableName="seg_roles_paginas"/>
+    </changeSet>
+    <changeSet id="1660949118908-7" author="Miguel_Figueroa2 (generated)">
+        <addNotNullConstraint columnDataType="VARCHAR(100)" columnName="usuario_crea" tableName="seg_roles_paginas"/>
+    </changeSet>
+    <changeSet id="1660949118908-9" author="Miguel_Figueroa2 (generated)">
+        <addUniqueConstraint columnNames="username" constraintName="uc_seg_usuarios_username" tableName="seg_usuarios"/>
+    </changeSet>
+
+</databaseChangeLog>

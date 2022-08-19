@@ -1,55 +1,63 @@
 package com.tcm.tcmapp.entity;
 
-import lombok.Data;
-
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 public class BaseEntity {
-    @Column(name = "created_by", nullable = false, length = 100)
-    private String createdBy;
+    @Column(name = "usuario_crea", nullable = false, length = 100)
+    private String usuarioCrea;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "fecha_crea", nullable = false)
+    private LocalDateTime fechaCrea;
 
-    @Column(name = "updated_by", length = 100)
-    private String updatedBy;
+    @Column(name = "usuario_edita", length = 100)
+    private String usuario_edita;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "fecha_edita")
+    private LocalDateTime fechaEdita;
 
-    public String getCreatedBy() {
-        return createdBy;
+    @Column(name = "activo", nullable = false)
+    private Boolean activo = false;
+
+    public Boolean getActivo() {
+        return activo;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getUsuarioCrea() {
+        return usuarioCrea;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setUsuarioCrea(String usuarioCrea) {
+        this.usuarioCrea = usuarioCrea;
     }
 
-    public String getUpdatedBy() {
-        return updatedBy;
+    public LocalDateTime getFechaCrea() {
+        return fechaCrea;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setFechaCrea(LocalDateTime fechaCrea) {
+        this.fechaCrea = fechaCrea;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public String getUsuario_edita() {
+        return usuario_edita;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUsuario_edita(String usuario_edita) {
+        this.usuario_edita = usuario_edita;
+    }
+
+    public LocalDateTime getFechaEdita() {
+        return fechaEdita;
+    }
+
+    public void setFechaEdita(LocalDateTime fechaEdita) {
+        this.fechaEdita = fechaEdita;
     }
 }
