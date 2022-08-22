@@ -9,11 +9,11 @@ public class RolPagina extends BaseEntity{
     private RolPaginaId rolPaginaId;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "rol_id", nullable = false)
+    @JoinColumn(name = "rol_id", insertable = false, updatable = false)
     private Rol rol;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "pagina_id", nullable = false)
+    @JoinColumn(name = "pagina_id", insertable = false, updatable = false)
     private Pagina pagina;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)

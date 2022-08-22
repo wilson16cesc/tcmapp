@@ -1,7 +1,5 @@
 package com.tcm.tcmapp.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;

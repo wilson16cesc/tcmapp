@@ -1,11 +1,10 @@
 package com.tcm.tcmapp.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "seg_paginas")
+
 public class Pagina extends BaseEntityIdentity {
     @Column(name = "nombre", nullable = false, unique = true, length = 100)
     private String nombre;
