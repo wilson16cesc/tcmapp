@@ -1,8 +1,9 @@
 <persistence-unit name="tcm-PU" transaction-type="JTA">
-    <jta-data-source>jdbc/tcm</jta-data-source>
+    <jta-data-source>jdbc/tcmTest</jta-data-source>
     <properties>
         <class>com.tcm.tcmapp.business.Pagina</class>
         <class>com.tcm.tcmapp.business.Usuario</class>
+        <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
         <property name="eclipselink.logging.level" value="FINE"/>
         <property name="eclipselink.logging.level.sql" value="FINE"/>
         <property name="eclipselink.logging.parameters" value="true"/>

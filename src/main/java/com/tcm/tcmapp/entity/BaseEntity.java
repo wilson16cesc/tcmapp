@@ -1,11 +1,12 @@
 package com.tcm.tcmapp.entity;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable{
     @Column(name = "usuario_crea", nullable = false, length = 100)
     private String usuarioCrea;
 

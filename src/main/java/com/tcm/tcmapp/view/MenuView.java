@@ -1,133 +1,83 @@
 package com.tcm.tcmapp.view;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
+import com.tcm.tcmapp.business.PaginasService;
+import com.tcm.tcmapp.entity.Pagina;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
-@Named
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+
 @SessionScoped
-public class MenuView implements Serializable{
-    
-private MenuModel model;
+public class MenuView implements Serializable {
 
-private String name = "Miguel Figueroa";
+    public MenuView(){
 
-    
+    }
+    private MenuModel menuModel;
+
+    private List<Pagina> paginas;
+    @Inject
+    PaginasService paginasService;
+
+
+    private void agregarHijos(Pagina pagina, DefaultSubMenu submenu) {
+        List<Pagina> hijos = this.paginas.stream()
+                .filter(p -> p.getIdPadre() == pagina.getId().longValue())
+                .collect(Collectors.toList());
+        for (Pagina hijo : hijos) {
+            if (hijo.getHoja()) {
+                DefaultMenuItem menuItem = DefaultMenuItem.builder()
+                        .id(hijo.getId()+"")
+                        .value(hijo.getNombre())
+                        .icon(hijo.getIcono())
+                        .build();
+                submenu.getElements().add(menuItem);
+            } else {
+                DefaultSubMenu newSubmenu = DefaultSubMenu.builder()
+                        .id(hijo.getId()+"")
+                        .label(hijo.getNombre())
+                        .build();
+                submenu.getElements().add(newSubmenu);
+                agregarHijos(hijo, newSubmenu);
+            }
+        }
+    }
+
+
     @PostConstruct
     public void init() {
-        model = new DefaultMenuModel();
+        this.paginas = paginasService.getPaginasParaMenu();
 
-        //First submenu
-        DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
-                .label("Options")
-                .build();
+        List<Pagina> paginasNivel1 = this.paginas.stream()
+                .filter(pagina -> pagina.getIdPadre() == 0L)
+                .collect(Collectors.toList());
 
-        DefaultMenuItem item = DefaultMenuItem.builder()
-                .value("Save (Non-Ajax)")
-                .icon("pi pi-save")
-                .ajax(false)
-                .command("#{menuView.save}")
-                .update("messages")
-                .build();
-        firstSubmenu.getElements().add(item);
+        menuModel = new DefaultMenuModel();
 
-        item = DefaultMenuItem.builder()
-                .value("Update")
-                .icon("pi pi-refresh")
-                .command("#{menuView.update}")
-                .update("messages")
-                .build();
-        firstSubmenu.getElements().add(item);
-
-        item = DefaultMenuItem.builder()
-                .value("Delete")
-                .icon("pi pi-times")
-                .command("#{menuView.delete}")
-                .build();
-        firstSubmenu.getElements().add(item);
-
-        model.getElements().add(firstSubmenu);
-
-        //Second submenu
-        DefaultSubMenu secondSubmenu = DefaultSubMenu.builder()
-                .label("Navigations")
-                .build();
-
-        item = DefaultMenuItem.builder()
-                .value("Website")
-                .url("http://www.primefaces.org")
-                .icon("pi pi-external-link")
-                .build();
-        secondSubmenu.getElements().add(item);
-
-        item = DefaultMenuItem.builder()
-                .value("Internal")
-                .icon("pi pi-upload")
-                .command("#{menuView.redirect}")
-                .build();
-        secondSubmenu.getElements().add(item);
-
-        model.getElements().add(secondSubmenu);
+        paginasNivel1.forEach(pagina -> {
+            DefaultSubMenu submenu = DefaultSubMenu.builder()
+                    .id(pagina.getId()+"")
+                    .label(pagina.getNombre())
+                    .build();
+            menuModel.getElements().add(submenu);
+            agregarHijos(pagina, submenu);
+        });
     }
 
-    public MenuModel getModel() {
-        return model;
+
+    public MenuModel getMenuModel() {
+        return menuModel;
     }
 
-    public void redirect() throws IOException {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath());
+    public void setMenuModel(MenuModel menuModel) {
+        this.menuModel = menuModel;
     }
 
-    public void save() {
-        addMessage("Save", "Data saved");
-    }
-
-    public void update() {
-        addMessage("Update", "Data updated");
-    }
-
-    public void delete() {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Delete", "Data deleted");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    public void sleepAndSave() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
-        save();
-    }
-
-    public void sleepAndUpdate() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
-        update();
-    }
-
-    public void sleepAndDelete() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
-        delete();
-    }
-
-    public void addMessage(String summary, String detail) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    
 }

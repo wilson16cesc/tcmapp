@@ -7,5 +7,6 @@
     <include file="db/changelog/2022/08/19-01-crea-usuarios-roles-changelog.xml"/>
     <include file="db/changelog/2022/08/19-02-crea-paginas-accesos-changelog.xml"/>
     <include file="db/changelog/2022/08/19-03-ajustes-usuarios-roles_paginas-changelog.xml"/>
+    <include file="db/changelog/2022/08/23-01-agrega-columna-nivel-changelog.xml"/>
 
 </databaseChangeLog>

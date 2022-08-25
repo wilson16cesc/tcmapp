@@ -1,9 +1,7 @@
 package com.tcm.tcmapp.entity;
 
-import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @MappedSuperclass
 public class BaseEntityIdentity extends BaseEntity{

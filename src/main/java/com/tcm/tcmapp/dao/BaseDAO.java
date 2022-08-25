@@ -6,7 +6,7 @@
 package com.tcm.tcmapp.dao;
 
 import java.util.List;
-import javax.ejb.Stateless;
+import javax.ejb.Local;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
@@ -14,14 +14,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 /**
  *
  * @author MFIGUEROAG
  * @param <T>
  */
-
+@Local
 public class BaseDAO<T>{
     
     private Class<T> entityClass;
@@ -39,7 +38,7 @@ public class BaseDAO<T>{
     public void save(T entity) {
         getEntityManager().persist(entity);
     }
-
+    
     public void update(T entity) {
         getEntityManager().merge(entity);
     }
@@ -70,6 +69,10 @@ public class BaseDAO<T>{
 
     protected EntityManager getEntityManager() {
         return em;
-    }    
+    }
+
+    public void executeNativeQuery(String sql){
+        getEntityManager().createNativeQuery("BEGIN " + sql + " END;").executeUpdate();
+    }
     
 }
