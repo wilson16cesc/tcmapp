@@ -14,18 +14,19 @@
 
     <h:body>
 
-        <div id="top">
-            <ui:insert name="top">Contenido Top Plantilla</ui:insert>
+        <div id="top" style="height: 50px;">
+            <!--<ui:insert name="top">Contenido Top Plantilla</ui:insert>-->
+            <h2>Aplicación base</h2>
         </div>
         <div>
             <div id="left">
                 <h:form id="frm">
                     <p:tieredMenu model="#{menuView.menuModel}"/>
                     <p:slideMenu model="#{menuView.menuModel}"/>
-                    <p:messages id="messages" />
                 </h:form>
             </div>
             <div id="content" class="left_content">
+
                 <ui:insert name="content">Content</ui:insert>
             </div>
         </div>

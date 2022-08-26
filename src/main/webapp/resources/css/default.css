@@ -1,4 +1,4 @@
-body {
+/*body {
     background-color: #ffffff;
     font-size: 12px;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
@@ -26,4 +26,177 @@ a:link:hover, a:visited:hover  {
   color: #045491;
   font-weight : bold;
   text-decoration : underline;
+}
+*/
+body {
+    background-color: #ffffff;
+    font-size: 11px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    color: #000000;  
+    margin: 10px;
+}
+
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #AFAFAF; 
+    font-size:  16px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #D20005;
+}
+
+table{
+    font-size: 11px;
+    font-style: inherit;
+}
+
+a:link, a:visited {
+    color: #045491;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+    color: #045491;
+    font-weight : bold;
+    text-decoration : underline;
+}
+.ui-dialog-title
+{
+    font-size: 13px;
+}
+.ui-dialog.ui-widget-content .ui-dialog-title {
+    font-size: 13px;
+}
+.ui-dialog.ui-widget-content .ui-dialog-titlebar {
+    padding: 3px 15px;
+    border-bottom: 1px solid #eee;
+    background-color: #ffffff;
+}
+.ui-dialog .ui-widget-content .ui-dialog-titlebar-close {
+    margin-top: 3px;
+}
+.ui-state-error
+{
+    border:1px solid #cd0a0a !important;
+    color:#000000;
+}
+.ui-tabs-panels {
+    border-right: 1px solid #dddddd;
+    border-left: 1px solid #dddddd;
+}
+.ui-widget .ui-widget {
+    font-size: 11px !important;
+}
+.ui-dialog.ui-widget-content .ui-dialog-content {
+    padding: 15px;
+    font-size: 1em;
+}
+
+td.resourcesColumn div.ui-tt-c {
+    padding: 0 !important;
+}
+td.resourcesColumn div.ui-tt-c div.ui-datalist div.ui-datalist-content {
+    border: none;
+}
+td.resourcesColumn div.ui-tt-c div.ui-datalist div.ui-datalist-header {
+    padding: 1px 4px;
+    text-align: right;
+}
+
+td.resourcesColumn div.ui-tt-c div.ui-datalist div.ui-datalist-content ul.ui-datalist-data {
+    padding-left: 25px;
+    margin: 2px;
+}
+
+td.resourcesColumn div.ui-tt-c div.ui-datalist .ui-icon { 
+    display: inline-block;
+    /*width: 8px;
+    height: 8px;*/
+}
+
+td.resourcesColumn div.ui-tt-c div.ui-datalist .ui-datalist-header {
+    background-color: transparent;
+}
+
+.nopad .ui-widget-content {
+    padding: 0 !important;
+}
+
+#defaultForm\:newTemplatePopupDialog .ui-message-error {
+  display: inline-block;
+}
+tr.activeRow td {
+    background-color: #036fab;
+}
+.activeRecord {
+    font-weight: bold;
+    color: white;
+}
+
+
+div.ui-state-error input, div.ui-state-error label, input.ui-state-error {
+    color: black !important;
+}
+
+.number {
+    text-align: right;
+}
+
+.sayUserInfo:before {
+    content: "User Information";
+    padding-left: 4px;
+}
+
+.sayMainMenu:before {
+    content: "Main Menu";
+    padding-left: 4px;
+}
+
+table.borderless, table.borderless tr, table.borderless tr td {
+    border: none;
+}
+
+table.borderless td {
+    padding: 2px;
+    vertical-align: top;
+}
+
+.userInfoMenu .ui-menuitem-text {
+    max-width: 130px;
+}
+.ui-menu {
+    width: 10em !important;
+}
+
+.notesList dl dt, .notesList dl dd,
+.historiesList dl dt, .historiesList dl dd {
+    text-align: justify;
+}
+.notesList dl dt, .historiesList dl dt {
+    margin-top: 5px;
+    padding-left: 4px;
+}
+.notesList dl dd, .historiesList dl dd {
+    padding-left: 20px;
+    padding-right: 30px;
+    border-bottom: 1px solid gray;
+    padding-bottom: 5px;
+}
+.notesList dl dd:last-child, .historiesList dl dd:last-child {
+    border-bottom: none;
+}
+
+.ui-outputlabel-rfi {
+    display: none;
+}
+
+.ui-textblock {
+    white-space: normal;
+    text-align: justify;
+}
+
+.ui-left-aligned table tr th {
+    text-align: left;
 }

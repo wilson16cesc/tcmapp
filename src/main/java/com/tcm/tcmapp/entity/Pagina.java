@@ -33,7 +33,18 @@ public class Pagina extends BaseEntityIdentity {
     public Pagina() {
     }
 
-    public Pagina(Long id, String nombre, String url, Boolean hoja, String icono, Long idPadre, LocalDateTime fechaCrea, String usuarioCrea, Boolean activo, Integer nivel) {
+    public Pagina(String nombre, String url, Boolean hoja, String icono, Long idPadre, LocalDateTime fechaCrea, String usuarioCrea, Boolean activo, Integer nivel) {
+        this.nombre = nombre;
+        this.url = url;
+        this.hoja = hoja;
+        this.icono = icono;
+        this.idPadre = idPadre;
+        this.nivel = nivel;
+        super.setFechaCrea(fechaCrea);
+        super.setUsuarioCrea(usuarioCrea);
+        super.setActivo(activo);
+    }
+    public Pagina(Long id,String nombre, String url, Boolean hoja, String icono, Long idPadre, LocalDateTime fechaCrea, String usuarioCrea, Boolean activo, Integer nivel) {
         super.setId(id);
         this.nombre = nombre;
         this.url = url;
@@ -45,7 +56,6 @@ public class Pagina extends BaseEntityIdentity {
         super.setUsuarioCrea(usuarioCrea);
         super.setActivo(activo);
     }
-
     public Long getIdPadre() {
         return idPadre;
     }

@@ -75,4 +75,7 @@ public class BaseDAO<T>{
         getEntityManager().createNativeQuery("BEGIN " + sql + " END;").executeUpdate();
     }
     
+    public void flush(){
+        em.flush();
+    }
 }

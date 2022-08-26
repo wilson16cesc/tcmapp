@@ -10,16 +10,18 @@ import org.primefaces.model.menu.MenuModel;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 
+@Named
 @SessionScoped
 public class MenuView implements Serializable {
 
-    public MenuView(){
+    private String name = "Miguel Figueroa";
 
-    }
     private MenuModel menuModel;
 
     private List<Pagina> paginas;
@@ -57,6 +59,7 @@ public class MenuView implements Serializable {
 
         List<Pagina> paginasNivel1 = this.paginas.stream()
                 .filter(pagina -> pagina.getIdPadre() == 0L)
+                .sorted(Comparator.comparing(Pagina::getFechaCrea))
                 .collect(Collectors.toList());
 
         menuModel = new DefaultMenuModel();
@@ -80,4 +83,11 @@ public class MenuView implements Serializable {
         this.menuModel = menuModel;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
