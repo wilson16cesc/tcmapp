@@ -8,10 +8,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MenuViewTest extends MenuBaseTest {
+public class MenuEditViewTest extends MenuBaseTest{
 
     @Mock
     private PaginasService paginasService;
@@ -28,26 +28,25 @@ public class MenuViewTest extends MenuBaseTest {
     private List<Pagina> paginas;
 
     @InjectMocks
-    private final MenuView menuView = new MenuView();
+    private MenuEditView menuEditView = new MenuEditView();
 
     @Before
     public void setUp() throws Exception {
         paginas = cargarPaginas();
     }
 
-
     @Test
-    public void givenPaginasData_whenGetMenuModel_thenReturnMenuContent() {
+    public void givenPaginasData_whenGetMenuRoot_thenReturnMenuData(){
+
         given(paginasService.getPaginasParaMenu()).willReturn(paginas);
 
-        menuView.init();
-        MenuModel menuModel = menuView.getMenuModel();
+        menuEditView.init();
+        TreeNode<MenuInfo> menuRoot = menuEditView.getMenuRoot();
 
         verify(paginasService, times(1)).getPaginasParaMenu();
 
-        assertEquals(3, menuModel.getElements().size());
-        assertEquals("12", menuModel.getElements().get(2).getId());
-
+        assertEquals(3, menuRoot.getChildren().size());
+        assertEquals("Item 12", menuRoot.getChildren().get(2).getData().getName());
     }
 
 }

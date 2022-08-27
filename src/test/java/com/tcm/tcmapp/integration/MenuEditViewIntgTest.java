@@ -6,6 +6,8 @@ import com.tcm.tcmapp.dao.PaginaDAO;
 import com.tcm.tcmapp.entity.BaseEntity;
 import com.tcm.tcmapp.entity.BaseEntityIdentity;
 import com.tcm.tcmapp.entity.Pagina;
+import com.tcm.tcmapp.view.MenuEditView;
+import com.tcm.tcmapp.view.MenuInfo;
 import com.tcm.tcmapp.view.MenuView;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -19,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.primefaces.component.api.Confirmable;
+import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
 
 import javax.inject.Inject;
@@ -29,12 +32,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-//@Ignore("Class not ready for tests")
 @RunWith(Arquillian.class)
-public class MenuViewIntgTest {
+public class MenuEditViewIntgTest {
 
     @Inject
-    MenuView menuView;
+    MenuEditView menuEditView;
 
     @Inject
     PaginaDAO paginaDAO;
@@ -45,9 +47,9 @@ public class MenuViewIntgTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-api").withTransitivity().asFile())
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-jdk14").withTransitivity().asFile())
-                .addPackages(true, MenuModel.class.getPackage(), Confirmable.class.getPackage())
-                .addClasses(MenuView.class, PaginasService.class,
-                        Pagina.class, BaseEntityIdentity.class, BaseEntity.class,
+                .addPackages(true, TreeNode.class.getPackage(), Confirmable.class.getPackage())
+                .addClasses(MenuEditView.class, MenuInfo.class)
+                .addClasses(Pagina.class, BaseEntityIdentity.class, BaseEntity.class,
                         PaginasService.class, PaginaDAO.class, BaseDAO.class)
                 .addAsResource("META-INF/persistence.xml")
                 //.addAsWebInfResource("META-INF/glassfish-resources.xml")
@@ -63,16 +65,19 @@ public class MenuViewIntgTest {
     }
 
     @Test
-    public void givenPaginasData_whenGetMenuModel_thenReturnMenuContent() {
-        List<String> menuFirstLevelIds = Arrays.asList("1", "8", "12");
+    public void givenPaginasData_whenGetMenuRoot_thenReturnMenuData() {
+        List<String> menuFirstLevelNames = Arrays.asList("Item 1", "Item 8", "Item 12");
 
-        MenuModel menuModel = menuView.getMenuModel();
+        TreeNode<MenuInfo> menuModel = menuEditView.getMenuRoot();
 
-        assertEquals(3, menuModel.getElements().size());
+        assertEquals(3, menuModel.getChildren().size());
 
-        assertTrue(menuFirstLevelIds.contains(menuModel.getElements().get(0).getId()));
-        assertTrue(menuFirstLevelIds.contains(menuModel.getElements().get(1).getId()));
-        assertTrue(menuFirstLevelIds.contains(menuModel.getElements().get(2).getId()));
+        assertTrue(menuFirstLevelNames
+                .contains(menuModel.getChildren().get(0).getData().getName()));
+        assertTrue(menuFirstLevelNames
+                .contains(menuModel.getChildren().get(1).getData().getName()));
+        assertTrue(menuFirstLevelNames
+                .contains(menuModel.getChildren().get(2).getData().getName()));
     }
 
     /**

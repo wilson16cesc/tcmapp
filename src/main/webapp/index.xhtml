@@ -7,12 +7,35 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form id="frm">
-            <p:tieredMenu model="#{menuView.menuModel}"/>
-            <p:slideMenu model="#{menuView.menuModel}"/>
-            <p:inputText value="#{menuView.name}"/>
-            <p:spinner/>
-            <p:messages id="messages" />
+        <h:form id="editMenuForm">
+
+            <p:panel id="menuEditPanel" header="Editar Menu" style="width: 60%;">
+
+                <p:panelGrid id="menuEditPanelGrid" columns="2" layout="grid" >
+                    <p:tree id="editMenuTree" value="#{menuEditView.menuRoot}" var="node" selectionMode="single" 
+                            selection="#{menuEditView.selectedNode}" >
+                        <p:ajax event="select" update=":editMenuForm:editMenuNodePanel" listener="#{menuEditView.updateSelectedPagina()}"/>
+                        
+                        <p:treeNode icon="#{node.icon}">
+                            <h:outputText value="#{node.name}"/>
+                        </p:treeNode>
+                    </p:tree>
+                    <p:panel id="editMenuNodePanel">
+                        <p:panelGrid columns="2" layout="grid">
+                            
+                            <p:outputLabel value="Nombre"/>
+                            <p:outputLabel value="#{menuEditView.selectedPagina.nombre}" style="font-weight: bold" />
+                            <p:outputLabel value="Url" rendered="#{menuEditView.selectedPagina.hoja}" />
+                            <p:outputLabel value="#{menuEditView.selectedPagina.url}" rendered="#{menuEditView.selectedPagina.hoja}" style="font-weight: bold" />
+                            <p:outputLabel value="Icono"/>
+                            <p:outputLabel value="#{menuEditView.selectedPagina.icono}" style="font-weight: bold" />
+                            
+                        </p:panelGrid>
+                    </p:panel>
+
+                </p:panelGrid>
+            </p:panel>
+            
         </h:form>
     </h:body>
 </html>

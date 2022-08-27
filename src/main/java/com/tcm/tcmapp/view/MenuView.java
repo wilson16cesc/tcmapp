@@ -15,11 +15,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named
 @SessionScoped
 public class MenuView implements Serializable {
-
+    
+    final Logger logger = LoggerFactory.getLogger(MenuView.class.getSimpleName());
     private String name = "Miguel Figueroa";
 
     private MenuModel menuModel;
@@ -55,6 +58,7 @@ public class MenuView implements Serializable {
 
     @PostConstruct
     public void init() {
+        logger.info("Cargando datos del menu - {}", this.getClass().getSimpleName());
         this.paginas = paginasService.getPaginasParaMenu();
 
         List<Pagina> paginasNivel1 = this.paginas.stream()
