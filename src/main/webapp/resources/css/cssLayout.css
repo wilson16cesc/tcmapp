@@ -1,9 +1,10 @@
 
 #top {
     position: relative;
-    background-color: #036fab;
+    background-color: #045491;
     color: white;
     padding: 5px;
+    height: 50px;
     margin: 0px 0px 10px 0px;
 }
 
@@ -16,7 +17,7 @@
 
 #left {
     float: left;
-    padding: 5px;
+    padding-top: 10px;
     width: 200px;
 }
 
@@ -34,8 +35,6 @@
 }
 
 .left_content {
-    background-color: #dddddd;
-    padding: 5px;
     margin-left: 170px;
 }
 
