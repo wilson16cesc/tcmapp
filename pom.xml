@@ -26,8 +26,7 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>10.2.1.jre11</version>
-            <scope>runtime</scope>
+            <version>11.2.0.jre8</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -44,6 +43,12 @@
             <artifactId>primefaces</artifactId>
             <version>11.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.omnifaces</groupId>
+            <artifactId>omnifaces</artifactId>
+            <version>3.13.4</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

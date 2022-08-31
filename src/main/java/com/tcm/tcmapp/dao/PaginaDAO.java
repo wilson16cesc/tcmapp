@@ -2,7 +2,6 @@ package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.entity.Pagina;
 import java.util.List;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 @Stateless
@@ -17,4 +16,8 @@ public class PaginaDAO extends BaseDAO<Pagina> {
                 .getResultList();
     }
 
+    public Long findMaxId() {
+        return getEntityManager().createNamedQuery("Pagina.findMaxId", Long.class)
+                .getSingleResult();
+    }
 }

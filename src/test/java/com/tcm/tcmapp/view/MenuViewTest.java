@@ -1,6 +1,6 @@
 package com.tcm.tcmapp.view;
 
-import com.tcm.tcmapp.business.PaginasService;
+import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.entity.Pagina;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.primefaces.model.menu.MenuModel;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -37,7 +35,7 @@ public class MenuViewTest extends MenuBaseTest {
 
 
     @Test
-    public void givenPaginasData_whenGetMenuModel_thenReturnMenuContent() {
+    public void dadoDatosDePaginas_cuandoInvocaGetMenuModel_entoncesDevuelveEstructuraDelMenu() {
         given(paginasService.getPaginasParaMenu()).willReturn(paginas);
 
         menuView.init();

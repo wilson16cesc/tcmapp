@@ -1,6 +1,6 @@
 package com.tcm.tcmapp.view;
 
-import com.tcm.tcmapp.business.PaginasService;
+import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.entity.Pagina;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;

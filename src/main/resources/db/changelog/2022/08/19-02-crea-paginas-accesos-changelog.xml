@@ -10,6 +10,9 @@
             <column name="id" type="VARCHAR(1)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_accesos"/>
             </column>
+            <column name="nombre" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
             <column name="usuario_crea" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
@@ -19,28 +22,14 @@
             <column name="usuario_edita" type="VARCHAR(100)"/>
             <column name="fecha_edita" type="DATETIME"/>
             <column name="activo" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-            <column name="nombre" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="1660948354873-2" author="Miguel_Figueroa2 (generated)">
         <createTable tableName="seg_paginas">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column autoIncrement="false" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_paginas"/>
-            </column>
-            <column name="usuario_crea" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="fecha_crea" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="usuario_edita" type="VARCHAR(100)"/>
-            <column name="fecha_edita" type="DATETIME"/>
-            <column name="activo" type="BOOLEAN">
-                <constraints nullable="false"/>
             </column>
             <column name="nombre" type="VARCHAR(100)">
                 <constraints nullable="false"/>
@@ -51,6 +40,17 @@
             </column>
             <column name="icono" type="VARCHAR(50)"/>
             <column name="id_padre" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="usuario_crea" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha_crea" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="usuario_edita" type="VARCHAR(100)"/>
+            <column name="fecha_edita" type="DATETIME"/>
+            <column name="activo" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
         </createTable>

@@ -1,4 +1,4 @@
-package com.tcm.tcmapp.business;
+package com.tcm.tcmapp.service;
 
 import com.tcm.tcmapp.dao.PaginaDAO;
 import com.tcm.tcmapp.entity.Pagina;
@@ -15,6 +15,12 @@ public class PaginasService {
 
     public List<Pagina> getPaginasParaMenu() {
         return paginaDAO.findAllOrderByIdPadre();
+    }
+
+    public void saveAll(List<Pagina> paginas) {
+        paginas.forEach(pagina -> {
+            paginaDAO.save(pagina);
+        });
     }
 
 }

@@ -1,24 +1,26 @@
 package com.tcm.tcmapp.view;
 
+import com.tcm.tcmapp.entity.Pagina;
 import java.util.Objects;
-
 
 public class MenuInfo {
 
     public MenuInfo() {
     }
 
-    public MenuInfo(Long paginaId, String name, String type, String icon) {
+    public MenuInfo(Long paginaId, String name, String icon, Boolean hoja, Long idPadre) {
         this.paginaId = paginaId;
         this.name = name;
-        this.type = type;
         this.icon = icon;
+        this.hoja = hoja;
+        this.idPadre = idPadre;
     }
 
     private Long paginaId;
     private String name;
-    private String type;
     private String icon;
+    private Boolean hoja;
+    private Long idPadre;
 
     public Long getPaginaId() {
         return paginaId;
@@ -28,21 +30,12 @@ public class MenuInfo {
         this.paginaId = paginaId;
     }
 
-    
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getIcon() {
@@ -53,10 +46,28 @@ public class MenuInfo {
         this.icon = icon;
     }
 
+    public Boolean getHoja() {
+        return hoja;
+    }
+
+    public void setHoja(Boolean hoja) {
+        this.hoja = hoja;
+    }
+
+    public Long getIdPadre() {
+        return idPadre;
+    }
+
+    public void setIdPadre(Long idPadre) {
+        this.idPadre = idPadre;
+    }
+
     @Override
     public String toString() {
-        return this.name;
+        return "MenuInfo{" + "paginaId=" + paginaId + ", name=" + name + ", icon=" + icon + ", hoja=" + hoja + ", idPadre=" + idPadre + '}';
     }
+
+
 
     @Override
     public int hashCode() {
@@ -80,7 +91,8 @@ public class MenuInfo {
         return Objects.equals(this.paginaId, other.paginaId);
     }
 
-    
-    
-    
+    public static MenuInfo fromPagina(Pagina pagina) {
+        return new MenuInfo(pagina.getId(), pagina.getNombre(), pagina.getIcono(), pagina.getHoja(), pagina.getIdPadre());
+    }
+
 }
