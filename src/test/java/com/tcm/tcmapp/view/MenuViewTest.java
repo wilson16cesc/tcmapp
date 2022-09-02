@@ -8,9 +8,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -30,7 +32,9 @@ public class MenuViewTest extends MenuBaseTest {
 
     @Before
     public void setUp() throws Exception {
-        paginas = cargarPaginas();
+        Map<String, Object> paginasAndMenu = cargarPaginasAndMenu();
+        paginas = (List<Pagina>) paginasAndMenu.get(PAGINAS);
+
     }
 
 
@@ -43,8 +47,8 @@ public class MenuViewTest extends MenuBaseTest {
 
         verify(paginasService, times(1)).getPaginasParaMenu();
 
-        assertEquals(3, menuModel.getElements().size());
-        assertEquals("12", menuModel.getElements().get(2).getId());
+        assertEquals(1, menuModel.getElements().size());
+        assertEquals("1", menuModel.getElements().get(0).getId());
 
     }
 

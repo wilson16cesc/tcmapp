@@ -44,6 +44,16 @@ public class Pagina extends BaseEntity {
         this.setUsuarioCrea(usuarioCrea);
         this.setActivo(activo);
     }
+    public Pagina(String nombre, String url, Boolean hoja, String icono, Long idPadre, LocalDateTime fechaCrea, String usuarioCrea, Boolean activo) {
+        this.nombre = nombre;
+        this.url = url;
+        this.hoja = hoja;
+        this.icono = icono;
+        this.idPadre = idPadre;
+        this.setFechaCrea(fechaCrea);
+        this.setUsuarioCrea(usuarioCrea);
+        this.setActivo(activo);
+    }
 
     public Long getId() {
         return id;

@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -34,18 +35,13 @@ public class MenuEditView implements Serializable {
 
     private TreeNode<MenuInfo> menuRoot;
 
-    //todo:quitar estos campos al finalizar el desarrollo de esta clase
-    private TreeNode<MenuInfo> root2;
-    private String name = "Miguel Figueroa";
-
     private List<Pagina> paginas;
     private TreeNode<MenuInfo> selectedNode;
     private Pagina selectedPagina;
-    private Pagina newPagina;
-    private PrimeFaces primeFaces;
+    private Pagina paginaEditar;
 
     public MenuEditView() {
-        this.newPagina = new Pagina();
+        this.paginaEditar = new Pagina();
         this.selectedPagina = new Pagina();
     }
 
@@ -141,12 +137,12 @@ public class MenuEditView implements Serializable {
         this.selectedPagina = selectedPagina;
     }
 
-    public Pagina getNewPagina() {
-        return newPagina;
+    public Pagina getPaginaEditar() {
+        return paginaEditar;
     }
 
-    public void setNewPagina(Pagina newPagina) {
-        this.newPagina = newPagina;
+    public void setPaginaEditar(Pagina paginaEditar) {
+        this.paginaEditar = paginaEditar;
     }
 
     public void updateSelectedPagina() {
@@ -156,52 +152,68 @@ public class MenuEditView implements Serializable {
         System.out.println("selectedPagina: " + selectedPagina);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void nuevaPagina() {
-        this.newPagina = new Pagina();
-        this.newPagina.setHoja(Boolean.FALSE);
+    public void nuevoNodoMenu() {
+        this.paginaEditar = new Pagina();
+        this.paginaEditar.setHoja(Boolean.FALSE);
         Long idPadre = selectedPagina.getId();
-        this.newPagina.setIdPadre(idPadre);
+        this.paginaEditar.setIdPadre(idPadre);
 
         PrimeFaces.current().executeScript("PF('dlgCrearPagina').show();");
     }
 
-    public void agregarNodoMenu() {
-        newPagina.setId(menuCounter.getNextId());
-        newPagina.setCreado(Boolean.TRUE);
-        if (!newPagina.getHoja()) {
-            newPagina.setUrl(null);
+    public void agregarActualizarNodoMenu() {
+
+        //si se está creando
+        if (paginaEditar.getId() == null) {
+            paginaEditar.setId(menuCounter.getNextId());
+            paginaEditar.setCreado(Boolean.TRUE);
+            this.paginas.add(paginaEditar);
+            TreeNode<MenuInfo> menuNode = new DefaultTreeNode<>(MenuInfo.fromPagina(paginaEditar));
+            agregarHijo(this.menuRoot, paginaEditar.getIdPadre(), menuNode);
+            System.out.println("pagina Crear: " + paginaEditar);
+            //si la nueva es hoja dejarla seleccionada en la página
+            if (!paginaEditar.getHoja()) {
+                selectedNode = menuNode;
+                selectedPagina = paginaEditar;
+            }
+        } else { //si se está modificando
+            paginaEditar.setEditado(Boolean.TRUE);
+            System.out.println("pagina a modificar: " + paginaEditar);
+            selectedNode.getData().setIcon(paginaEditar.getIcono());
+            selectedNode.getData().setName(paginaEditar.getNombre());
         }
-        this.paginas.add(newPagina);
-        System.out.println("newPagina: " + newPagina);
-        TreeNode<MenuInfo> menuNode = new DefaultTreeNode<>(MenuInfo.fromPagina(newPagina));
-        agregarHijo(this.menuRoot, newPagina.getIdPadre(), menuNode);
         System.out.println("Paginas: " + Arrays.toString(paginas.toArray()));
         PrimeFaces.current().executeScript("PF('dlgCrearPagina').hide();");
     }
 
     public void guardarMenu() {
-        List<Pagina> paginasPorGuardar = paginas.stream()
+        List<Pagina> paginasPorCrear = paginas.stream()
                 .filter(Pagina::getCreado)
                 .collect(Collectors.toList());
         //todo: colocar estos campos en el PrePersist de la entidad.
         // tratar de colocarlos en la clase BaseEntity a ver si funciona
-        paginasPorGuardar.forEach(pagina -> {
+        paginasPorCrear.forEach(pagina -> {
             pagina.setFechaCrea(LocalDateTime.now());
             pagina.setUsuarioCrea("mfigueroa");
             pagina.setActivo(true);
             pagina.setCreado(false);
         });
+        List<Pagina> paginasPorActualizar = paginas.stream()
+                .filter(Pagina::getEditado)
+                .collect(Collectors.toList());
+        //todo: colocar estos campos en el PrePersist de la entidad.
+        // tratar de colocarlos en la clase BaseEntity a ver si funciona
+        paginasPorActualizar.forEach(pagina -> {
+            pagina.setFechaEdita(LocalDateTime.now());
+            pagina.setUsuario_edita("mfigueroa");
+            pagina.setEditado(Boolean.FALSE);
+        });
+        List<Pagina> paginasPorGuardar = new ArrayList<>();
+        paginasPorGuardar.addAll(paginasPorActualizar);
+        paginasPorGuardar.addAll(paginasPorCrear);
         System.out.println("paginasPorGuardar: " + Arrays.toString(paginasPorGuardar.toArray()));
         try {
-            paginasService.saveAll(paginasPorGuardar);
+            paginasService.saveOrUpdateAll(paginasPorGuardar);
             this.paginas = paginasService.getPaginasParaMenu();
             System.out.println("paginas: " + Arrays.toString(paginas.toArray()));
             inicializarMenu();
@@ -209,5 +221,28 @@ public class MenuEditView implements Serializable {
         } catch (Exception e) {
             Messages.addError(null, "Error al guardar los datos", e);
         }
+    }
+
+    public void borrarNodoMenu() {
+        TreeNode<MenuInfo> parentNode = selectedNode.getParent();
+        paginas.remove(selectedPagina);
+        selectedNode.getParent().getChildren().remove(selectedNode);
+        selectedNode.setParent(null);
+        selectedNode = parentNode;
+        updateSelectedPagina();
+    }
+
+    public void editarNodoMenu() {
+        paginaEditar = selectedPagina;
+        PrimeFaces.current().executeScript("PF('dlgCrearPagina').show();");
+
+    }
+
+    public List<Pagina> getPaginas() {
+        return paginas;
+    }
+
+    public void setPaginas(List<Pagina> paginas) {
+        this.paginas = paginas;
     }
 }

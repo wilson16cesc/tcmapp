@@ -22,5 +22,9 @@ public class PaginasService {
             paginaDAO.save(pagina);
         });
     }
-
+    public void saveOrUpdateAll(List<Pagina> paginas) {
+        paginas.forEach(pagina -> {
+            paginaDAO.update(pagina);
+        });
+    }
 }

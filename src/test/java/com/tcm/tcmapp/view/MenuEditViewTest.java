@@ -11,14 +11,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.omnifaces.util.Faces;
-import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -41,13 +41,17 @@ public class MenuEditViewTest extends MenuBaseTest {
 
 
     private List<Pagina> paginas;
+    private TreeNode<MenuInfo> menuRoot;
 
     @InjectMocks
     final MenuEditView menuEditView = new MenuEditView();
 
     @Before
     public void setUp() throws Exception {
-        paginas = cargarPaginas();
+
+        Map<String, Object> paginasAndMenu = cargarPaginasAndMenu();
+        paginas = (List<Pagina>) paginasAndMenu.get(PAGINAS);
+        menuRoot = (TreeNode<MenuInfo>) paginasAndMenu.get(MENU);
         given(paginasService.getPaginasParaMenu()).willReturn(paginas);
 
         PrimeFaces.setCurrent(primeFacesMock);
@@ -59,48 +63,80 @@ public class MenuEditViewTest extends MenuBaseTest {
     public void dadoDatosDePaginas_cuandoInvocaGetMenuRoot_entoncesDevuelveDatosDelMenu() {
 
         menuEditView.init();
-        TreeNode<MenuInfo> menuRoot = menuEditView.getMenuRoot();
+        TreeNode<MenuInfo> menuRootObtenido = menuEditView.getMenuRoot();
 
         verify(paginasService, times(1)).getPaginasParaMenu();
 
-        assertEquals(3, menuRoot.getChildren().size());
-        assertEquals("Item 12", menuRoot.getChildren().get(2).getData().getName());
+        TreeNode<MenuInfo> menuItem1 = menuRootObtenido.getChildren().get(0);
+        TreeNode<MenuInfo> menuItem2 = menuItem1.getChildren().get(0);
+        TreeNode<MenuInfo> menuItem4 = menuItem2.getChildren().get(1);
+
+        assertEquals(1, menuRootObtenido.getChildren().size());
+        assertEquals("Item 4", menuItem4.getData().getName());
     }
 
     @Test
-    public void dadoMenuExistente_cuandoInvocaAgregarNuevoItem_entoncesAgregaElNuevoItem() {
-        Pagina newPagina = new Pagina(19L, "Item 19", "http://item19.com", true, "pi pi-save", 16L, null, null, null);
+    public void dadoMenuExistente_cuandoInvocaagregarActualizarNodoMenu_entoncesAgregaElNuevoNodo() {
+        Pagina newPagina = new Pagina( "Item 5", "http://item5.com", true, "pi pi-save", 2L, null, null, null);
 
-        given(menuCounter.getNextId()).willReturn(19L);
+        given(menuCounter.getNextId()).willReturn(5L);
 
-        menuEditView.init();
-        menuEditView.setNewPagina(newPagina);
+        menuEditView.setPaginas(paginas);
+        menuEditView.setMenuRoot(menuRoot);
+        menuEditView.setPaginaEditar(newPagina);
 
-        menuEditView.agregarNodoMenu();
+        menuEditView.agregarActualizarNodoMenu();
 
-        TreeNode<MenuInfo> menuRoot = menuEditView.getMenuRoot();
+        TreeNode<MenuInfo> menuRootModificado = menuEditView.getMenuRoot();
 
-        TreeNode<MenuInfo> nodoDoce = menuRoot.getChildren().get(2);
-        TreeNode<MenuInfo> nodoDieciseis = nodoDoce.getChildren().get(1);
-        TreeNode<MenuInfo> nuevoNodo = nodoDieciseis.getChildren().get(2);
+        TreeNode<MenuInfo> menuItem1 = menuRootModificado.getChildren().get(0);
+        TreeNode<MenuInfo> menuItem2 = menuItem1.getChildren().get(0);
+        TreeNode<MenuInfo> nuevoMenuItem = menuItem2.getChildren().get(2);
 
-        assertEquals("Item 19", nuevoNodo.getData().getName());
+        assertEquals("Item 5", nuevoMenuItem.getData().getName());
 
     }
 
     @Test
-    public void dadoMenuExistente_cuandoInvoqueGuardarMenu_entoncesGuardarNuevasPaginas() {
-        Pagina nuevaPagina19 = new Pagina(19L, "Item 17", "http://item17.com", true, "pi pi-save", 16L, LocalDateTime.now(), "mfigueroa", true);
-        Pagina nuevaPagina20 = new Pagina(20L, "Item 18", "http://item18.com", true, "pi pi-save", 16L, LocalDateTime.now(), "mfigueroa", true);
-        paginas.add(nuevaPagina19);
-        paginas.add(nuevaPagina20);
+    public void dadoMenuExistente_cuandoInvoqueGuardarMenu_entoncesGuardarOActualizarLasPaginas() {
+        Pagina paginaParaActualizar = new Pagina(4L, "Item 4 actualizado", "http://item4.com", true, "pi pi-save", 2L, LocalDateTime.now(), "mfigueroa", true);
+        paginaParaActualizar.setEditado(true);
+        Pagina paginaParaInsertar = new Pagina("Item 5", "http://item5.com", true, "pi pi-save", 2L, LocalDateTime.now(), "mfigueroa", true);
+        paginaParaInsertar.setCreado(true);
+        paginas.add(paginaParaInsertar);
+        paginas.add(paginaParaActualizar);
 
         given(paginasService.getPaginasParaMenu()).willReturn(paginas);
+        menuEditView.setPaginas(paginas);
 
-        menuEditView.init();
         menuEditView.guardarMenu();
 
-        verify(paginasService, times(1)).saveAll(Mockito.anyList());
-        verify(paginasService, times(2)).getPaginasParaMenu();
+        verify(paginasService, times(1)).saveOrUpdateAll(Mockito.anyList());
+        verify(paginasService, times(1)).getPaginasParaMenu();
+    }
+
+    @Test
+    public void dadoMenuExistente_cuandoInvoqueBorrarNodoMenu_entoncesRemoverNodoMenu() {
+        Pagina newPagina = new Pagina(5L, "Item 5", "http://item5.com", true, "pi pi-save", 12L, LocalDateTime.now(), "mfigueroa", true);
+        paginas.add(newPagina);
+        TreeNode<MenuInfo> menuItem1 = menuRoot.getChildren().get(0);
+        TreeNode<MenuInfo> menuItem2 = menuItem1.getChildren().get(0);
+        DefaultTreeNode<MenuInfo> nuevoMenuItem = new DefaultTreeNode<>(MenuInfo.fromPagina(newPagina));
+        menuItem2.getChildren().add(nuevoMenuItem);
+
+        menuEditView.setSelectedNode(nuevoMenuItem);
+        menuEditView.setSelectedPagina(newPagina);
+        menuEditView.setPaginas(paginas);
+        menuEditView.setMenuRoot(menuRoot);
+
+        assertEquals(3, menuItem2.getChildCount());
+
+        menuEditView.borrarNodoMenu();
+
+        TreeNode<MenuInfo> menuRootModificado = menuEditView.getMenuRoot();
+        TreeNode<MenuInfo> menuItemUno = menuRootModificado.getChildren().get(0);
+        TreeNode<MenuInfo> menuItemDos = menuItemUno.getChildren().get(0);
+
+        assertEquals(2, menuItemDos.getChildCount());
     }
 }
