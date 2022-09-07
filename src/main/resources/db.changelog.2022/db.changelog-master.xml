@@ -9,5 +9,6 @@
     <include file="db/changelog/2022/08/19-03-ajustes-usuarios-roles_paginas-changelog.xml"/>
     <include file="db/changelog/2022/08/23-01-agrega-columna-nivel-changelog.xml"/>
     <include file="db/changelog/2022/08/31-01-quitar-columna-nivelchangelog.xml"/>
+    <include file="db/changelog/2022/09/02-01-elimina-roles_paginas-crea-roles_permisos-changelog.xml"/>
 
 </databaseChangeLog>

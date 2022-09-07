@@ -8,19 +8,75 @@
 
     <ui:define name="content">
         <h:form id="editMenuForm">
+            <p:panel id="menuEditPanel" header="Editar Menu" style="width: 70%;">
+                <p:messages id="menuEditMessages"/>
+                <p:panelGrid id="menuEditPanelGrid" columns="2" layout="grid" >
+                    <p:tree id="editMenuTree" value="#{menuEditView.menuRoot}"  var="node" selectionMode="single" 
+                            selection="#{menuEditView.selectedNode}" >
+                        <p:ajax event="select" update=":editMenuForm:paginaPanel" listener="#{menuEditView.updateSelectedPagina()}"/>
 
-            <p:panel id="menuEditPanel" header="Editar Menu" style="width: 60%;">
-                <p:panelGrid id="menuEditPanelGrid" columns="2" layout="flex" columnClasses="ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
-                    <p:tree id="editMenuTree" value="#{menuEditView.menuRoot}" var="node" >
-                        <p:treeNode icon="#{node.icon}">
+                        <p:treeNode icon="#{node.icon}" >
                             <h:outputText value="#{node.name}"/>
                         </p:treeNode>
                     </p:tree>
-                    <p:outputLabel value="prueba"/>
+
+                    <p:panel id="paginaPanel">
+                        <p:panelGrid id="paginaPanelGrid" columns="2" layout="grid" columnClasses="ui-g-4, ui-g-8" >
+
+                            <p:outputLabel value="Nombre"/>
+                            <p:outputLabel value="#{menuEditView.selectedPagina.nombre}" style="font-weight: bold" />
+                            <p:outputLabel value="Url" rendered="#{menuEditView.selectedPagina.hoja}" />
+                            <p:outputLabel value="#{menuEditView.selectedPagina.url}" rendered="#{menuEditView.selectedPagina.hoja}" style="font-weight: bold" />
+                            <p:outputLabel value="Icono"/>
+                            <p:outputLabel value="#{menuEditView.selectedPagina.icono}" style="font-weight: bold" />
+                        </p:panelGrid>
+                        <div style="text-align: right;padding-top: 5px;">
+                            <p:commandButton value="Borrar" style="margin-right: 5px;" actionListener="#{menuEditView.borrarNodoMenu()}" rendered="#{menuEditView.selectedPagina.creado and menuEditView.selectedNode.childCount eq 0}">
+                                <p:confirm header="Confirmación" message="¿Está seguro que desea borrar este item de menú?" icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
+                            <p:commandButton value="Editar Item" actionListener="#{menuEditView.editarNodoMenu()}" update="newPaginaForm"  rendered="#{not empty menuEditView.selectedPagina.nombre}" style="margin-right: 5px;"/>
+                            <p:commandButton value="Nuevo hijo" actionListener="#{menuEditView.nuevoNodoMenu()}" update="newPaginaForm"  rendered="#{(not menuEditView.selectedPagina.hoja) and (not empty menuEditView.selectedPagina.nombre)}"/>
+                        </div>
+                    </p:panel>
                 </p:panelGrid>
+
+                <div style="text-align: right;">
+                    <p:commandButton value="Guardar" update="editMenuForm:menuEditMessages editMenuForm" actionListener="#{menuEditView.guardarMenu()}">
+                        <p:confirm header="Confirmación" message="¿Desea guardar los cambios?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </div>
             </p:panel>
 
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+            </p:confirmDialog>
         </h:form>
+        <h:form id="newPaginaForm">
+            <p:dialog header="Nuevo Item" widgetVar="dlgCrearPagina" minHeight="60" width="400" showEffect="fade" modal="true">
+
+                <p:messages id="newPaginaMessages" />
+                <p:panelGrid id="newPaginaGrid" columns="2" layout="grid" columnClasses="ui-g-10 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
+                    <p:outputLabel value="Página:" rendered="#{empty menuEditView.paginaEditar.id}"/>
+                    <p:selectBooleanCheckbox value="#{menuEditView.paginaEditar.hoja}" rendered="#{empty menuEditView.paginaEditar.id}">
+                        <p:ajax event="blur" update="newPaginaForm:newPaginaGrid"/>
+                    </p:selectBooleanCheckbox> 
+                    <p:outputLabel value="Nombre"/>
+                    <p:inputText value="#{menuEditView.paginaEditar.nombre}" required="true" label="Nombre"/>
+                    <p:outputLabel value="Icono"/>
+                    <p:inputText value="#{menuEditView.paginaEditar.icono}" required="true" label="Icono"/>
+                    <p:outputLabel value="Url" rendered="#{menuEditView.paginaEditar.hoja}"/>
+                    <p:inputText value="#{menuEditView.paginaEditar.url}" rendered="#{menuEditView.paginaEditar.hoja}" required="true" label="Url"/>  
+                </p:panelGrid>
+
+                <div style="text-align: right;">
+                    <p:commandButton value="Cancelar" style="margin-right: 5px;" onclick="PF('dlgCrearPagina').hide()"/>
+                    <p:commandButton value="Guardar" update="newPaginaForm:newPaginaMessages editMenuForm:editMenuTree editMenuForm:paginaPanelGrid" actionListener="#{menuEditView.agregarActualizarNodoMenu()}"/>
+                </div>
+
+            </p:dialog>
+        </h:form>
+
     </ui:define>
 
 </ui:composition>

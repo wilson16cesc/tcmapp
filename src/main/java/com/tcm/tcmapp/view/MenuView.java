@@ -42,12 +42,16 @@ public class MenuView implements Serializable {
                         .id(hijo.getId()+"")
                         .value(hijo.getNombre())
                         .icon(hijo.getIcono())
+                        //.command("#{menuView.redirect(\"/pages/menuEdit.xhtml\")}")
+                        //.command("#{menuView.redirect(\"hola mundo\")}")
+                        .outcome(hijo.getUrl().startsWith("/") ? hijo.getUrl() : null)
                         .build();
                 submenu.getElements().add(menuItem);
             } else {
                 DefaultSubMenu newSubmenu = DefaultSubMenu.builder()
                         .id(hijo.getId()+"")
                         .label(hijo.getNombre())
+                        .icon(hijo.getIcono())
                         .build();
                 submenu.getElements().add(newSubmenu);
                 agregarHijos(hijo, newSubmenu);
@@ -93,5 +97,9 @@ public class MenuView implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void redirect(String page){
+        logger.info("Pagina a redireccionar: "+ page);
     }
 }

@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -44,18 +45,26 @@ public class BaseDAO<T>{
     }
 
     public void delete(Object id){
-        T entity = find(id);
+        T entity = findById(id);
         getEntityManager().remove(entity);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public T find(Object id) {
+    public T findById(Object id) {
         return getEntityManager().find(entityClass, id);
     }
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List findAll() {
         CriteriaQuery<Object> cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
+        return getEntityManager().createQuery(cq).getResultList();
+    }
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List findAllActive() {
+        CriteriaQuery<Object> cq = getEntityManager().getCriteriaBuilder().createQuery();
+        Root<T> root = cq.from(entityClass);
+        cq.where(root.get("activo").in(true));
+        cq.select(root);
         return getEntityManager().createQuery(cq).getResultList();
     }
 
@@ -77,5 +86,9 @@ public class BaseDAO<T>{
     
     public void flush(){
         em.flush();
+    }
+
+    public int executeJpqlUpdate(String jpql){
+        return em.createQuery(jpql).executeUpdate();
     }
 }

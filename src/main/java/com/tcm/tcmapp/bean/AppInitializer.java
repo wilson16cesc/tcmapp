@@ -1,8 +1,11 @@
-package com.tcm.tcmapp.service;
+package com.tcm.tcmapp.bean;
 
 import com.tcm.tcmapp.dao.PaginaDAO;
+import com.tcm.tcmapp.dao.RolDAO;
 import com.tcm.tcmapp.dao.UsuarioDAO;
 import com.tcm.tcmapp.entity.Pagina;
+import com.tcm.tcmapp.entity.Rol;
+import com.tcm.tcmapp.entity.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +13,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
 
 @Singleton
 @Startup
@@ -23,12 +30,36 @@ public class AppInitializer {
     @Inject
     PaginaDAO paginaDAO;
 
+    @Inject
+    RolDAO rolDAO;
+
+    @Inject
+    Pbkdf2PasswordHash passwordHash;
+
     @PostConstruct
     private void initializeApp() {
-        logger.info("Borrando datos del menu en base de datos.");
-        paginaDAO.deleteAll();
-        crearPaginas();
-        logger.info("Menu cardado desde base de datos.");
+        logger.info("Limpiando datos existentes");
+        //usuarioDAO.executeJpqlUpdate("DELETE FROM Usuario u");
+        //rolDAO.executeJpqlUpdate("DELETE FROM Rol r");
+
+        logger.info("Inicializando datos de la aplicación");
+
+        Pagina pagina = paginaDAO.findById(1L);
+        if (Objects.isNull(pagina)) {
+            crearPaginas();
+        }
+
+        Usuario usuario = usuarioDAO.findByUsername("mfigueroa");
+        if (Objects.isNull(usuario)) {
+            Rol rol1Admin = new Rol("ADMIN");
+            Rol rolUser = new Rol("USER");
+            rolDAO.save(rol1Admin);
+            rolDAO.save(rolUser);
+            Usuario usuario1 = new Usuario("mfigueroa", "12345",
+                    new HashSet<>(Arrays.asList(rol1Admin, rolUser)));
+            usuarioDAO.save(usuario1);
+        }
+
     }
 
     private void crearPaginas() {
@@ -39,9 +70,9 @@ public class AppInitializer {
         paginaDAO.save(segundo);
         Pagina tercero = new Pagina(3L, "Item 3", "http://item3.com", false, "pi pi-save", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(tercero);
-        Pagina cuarto = new Pagina(4L, "Item 4", "http://item4.com", true, "pi pi-save", tercero.getId(), LocalDateTime.now(), "mfigueroa", true);
+        Pagina cuarto = new Pagina(4L, "Editar Menu", "/pages/menuEdit.xhtml", true, "pi pi-save", tercero.getId(), LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(cuarto);
-        Pagina quinto = new Pagina(5L, "Item 5", "http://item5.com", true, "pi pi-save", tercero.getId(), LocalDateTime.now(), "mfigueroa", true);
+        Pagina quinto = new Pagina(5L, "Pagina de Inicio", "/pages/home.xhtml", true, "pi pi-save", tercero.getId(), LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(quinto);
 
         Pagina sexto = new Pagina(6L, "Item 6", "http://item6.com", false, "pi pi-save", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);

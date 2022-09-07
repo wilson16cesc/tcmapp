@@ -47,7 +47,7 @@ public class MenuEditViewIntgTest {
         PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-api").withTransitivity().asFile())
-                .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-jdk14").withTransitivity().asFile())
+                //.addAsLibraries(pomFile.resolve("org.slf4j:slf4j-jdk14").withTransitivity().asFile())
                 .addPackages(true, TreeNode.class.getPackage(), Confirmable.class.getPackage(), 
                         PrimeFaces.class.getPackage(), ViewScoped.class.getPackage())
                 .addClasses(MenuEditView.class, MenuInfo.class)

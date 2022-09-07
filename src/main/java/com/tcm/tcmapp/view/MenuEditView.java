@@ -3,6 +3,7 @@ package com.tcm.tcmapp.view;
 import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.entity.Pagina;
 import com.tcm.tcmapp.service.PaginasService;
+import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -20,7 +21,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.omnifaces.util.Messages;
 
 @Named
 @SessionScoped
@@ -65,6 +65,7 @@ public class MenuEditView implements Serializable {
         paginasNivel1.forEach(pagina -> {
             TreeNode<MenuInfo> menuItem
                     = new DefaultTreeNode<>(MenuInfo.fromPagina(pagina));
+            menuItem.setExpanded(true);
             menuRoot.getChildren().add(menuItem);
             agregarHijos(pagina, menuItem);
         });
@@ -75,14 +76,11 @@ public class MenuEditView implements Serializable {
                 .filter(p -> p.getIdPadre() == pagina.getId().longValue())
                 .collect(Collectors.toList());
         for (Pagina hijo : hijos) {
-            if (hijo.getHoja()) {
-                TreeNode<MenuInfo> menuItem
-                        = new DefaultTreeNode<>(MenuInfo.fromPagina(hijo));
-                node.getChildren().add(menuItem);
-            } else {
-                TreeNode<MenuInfo> menuItem
-                        = new DefaultTreeNode<>(MenuInfo.fromPagina(hijo));
-                node.getChildren().add(menuItem);
+            TreeNode<MenuInfo> menuItem
+                    = new DefaultTreeNode<>(MenuInfo.fromPagina(hijo));
+            node.setExpanded(true);
+            node.getChildren().add(menuItem);
+            if (!hijo.getHoja()) {
                 agregarHijos(hijo, menuItem);
             }
         }
@@ -90,9 +88,8 @@ public class MenuEditView implements Serializable {
 
     /**
      * Agrega un nuevo elemento al menu. es un método de tipo Recursivo
-     *
-     * @param menuTree menú base
-     * @param idPadre id del nodo padre
+     * @param menuTree  menú base
+     * @param idPadre   id del nodo padre
      * @param nuevoHijo nodo a agregar
      */
     private void agregarHijo(TreeNode<MenuInfo> menuTree, long idPadre, TreeNode<MenuInfo> nuevoHijo) {
@@ -220,6 +217,7 @@ public class MenuEditView implements Serializable {
             Messages.addInfo(null, "Datos guardados correctamente");
         } catch (Exception e) {
             Messages.addError(null, "Error al guardar los datos", e);
+            logger.error("Error al guardar datos del menú", e);
         }
     }
 
@@ -235,7 +233,6 @@ public class MenuEditView implements Serializable {
     public void editarNodoMenu() {
         paginaEditar = selectedPagina;
         PrimeFaces.current().executeScript("PF('dlgCrearPagina').show();");
-
     }
 
     public List<Pagina> getPaginas() {

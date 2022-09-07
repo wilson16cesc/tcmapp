@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>TCM</title>
+
+    </h:head>
+    <h:body>
+        <h:form id="loginForm">
+            <div align="center" style="padding-top: 10%;">
+                <p:messages id="loginMessages" style="width: 700px;"/>
+                <p:splitter style="height: 500px;width: 700px;" styleClass="mb-5">
+                    <p:splitterPanel size="45">
+                        <div style="margin-top: 40%;">
+                            <p:graphicImage name="tcm_logo.jpeg" library="images"/>
+                        </div>
+                        <div>
+                            <h2 style="font-weight: 700;">Nombre Aplicación</h2>
+                        </div>
+                    </p:splitterPanel>
+                    <p:splitterPanel size="55" >
+                        <p:panel style="width: 280px; margin-top: 20%;">
+                            <div align="center" style="width: 200px; margin-top: 30px;">
+                                <div style="text-align: center; margin-bottom: 15px;" >
+                                    <p:graphicImage name="login.png" library="images" height="80px" width="80px"/>
+                                </div>
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <span class="ui-float-label">
+                                        <p:inputText id="username" value="#{loginView.username}" style="width: 200px;"/>
+                                        <p:outputLabel for="@previous" value="Usuario"/>
+                                    </span> 
+                                    <br/>
+                                    <span class="ui-float-label">
+                                        <p:password id="password" toggleMask="true" redisplay="true" value="#{loginView.password}" style="width: 200px;"/>
+                                        <p:outputLabel for="@previous" value="Contraseña"/>
+                                    </span>
+                                    <div align="center" style="padding: 15px;">
+                                        <p:commandButton ajax="false" value="Entrar" update="loginForm:loginMessages" action="#{loginView.autenticar()}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </p:splitterPanel>
+                </p:splitter>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

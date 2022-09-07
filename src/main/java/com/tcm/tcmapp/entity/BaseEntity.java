@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseEntity implements Serializable{
     @Column(name = "usuario_crea", nullable = false, length = 100)
-    private String usuarioCrea;
+    private String usuarioCrea = "mfigueroa";
 
     @Column(name = "fecha_crea", nullable = false)
-    private LocalDateTime fechaCrea;
+    private LocalDateTime fechaCrea = LocalDateTime.now();
 
     @Column(name = "usuario_edita", length = 100)
     private String usuario_edita;
@@ -20,7 +20,7 @@ public class BaseEntity implements Serializable{
     private LocalDateTime fechaEdita;
 
     @Column(name = "activo", nullable = false)
-    private Boolean activo = false;
+    private Boolean activo = true;
 
     public Boolean getActivo() {
         return activo;
