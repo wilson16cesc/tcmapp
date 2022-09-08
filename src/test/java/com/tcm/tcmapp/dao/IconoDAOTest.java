@@ -12,49 +12,44 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(Arquillian.class)
-public class RolDAOTest extends BaseDAO {
-
+public class IconoDAOTest extends BaseDAO {
 
     @Inject
-    RolDAO rolDAO;
-
-    @Before
-    public void setUp() throws Exception {
-        Rol rol1 = new Rol("user_role");
-        rolDAO.save(rol1);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        rolDAO.deleteAll();
-    }
+    IconoDAO iconoDAO;
 
     @Deployment
     public static WebArchive createDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addClass(Usuario.class)
-                .addClass(Rol.class)
-                .addClass(Permiso.class)
+                .addClass(Icono.class)
                 .addClass(BaseEntityIdentity.class)
                 .addClass(BaseEntity.class)
                 .addClass(BaseDAO.class)
-                .addClass(UsuarioDAO.class)
-                .addClass(RolDAO.class)
+                .addClass(IconoDAO.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(war.toString(true));
         return war;
     }
 
+    @Before
+    public void setUp() throws Exception {
+        iconoDAO.save(new Icono("icon-name"));
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        iconoDAO.deleteAll();
+    }
 
     @Test
-    public void testFindAllActive() {
-        List<Rol> rolesActivos = rolDAO.findAllActive();
-        assertEquals(1, rolesActivos.size());
+    public void testFindFirst() {
+        Icono primerIcono = iconoDAO.findFirst();
+        assertNotNull(primerIcono);
+        assertEquals("icon-name", primerIcono.getNombre());
     }
 }

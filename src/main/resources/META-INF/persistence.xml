@@ -3,6 +3,9 @@
     <properties>
         <class>com.tcm.tcmapp.business.Pagina</class>
         <class>com.tcm.tcmapp.business.Usuario</class>
+        <class>com.tcm.tcmapp.business.Rol</class>
+        <class>com.tcm.tcmapp.business.Icono</class>
+        <class>com.tcm.tcmapp.business.Permiso</class>
         <property name="eclipselink.logging.level" value="FINE"/>
         <property name="eclipselink.logging.level.sql" value="FINE"/>
         <property name="eclipselink.logging.parameters" value="true"/>

@@ -40,7 +40,7 @@ public class PaginaDAOTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addClasses(Pagina.class, BaseEntityIdentity.class, BaseEntity.class,
                          PaginaDAO.class, BaseDAO.class)
-                .addAsResource("META-INF/persistence.xml")
+                .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(war.toString(true));
         return war;
@@ -48,7 +48,7 @@ public class PaginaDAOTest {
 
     @Test
     public void findMaxId() {
-        Pagina pagina = new Pagina(2L, "Item 2", "http://item2.com", false, "pi pi-save", 1L, LocalDateTime.now(), "mfigueroa", true);
+        Pagina pagina = new Pagina(2L, "Item 2", "http://item2.com", false, "save", 1L, LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(pagina);
         Long maxId = paginaDAO.findMaxId();
         assertEquals(2L, maxId.longValue());

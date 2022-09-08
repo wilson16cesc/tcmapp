@@ -21,7 +21,8 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class MenuView implements Serializable {
-    
+
+    public static final String ICON_PREFIX = "pi pi-";
     final Logger logger = LoggerFactory.getLogger(MenuView.class.getSimpleName());
     private String name = "Miguel Figueroa";
 
@@ -37,13 +38,13 @@ public class MenuView implements Serializable {
                 .filter(p -> p.getIdPadre() == pagina.getId().longValue())
                 .collect(Collectors.toList());
         for (Pagina hijo : hijos) {
+            String icono = ICON_PREFIX + hijo.getIcono();
+            logger.info("icono: {}", icono);
             if (hijo.getHoja()) {
                 DefaultMenuItem menuItem = DefaultMenuItem.builder()
                         .id(hijo.getId()+"")
                         .value(hijo.getNombre())
-                        .icon(hijo.getIcono())
-                        //.command("#{menuView.redirect(\"/pages/menuEdit.xhtml\")}")
-                        //.command("#{menuView.redirect(\"hola mundo\")}")
+                        .icon(ICON_PREFIX +hijo.getIcono())
                         .outcome(hijo.getUrl().startsWith("/") ? hijo.getUrl() : null)
                         .build();
                 submenu.getElements().add(menuItem);
@@ -51,7 +52,7 @@ public class MenuView implements Serializable {
                 DefaultSubMenu newSubmenu = DefaultSubMenu.builder()
                         .id(hijo.getId()+"")
                         .label(hijo.getNombre())
-                        .icon(hijo.getIcono())
+                        .icon(icono)
                         .build();
                 submenu.getElements().add(newSubmenu);
                 agregarHijos(hijo, newSubmenu);
@@ -73,9 +74,12 @@ public class MenuView implements Serializable {
         menuModel = new DefaultMenuModel();
 
         paginasNivel1.forEach(pagina -> {
+            String icono = ICON_PREFIX + pagina.getIcono();
+            logger.info("icono: {}", icono);
             DefaultSubMenu submenu = DefaultSubMenu.builder()
                     .id(pagina.getId()+"")
                     .label(pagina.getNombre())
+                    .icon(icono)
                     .build();
             menuModel.getElements().add(submenu);
             agregarHijos(pagina, submenu);

@@ -53,7 +53,7 @@ public class UsuarioDAOTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addClasses(Usuario.class, Rol.class, Permiso.class, BaseEntityIdentity.class, BaseEntity.class,
                         UsuarioDAO.class, RolDAO.class, BaseDAO.class)
-                .addAsResource("META-INF/persistence.xml")
+                .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(war.toString(true));
         return war;

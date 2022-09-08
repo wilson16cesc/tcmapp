@@ -1,6 +1,8 @@
 package com.tcm.tcmapp.view;
 
+import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.bean.MenuCounter;
+import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
 import com.tcm.tcmapp.service.PaginasService;
 import org.omnifaces.util.Messages;
@@ -33,12 +35,18 @@ public class MenuEditView implements Serializable {
     @Inject
     MenuCounter menuCounter;
 
+    @Inject
+    DatosAplicacion datosAplicacion;
+
+    private Icono selectedIcono;
+
     private TreeNode<MenuInfo> menuRoot;
 
     private List<Pagina> paginas;
     private TreeNode<MenuInfo> selectedNode;
     private Pagina selectedPagina;
     private Pagina paginaEditar;
+    private List<Icono> iconos;
 
     public MenuEditView() {
         this.paginaEditar = new Pagina();
@@ -49,6 +57,7 @@ public class MenuEditView implements Serializable {
     public void init() {
         logger.info("Ejecutando metodo init - {}", this.getClass().getSimpleName());
         this.paginas = paginasService.getPaginasParaMenu();
+        this.iconos = datosAplicacion.getIconos();
         inicializarMenu();
     }
 
@@ -88,6 +97,7 @@ public class MenuEditView implements Serializable {
 
     /**
      * Agrega un nuevo elemento al menu. es un método de tipo Recursivo
+     *
      * @param menuTree  menú base
      * @param idPadre   id del nodo padre
      * @param nuevoHijo nodo a agregar
@@ -160,6 +170,7 @@ public class MenuEditView implements Serializable {
 
     public void agregarActualizarNodoMenu() {
 
+        paginaEditar.setIcono(selectedIcono.getNombre());
         //si se está creando
         if (paginaEditar.getId() == null) {
             paginaEditar.setId(menuCounter.getNextId());
@@ -232,6 +243,9 @@ public class MenuEditView implements Serializable {
 
     public void editarNodoMenu() {
         paginaEditar = selectedPagina;
+        selectedIcono = iconos.stream()
+                .filter(icono -> icono.getNombre().equals(paginaEditar.getIcono()))
+                .findFirst().orElse(new Icono());
         PrimeFaces.current().executeScript("PF('dlgCrearPagina').show();");
     }
 
@@ -241,5 +255,19 @@ public class MenuEditView implements Serializable {
 
     public void setPaginas(List<Pagina> paginas) {
         this.paginas = paginas;
+    }
+
+    public Icono getSelectedIcono() {
+        return selectedIcono;
+    }
+
+    public void setSelectedIcono(Icono selectedIcono) {
+        this.selectedIcono = selectedIcono;
+    }
+
+    public List<Icono> completeIcono(String query) {
+        return this.iconos.stream()
+                .filter(icono -> icono.getNombre().contains(query))
+                .collect(Collectors.toList());
     }
 }

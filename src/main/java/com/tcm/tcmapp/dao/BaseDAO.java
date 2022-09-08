@@ -10,6 +10,8 @@ import javax.ejb.Local;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -54,14 +56,14 @@ public class BaseDAO<T>{
         return getEntityManager().find(entityClass, id);
     }
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List findAll() {
-        CriteriaQuery<Object> cq = getEntityManager().getCriteriaBuilder().createQuery();
+    public List<T> findAll() {
+        CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
     }
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List findAllActive() {
-        CriteriaQuery<Object> cq = getEntityManager().getCriteriaBuilder().createQuery();
+    public List<T> findAllActive() {
+        CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
         Root<T> root = cq.from(entityClass);
         cq.where(root.get("activo").in(true));
         cq.select(root);
@@ -71,8 +73,6 @@ public class BaseDAO<T>{
     public int deleteAll(){
         CriteriaBuilder cb  = getEntityManager().getCriteriaBuilder();
         CriteriaDelete<T> query = cb.createCriteriaDelete(entityClass);
-        //Root<T> root = query.from(entityClass);
-        //query.where(root.get("id").in(listWithIds));
         return getEntityManager().createQuery(query).executeUpdate();
     }
 
@@ -90,5 +90,18 @@ public class BaseDAO<T>{
 
     public int executeJpqlUpdate(String jpql){
         return em.createQuery(jpql).executeUpdate();
+    }
+
+    public T findFirst(){
+        CriteriaBuilder criteriaBuilder  = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        Root<T> entityRoot = criteriaQuery.from(entityClass);
+        criteriaQuery.select(entityRoot);
+        criteriaQuery.orderBy(criteriaBuilder.asc(entityRoot.get("id")));
+        try {
+            return getEntityManager().createQuery(criteriaQuery).setMaxResults(1).getSingleResult();
+        } catch (NonUniqueResultException | NoResultException e) {
+            return null;
+        }
     }
 }

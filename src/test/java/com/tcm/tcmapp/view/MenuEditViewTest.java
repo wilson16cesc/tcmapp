@@ -1,6 +1,8 @@
 package com.tcm.tcmapp.view;
 
+import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.bean.MenuCounter;
+import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.entity.Pagina;
 import org.junit.Before;
@@ -17,6 +19,8 @@ import org.primefaces.model.TreeNode;
 
 import javax.faces.context.FacesContext;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,9 @@ public class MenuEditViewTest extends MenuBaseTest {
 
     @Mock
     private PaginasService paginasService;
+
+    @Mock
+    private DatosAplicacion datosAplicacion;
 
     @Mock
     private MenuCounter menuCounter;
@@ -59,10 +66,14 @@ public class MenuEditViewTest extends MenuBaseTest {
         Faces.setContext(facesContextMock);
     }
 
+
     @Test
     public void dadoDatosDePaginas_cuandoInvocaGetMenuRoot_entoncesDevuelveDatosDelMenu() {
+        List<Icono> iconos = cargarIconos();
+        given(datosAplicacion.getIconos()).willReturn(iconos);
 
         menuEditView.init();
+
         TreeNode<MenuInfo> menuRootObtenido = menuEditView.getMenuRoot();
 
         verify(paginasService, times(1)).getPaginasParaMenu();
@@ -77,7 +88,7 @@ public class MenuEditViewTest extends MenuBaseTest {
 
     @Test
     public void dadoMenuExistente_cuandoInvocaagregarActualizarNodoMenu_entoncesAgregaElNuevoNodo() {
-        Pagina newPagina = new Pagina( "Item 5", "http://item5.com", true, "pi pi-save", 2L, null, null, null);
+        Pagina newPagina = new Pagina( "Item 5", "http://item5.com", true, "save", 2L, null, null, null);
 
         given(menuCounter.getNextId()).willReturn(5L);
 
@@ -99,9 +110,9 @@ public class MenuEditViewTest extends MenuBaseTest {
 
     @Test
     public void dadoMenuExistente_cuandoInvoqueGuardarMenu_entoncesGuardarOActualizarLasPaginas() {
-        Pagina paginaParaActualizar = new Pagina(4L, "Item 4 actualizado", "http://item4.com", true, "pi pi-save", 2L, LocalDateTime.now(), "mfigueroa", true);
+        Pagina paginaParaActualizar = new Pagina(4L, "Item 4 actualizado", "http://item4.com", true, "save", 2L, LocalDateTime.now(), "mfigueroa", true);
         paginaParaActualizar.setEditado(true);
-        Pagina paginaParaInsertar = new Pagina("Item 5", "http://item5.com", true, "pi pi-save", 2L, LocalDateTime.now(), "mfigueroa", true);
+        Pagina paginaParaInsertar = new Pagina("Item 5", "http://item5.com", true, "save", 2L, LocalDateTime.now(), "mfigueroa", true);
         paginaParaInsertar.setCreado(true);
         paginas.add(paginaParaInsertar);
         paginas.add(paginaParaActualizar);
@@ -117,7 +128,7 @@ public class MenuEditViewTest extends MenuBaseTest {
 
     @Test
     public void dadoMenuExistente_cuandoInvoqueBorrarNodoMenu_entoncesRemoverNodoMenu() {
-        Pagina newPagina = new Pagina(5L, "Item 5", "http://item5.com", true, "pi pi-save", 12L, LocalDateTime.now(), "mfigueroa", true);
+        Pagina newPagina = new Pagina(5L, "Item 5", "http://item5.com", true, "save", 12L, LocalDateTime.now(), "mfigueroa", true);
         paginas.add(newPagina);
         TreeNode<MenuInfo> menuItem1 = menuRoot.getChildren().get(0);
         TreeNode<MenuInfo> menuItem2 = menuItem1.getChildren().get(0);
@@ -138,5 +149,14 @@ public class MenuEditViewTest extends MenuBaseTest {
         TreeNode<MenuInfo> menuItemDos = menuItemUno.getChildren().get(0);
 
         assertEquals(2, menuItemDos.getChildCount());
+    }
+
+    private List<Icono> cargarIconos() {
+        List<Icono> iconos = new ArrayList<>();
+        List<String> nombresIconos = new ArrayList<>(Arrays.asList("sort-alt", "arrows-h", "arrows-v", "pound", "prime",
+                "chart-pie", "reddit", "code", "sync", "shopping-bag", "server", "database", "hashtag"));
+
+        nombresIconos.forEach(nombre -> iconos.add(new Icono(nombre)));
+        return iconos;
     }
 }
