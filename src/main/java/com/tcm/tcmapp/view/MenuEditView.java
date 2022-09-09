@@ -170,6 +170,7 @@ public class MenuEditView implements Serializable {
         PrimeFaces.current().executeScript("PF('dlgCrearPagina').show();");
     }
 
+
     public void agregarActualizarNodoMenu() {
 
         //si se está creando
@@ -179,7 +180,6 @@ public class MenuEditView implements Serializable {
             this.paginas.add(paginaEditar);
             TreeNode<MenuInfo> menuNode = new DefaultTreeNode<>(MenuInfo.fromPagina(paginaEditar));
             agregarHijo(this.menuRoot, paginaEditar.getIdPadre(), menuNode);
-            System.out.println("pagina Crear: " + paginaEditar);
             //si la nueva es hoja dejarla seleccionada en la página
             if (!paginaEditar.getHoja()) {
                 selectedNode = menuNode;
@@ -187,11 +187,9 @@ public class MenuEditView implements Serializable {
             }
         } else { //si se está modificando
             paginaEditar.setEditado(Boolean.TRUE);
-            System.out.println("pagina a modificar: " + paginaEditar);
             selectedNode.getData().setIcon(paginaEditar.getIcono());
             selectedNode.getData().setName(paginaEditar.getNombre());
         }
-        System.out.println("Paginas: " + Arrays.toString(paginas.toArray()));
         PrimeFaces.current().executeScript("PF('dlgCrearPagina').hide();");
     }
 

@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -145,6 +145,48 @@ public class MenuEditViewTest extends MenuBaseTest {
         TreeNode<MenuInfo> menuItemDos = menuItemUno.getChildren().get(0);
 
         assertEquals(2, menuItemDos.getChildCount());
+    }
+
+    @Test
+
+    public void dadoMenuExistente_cuandoInvoqueNuevoNodoMenu_entoncesObjetoPaginaEditarDebeConfigurarse() {
+        Pagina selectedPagina = new Pagina(2L, "Item 2", null, false, "save", 1L, LocalDateTime.now(), "mfigueroa", true);
+        menuEditView.setSelectedPagina(selectedPagina);
+
+        menuEditView.nuevoNodoMenu();
+
+        assertNull(menuEditView.getPaginaEditar().getId());
+        assertEquals(selectedPagina.getId(), menuEditView.getPaginaEditar().getIdPadre());
+        verify(primeFacesMock, times(1)).executeScript("PF('dlgCrearPagina').show();");
+
+    }
+
+    @Test
+    public void dadoMenuExistente_cuandoInvoqueAgregarActualizarNodoMenu_debeActualizarDatosDeSelectedNodeSiElNodoYaExistia() {
+        Pagina paginaOriginal = new Pagina(2L, "Item 1", null, false, "save", 1L, LocalDateTime.now(), "mfigueroa", true);
+        Pagina paginaModificada = new Pagina(2L, "Reportes", null, false, "plus", 1L, LocalDateTime.now(), "mfigueroa", true);
+
+        TreeNode<MenuInfo> originalSelectedNode = new DefaultTreeNode<>(MenuInfo.fromPagina(paginaOriginal));
+
+        menuEditView.setSelectedNode(originalSelectedNode);
+        menuEditView.setPaginaEditar(paginaModificada);
+
+        menuEditView.agregarActualizarNodoMenu();
+
+        assertTrue(paginaModificada.getEditado());
+        assertEquals("Reportes", menuEditView.getSelectedNode().getData().getName());
+        assertEquals("plus", menuEditView.getSelectedNode().getData().getIcon());
+    }
+
+    @Test
+    public void dadoUnCriterioParaFiltrarIconos_cuandoInvoqueCompleteIcono_entoncesDevuelveListaFiltrada() {
+        String criterioFiltro = "rrow";
+        menuEditView.setIconos(cargarNombresIconos());
+
+        List<String> iconosFiltrados = menuEditView.completeIcono(criterioFiltro);
+
+        assertEquals(2, iconosFiltrados.size());
+        assertEquals("arrows-h", iconosFiltrados.get(0));
     }
 
     private List<Icono> cargarIconos() {
