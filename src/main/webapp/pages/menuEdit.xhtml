@@ -66,14 +66,14 @@
                     <p:inputText value="#{menuEditView.paginaEditar.nombre}" required="true" label="Nombre"/>
 
                     <p:outputLabel value="Icono"/>
-                    <p:autoComplete id="autoIcono" value="#{menuEditView.selectedIcono}" label="Icono"
+                    <p:autoComplete id="autoIcono" value="#{menuEditView.selectedPagina.icono}" label="Icono"
                                     completeMethod="#{menuEditView.completeIcono}"
-                                    var="icono" itemLabel="#{icono.nombre}" itemValue="#{icono}"
+                                    var="icono" itemLabel="#{icono}" itemValue="#{icono}"
                                     forceSelection="true" scrollHeight="250">
-                        <o:converter converterId="omnifaces.ListConverter" list="#{datosAplicacion.iconos}" />
+                        <!--<o:converter converterId="omnifaces.ListConverter" list="#{datosAplicacion.iconos}" />-->
                         <p:column>
-                            <i class="pi pi-#{icono.nombre}"></i>
-                            <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{icono.nombre}"/>
+                            <i class="pi pi-#{icono}"></i>
+                            <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{icono}"/>
                         </p:column>
                     </p:autoComplete>                    
 

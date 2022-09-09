@@ -146,5 +146,4 @@ public class Pagina extends BaseEntity {
         return Objects.equals(this.getId(), other.getId());
     }
 
-
 }

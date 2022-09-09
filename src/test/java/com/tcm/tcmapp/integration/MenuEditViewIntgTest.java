@@ -65,8 +65,6 @@ public class MenuEditViewIntgTest {
                 .addClass(PaginaDAO.class)
                 .addClass(BaseDAO.class)
                 .addClass(IconoDAO.class)
-                .addClass(PaginasService.class)
-                .addClass(PaginasService.class)
                 .addClass(MenuCounter.class)
                 .addClass(DatosAplicacion.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")

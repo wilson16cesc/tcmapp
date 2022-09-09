@@ -1,11 +1,17 @@
 package com.tcm.tcmapp.integration;
 
+import com.tcm.tcmapp.bean.DatosAplicacion;
+import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.dao.BaseDAO;
+import com.tcm.tcmapp.dao.IconoDAO;
 import com.tcm.tcmapp.dao.PaginaDAO;
 import com.tcm.tcmapp.entity.BaseEntity;
 import com.tcm.tcmapp.entity.BaseEntityIdentity;
+import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
 import com.tcm.tcmapp.service.PaginasService;
+import com.tcm.tcmapp.view.MenuEditView;
+import com.tcm.tcmapp.view.MenuInfo;
 import com.tcm.tcmapp.view.MenuView;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -18,7 +24,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.Confirmable;
+import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
 
 import javax.inject.Inject;
@@ -42,6 +50,7 @@ public class MenuViewIntgTest {
 
     @Inject
     Pbkdf2PasswordHash passwordHash;
+    //--trabajando en corregir los tests para probar el icono almacenado en la clase Pagina vista menuEdit.xhtml
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -49,13 +58,19 @@ public class MenuViewIntgTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-api").withTransitivity().asFile())
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-simple").withTransitivity().asFile())
-                .addPackages(true, MenuModel.class.getPackage(), Confirmable.class.getPackage())
-                .addClasses(MenuView.class, PaginasService.class,
-                        Pagina.class, BaseEntityIdentity.class, BaseEntity.class,
-                        PaginasService.class, PaginaDAO.class, BaseDAO.class)
+                .addPackage(Confirmable.class.getPackage())
+                .addPackage(MenuModel.class.getPackage())
+                .addClass(MenuView.class)
+                .addClass(Pagina.class)
+                .addClass(Icono.class)
+                .addClass(BaseEntityIdentity.class)
+                .addClass(BaseEntity.class)
+                .addClass(PaginasService.class)
+                .addClass(PaginaDAO.class)
+                .addClass(BaseDAO.class)
+                .addClass(IconoDAO.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        //System.out.println(war.toString(true));
         return war;
     }
 

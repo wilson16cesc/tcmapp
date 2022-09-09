@@ -32,13 +32,14 @@ public class MenuEditView implements Serializable {
 
     @Inject
     PaginasService paginasService;
+
     @Inject
     MenuCounter menuCounter;
 
     @Inject
     DatosAplicacion datosAplicacion;
 
-    private Icono selectedIcono;
+    //private Icono selectedIcono;
 
     private TreeNode<MenuInfo> menuRoot;
 
@@ -46,7 +47,7 @@ public class MenuEditView implements Serializable {
     private TreeNode<MenuInfo> selectedNode;
     private Pagina selectedPagina;
     private Pagina paginaEditar;
-    private List<Icono> iconos;
+    private List<String> iconos;
 
     public MenuEditView() {
         this.paginaEditar = new Pagina();
@@ -57,7 +58,9 @@ public class MenuEditView implements Serializable {
     public void init() {
         logger.info("Ejecutando metodo init - {}", this.getClass().getSimpleName());
         this.paginas = paginasService.getPaginasParaMenu();
-        this.iconos = datosAplicacion.getIconos();
+        this.iconos = datosAplicacion.getIconos()
+                .stream().map(Icono::getNombre)
+                .collect(Collectors.toList());
         inicializarMenu();
     }
 
@@ -97,7 +100,6 @@ public class MenuEditView implements Serializable {
 
     /**
      * Agrega un nuevo elemento al menu. es un método de tipo Recursivo
-     *
      * @param menuTree  menú base
      * @param idPadre   id del nodo padre
      * @param nuevoHijo nodo a agregar
@@ -170,7 +172,6 @@ public class MenuEditView implements Serializable {
 
     public void agregarActualizarNodoMenu() {
 
-        paginaEditar.setIcono(selectedIcono.getNombre());
         //si se está creando
         if (paginaEditar.getId() == null) {
             paginaEditar.setId(menuCounter.getNextId());
@@ -243,9 +244,6 @@ public class MenuEditView implements Serializable {
 
     public void editarNodoMenu() {
         paginaEditar = selectedPagina;
-        selectedIcono = iconos.stream()
-                .filter(icono -> icono.getNombre().equals(paginaEditar.getIcono()))
-                .findFirst().orElse(new Icono());
         PrimeFaces.current().executeScript("PF('dlgCrearPagina').show();");
     }
 
@@ -257,17 +255,17 @@ public class MenuEditView implements Serializable {
         this.paginas = paginas;
     }
 
-    public Icono getSelectedIcono() {
-        return selectedIcono;
-    }
-
-    public void setSelectedIcono(Icono selectedIcono) {
-        this.selectedIcono = selectedIcono;
-    }
-
-    public List<Icono> completeIcono(String query) {
+    public List<String> completeIcono(String query) {
         return this.iconos.stream()
-                .filter(icono -> icono.getNombre().contains(query))
+                .filter(icono -> icono.contains(query))
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getIconos() {
+        return iconos;
+    }
+
+    public void setIconos(List<String> iconos) {
+        this.iconos = iconos;
     }
 }

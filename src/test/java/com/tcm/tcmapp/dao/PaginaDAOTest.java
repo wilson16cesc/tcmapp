@@ -2,6 +2,7 @@ package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.entity.BaseEntity;
 import com.tcm.tcmapp.entity.BaseEntityIdentity;
+import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -38,8 +39,12 @@ public class PaginaDAOTest {
     @Deployment
     public static WebArchive createDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addClasses(Pagina.class, BaseEntityIdentity.class, BaseEntity.class,
-                         PaginaDAO.class, BaseDAO.class)
+                .addClass(Pagina.class)
+                .addClass(Icono.class)
+                .addClass(BaseEntityIdentity.class)
+                .addClass(BaseEntity.class)
+                .addClass(PaginaDAO.class)
+                .addClass(BaseDAO.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(war.toString(true));

@@ -3,8 +3,8 @@ package com.tcm.tcmapp.view;
 import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.entity.Icono;
-import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.entity.Pagina;
+import com.tcm.tcmapp.service.PaginasService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,32 +26,27 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MenuEditViewTest extends MenuBaseTest {
 
-    @Mock
-    private PaginasService paginasService;
-
-    @Mock
-    private DatosAplicacion datosAplicacion;
-
-    @Mock
-    private MenuCounter menuCounter;
-
-    @Mock
-    private PrimeFaces primeFacesMock;
-
-    @Mock
-    private FacesContext facesContextMock;
-
-
-    private List<Pagina> paginas;
-    private TreeNode<MenuInfo> menuRoot;
-
     @InjectMocks
     final MenuEditView menuEditView = new MenuEditView();
+    @Mock
+    private PaginasService paginasService;
+    @Mock
+    private DatosAplicacion datosAplicacion;
+    @Mock
+    private MenuCounter menuCounter;
+    @Mock
+    private PrimeFaces primeFacesMock;
+    @Mock
+    private FacesContext facesContextMock;
+    private List<Pagina> paginas;
+    private List<Icono> iconos;
+    private TreeNode<MenuInfo> menuRoot;
 
     @Before
     public void setUp() throws Exception {
@@ -60,7 +55,8 @@ public class MenuEditViewTest extends MenuBaseTest {
         paginas = (List<Pagina>) paginasAndMenu.get(PAGINAS);
         menuRoot = (TreeNode<MenuInfo>) paginasAndMenu.get(MENU);
         given(paginasService.getPaginasParaMenu()).willReturn(paginas);
-
+        iconos = cargarIconos();
+        given(datosAplicacion.getIconos()).willReturn(iconos);
         PrimeFaces.setCurrent(primeFacesMock);
         //doNothing().when(primeFacesMock).executeScript(anyString());
         Faces.setContext(facesContextMock);
@@ -69,8 +65,6 @@ public class MenuEditViewTest extends MenuBaseTest {
 
     @Test
     public void dadoDatosDePaginas_cuandoInvocaGetMenuRoot_entoncesDevuelveDatosDelMenu() {
-        List<Icono> iconos = cargarIconos();
-        given(datosAplicacion.getIconos()).willReturn(iconos);
 
         menuEditView.init();
 
@@ -88,7 +82,7 @@ public class MenuEditViewTest extends MenuBaseTest {
 
     @Test
     public void dadoMenuExistente_cuandoInvocaagregarActualizarNodoMenu_entoncesAgregaElNuevoNodo() {
-        Pagina newPagina = new Pagina( "Item 5", "http://item5.com", true, "save", 2L, null, null, null);
+        Pagina newPagina = new Pagina("Item 5", "http://item5.com", true, "save", 2L, null, null, null);
 
         given(menuCounter.getNextId()).willReturn(5L);
 
@@ -139,6 +133,8 @@ public class MenuEditViewTest extends MenuBaseTest {
         menuEditView.setSelectedPagina(newPagina);
         menuEditView.setPaginas(paginas);
         menuEditView.setMenuRoot(menuRoot);
+        menuEditView.setIconos(cargarNombresIconos());
+
 
         assertEquals(3, menuItem2.getChildCount());
 
@@ -153,10 +149,13 @@ public class MenuEditViewTest extends MenuBaseTest {
 
     private List<Icono> cargarIconos() {
         List<Icono> iconos = new ArrayList<>();
-        List<String> nombresIconos = new ArrayList<>(Arrays.asList("sort-alt", "arrows-h", "arrows-v", "pound", "prime",
-                "chart-pie", "reddit", "code", "sync", "shopping-bag", "server", "database", "hashtag"));
-
+        List<String> nombresIconos = cargarNombresIconos();
         nombresIconos.forEach(nombre -> iconos.add(new Icono(nombre)));
         return iconos;
+    }
+
+    private List<String> cargarNombresIconos() {
+        return new ArrayList<>(Arrays.asList("sort-alt", "arrows-h", "arrows-v", "pound", "prime",
+                "chart-pie", "reddit", "code", "sync", "shopping-bag", "server", "database", "hashtag"));
     }
 }
