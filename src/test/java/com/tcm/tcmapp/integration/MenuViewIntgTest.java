@@ -1,7 +1,5 @@
 package com.tcm.tcmapp.integration;
 
-import com.tcm.tcmapp.bean.DatosAplicacion;
-import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.dao.BaseDAO;
 import com.tcm.tcmapp.dao.IconoDAO;
 import com.tcm.tcmapp.dao.PaginaDAO;
@@ -10,23 +8,19 @@ import com.tcm.tcmapp.entity.BaseEntityIdentity;
 import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
 import com.tcm.tcmapp.service.PaginasService;
-import com.tcm.tcmapp.view.MenuEditView;
-import com.tcm.tcmapp.view.MenuInfo;
 import com.tcm.tcmapp.view.MenuView;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.primefaces.PrimeFaces;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
 
 import javax.inject.Inject;
@@ -35,11 +29,12 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //@Ignore("Class not ready for tests")
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class MenuViewIntgTest {
 
     @Inject
@@ -56,6 +51,7 @@ public class MenuViewIntgTest {
     public static WebArchive createDeployment() {
         PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");
         WebArchive war = ShrinkWrap.create(WebArchive.class)
+                .addAsLibraries(pomFile.resolve("org.assertj:assertj-core").withTransitivity().asFile())
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-api").withTransitivity().asFile())
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-simple").withTransitivity().asFile())
                 .addPackage(Confirmable.class.getPackage())
@@ -74,17 +70,22 @@ public class MenuViewIntgTest {
         return war;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         paginaDAO.deleteAll();
         crearPaginas();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        paginaDAO.deleteAll();
     }
 
     @Test
     public void pruebaPassworencode() {
         char[] passwordChar = "12345".toCharArray();
         System.out.println("password encoded: " + passwordHash.generate(passwordChar));
-        System.out.println("password verification result: "+ passwordHash.verify(passwordChar, "PBKDF2WithHmacSHA256:2048:xZBY9KygFVkA66vvfP9jldl9XEPlLQpQkNciQhrDCfc=:j6nPNzxhQJQOCMNcHCxeGI/4Fw7NDxV3H7m0nyysdtg="));
+        System.out.println("password verification result: " + passwordHash.verify(passwordChar, "PBKDF2WithHmacSHA256:2048:xZBY9KygFVkA66vvfP9jldl9XEPlLQpQkNciQhrDCfc=:j6nPNzxhQJQOCMNcHCxeGI/4Fw7NDxV3H7m0nyysdtg="));
     }
 
     @Test
@@ -95,8 +96,10 @@ public class MenuViewIntgTest {
 
         assertEquals(3, menuModel.getElements().size());
 
-        assertTrue(menuFirstLevelIds
-                .contains(menuModel.getElements().get(0).getId()));
+        assertThat(menuFirstLevelIds)
+                .contains(menuModel.getElements().get(0).getId());
+//        assertTrue(menuFirstLevelIds
+//                .contains(menuModel.getElements().get(0).getId()));
         assertTrue(menuFirstLevelIds
                 .contains(menuModel.getElements().get(1).getId()));
         assertTrue(menuFirstLevelIds
@@ -157,8 +160,4 @@ public class MenuViewIntgTest {
 
     }
 
-    @After
-    public void tearDown() throws Exception {
-        paginaDAO.deleteAll();
-    }
 }

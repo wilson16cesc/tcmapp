@@ -2,34 +2,34 @@ package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.entity.*;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class RolDAOTest extends BaseDAO {
 
 
     @Inject
     RolDAO rolDAO;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Rol rol1 = new Rol("user_role");
         rolDAO.save(rol1);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         rolDAO.deleteAll();
     }

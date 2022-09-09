@@ -2,15 +2,15 @@ package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.entity.*;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
@@ -18,9 +18,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class UsuarioDAOTest {
 
     public static final String USER_ROLE = "user_role";
@@ -36,18 +36,6 @@ public class UsuarioDAOTest {
     @Inject
     Pbkdf2PasswordHash passwordHash;
 
-    @Before
-    public void setUp() throws Exception {
-
-        Rol rol1 = new Rol(USER_ROLE);
-        Rol rol2 = new Rol(ADMIN_ROLE);
-        rolDAO.save(rol1);
-        rolDAO.save(rol2);
-        Usuario usuario1 = new Usuario(USUARIO_DEMO, PASSWORD_SIMPLE,
-                new HashSet<>(Arrays.asList(rol1,rol2)));
-        usuarioDAO.save(usuario1);
-    }
-
     @Deployment
     public static WebArchive createDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
@@ -59,6 +47,24 @@ public class UsuarioDAOTest {
         return war;
     }
 
+    @BeforeEach
+    public void setUp() throws Exception {
+
+        Rol rol1 = new Rol(USER_ROLE);
+        Rol rol2 = new Rol(ADMIN_ROLE);
+        rolDAO.save(rol1);
+        rolDAO.save(rol2);
+        Usuario usuario1 = new Usuario(USUARIO_DEMO, PASSWORD_SIMPLE,
+                new HashSet<>(Arrays.asList(rol1, rol2)));
+        usuarioDAO.save(usuario1);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        usuarioDAO.deleteAll();
+        rolDAO.deleteAll();
+    }
+
     @Test
     public void findByUsername() {
         Usuario usuario = usuarioDAO.findByUsername(USUARIO_DEMO);
@@ -66,16 +72,17 @@ public class UsuarioDAOTest {
     }
 
     @Test
-    @Ignore
-    public void dadoUsuarioConPasswordEncriptado_cuandoConsultaUsuario_entoncesDebeCoincidirElPassword(){
+    @Disabled
+    public void dadoUsuarioConPasswordEncriptado_cuandoConsultaUsuario_entoncesDebeCoincidirElPassword() {
         Usuario usuario = usuarioDAO.findByUsername(USUARIO_DEMO);
 
         char[] unencriptedPassword = "12345".toCharArray();
-        assertTrue(passwordHash.verify(unencriptedPassword,usuario.getPassword()));
+        assertTrue(passwordHash.verify(unencriptedPassword, usuario.getPassword()));
 
     }
+
     @Test
-    public void dadoUsuariosExistentes_cuandoConsultaUsuariosYRoles_entoncesDebeDevolverUsuariosConSusRoles(){
+    public void dadoUsuariosExistentes_cuandoConsultaUsuariosYRoles_entoncesDebeDevolverUsuariosConSusRoles() {
         List<Usuario> usuariosConRoles = usuarioDAO.findAllWithRoles();
 
         assertEquals(1, usuariosConRoles.size());
@@ -91,9 +98,4 @@ public class UsuarioDAOTest {
         assertEquals(2, usuario.getRoles().size());
     }
 
-    @After
-    public void tearDown() throws Exception {
-        usuarioDAO.deleteAll();
-        rolDAO.deleteAll();
-    }
 }

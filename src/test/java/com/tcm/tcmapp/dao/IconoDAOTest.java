@@ -1,22 +1,28 @@
 package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.entity.*;
+import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(Arquillian.class)
+
+@ExtendWith(ArquillianExtension.class)
 public class IconoDAOTest extends BaseDAO {
 
     @Inject
@@ -24,7 +30,10 @@ public class IconoDAOTest extends BaseDAO {
 
     @Deployment
     public static WebArchive createDeployment() {
+        PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");
         WebArchive war = ShrinkWrap.create(WebArchive.class)
+                .addAsLibraries(pomFile.resolve("org.assertj:assertj-core").withTransitivity().asFile())
+                .addPackage(Assertions.class.getPackage())
                 .addClass(Icono.class)
                 .addClass(BaseEntityIdentity.class)
                 .addClass(BaseEntity.class)
@@ -36,12 +45,12 @@ public class IconoDAOTest extends BaseDAO {
         return war;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         iconoDAO.save(new Icono("icon-name"));
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         iconoDAO.deleteAll();
     }
@@ -49,7 +58,9 @@ public class IconoDAOTest extends BaseDAO {
     @Test
     public void testFindFirst() {
         Icono primerIcono = iconoDAO.findFirst();
-        assertNotNull(primerIcono);
+        assertThat(primerIcono).isNotNull();
+        //assertThat(primerIcono).isNull();
+        //assertNotNull(primerIcono);
         assertEquals("icon-name", primerIcono.getNombre());
     }
 }

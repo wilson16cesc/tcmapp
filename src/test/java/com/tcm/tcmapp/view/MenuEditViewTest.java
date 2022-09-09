@@ -5,13 +5,13 @@ import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
 import com.tcm.tcmapp.service.PaginasService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.omnifaces.util.Faces;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultTreeNode;
@@ -24,12 +24,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class MenuEditViewTest extends MenuBaseTest {
 
     @InjectMocks
@@ -48,15 +48,15 @@ public class MenuEditViewTest extends MenuBaseTest {
     private List<Icono> iconos;
     private TreeNode<MenuInfo> menuRoot;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         Map<String, Object> paginasAndMenu = cargarPaginasAndMenu();
         paginas = (List<Pagina>) paginasAndMenu.get(PAGINAS);
         menuRoot = (TreeNode<MenuInfo>) paginasAndMenu.get(MENU);
-        given(paginasService.getPaginasParaMenu()).willReturn(paginas);
+        //given(paginasService.getPaginasParaMenu()).willReturn(paginas);
         iconos = cargarIconos();
-        given(datosAplicacion.getIconos()).willReturn(iconos);
+        //given(datosAplicacion.getIconos()).willReturn(iconos);
         PrimeFaces.setCurrent(primeFacesMock);
         //doNothing().when(primeFacesMock).executeScript(anyString());
         Faces.setContext(facesContextMock);

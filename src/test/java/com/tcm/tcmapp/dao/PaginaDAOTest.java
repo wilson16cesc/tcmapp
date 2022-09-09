@@ -5,32 +5,32 @@ import com.tcm.tcmapp.entity.BaseEntityIdentity;
 import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class PaginaDAOTest {
 
     @Inject
     PaginaDAO paginaDAO;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         paginaDAO.deleteAll();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         paginaDAO.deleteAll();
     }
