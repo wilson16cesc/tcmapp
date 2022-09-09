@@ -50,21 +50,18 @@ public class MenuEditViewTest extends MenuBaseTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-
         Map<String, Object> paginasAndMenu = cargarPaginasAndMenu();
         paginas = (List<Pagina>) paginasAndMenu.get(PAGINAS);
         menuRoot = (TreeNode<MenuInfo>) paginasAndMenu.get(MENU);
-        //given(paginasService.getPaginasParaMenu()).willReturn(paginas);
         iconos = cargarIconos();
-        //given(datosAplicacion.getIconos()).willReturn(iconos);
         PrimeFaces.setCurrent(primeFacesMock);
-        //doNothing().when(primeFacesMock).executeScript(anyString());
         Faces.setContext(facesContextMock);
     }
 
 
     @Test
     public void dadoDatosDePaginas_cuandoInvocaGetMenuRoot_entoncesDevuelveDatosDelMenu() {
+        given(paginasService.getPaginasParaMenu()).willReturn(paginas);
 
         menuEditView.init();
 
