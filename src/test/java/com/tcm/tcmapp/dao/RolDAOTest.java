@@ -6,6 +6,8 @@ import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(ArquillianExtension.class)
@@ -25,8 +28,7 @@ public class RolDAOTest extends BaseDAO {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Rol rol1 = new Rol("user_role");
-        rolDAO.save(rol1);
+
     }
 
     @AfterEach
@@ -36,7 +38,9 @@ public class RolDAOTest extends BaseDAO {
 
     @Deployment
     public static WebArchive createDeployment() {
+        PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");
         WebArchive war = ShrinkWrap.create(WebArchive.class)
+                .addAsLibraries(pomFile.resolve("org.assertj:assertj-core").withTransitivity().asFile())
                 .addClass(Usuario.class)
                 .addClass(Rol.class)
                 .addClass(Permiso.class)
@@ -54,7 +58,21 @@ public class RolDAOTest extends BaseDAO {
 
     @Test
     public void testFindAllActive() {
+        Rol adminRol = new Rol("USER");
+        rolDAO.save(adminRol);
+
         List<Rol> rolesActivos = rolDAO.findAllActive();
         assertEquals(1, rolesActivos.size());
+    }
+
+    @Test
+    public void findFirstByName(){
+        Rol adminRol = new Rol("ADMIN");
+        rolDAO.save(adminRol);
+
+        Rol resultRol = rolDAO.findFirstByNombre("ADMIN");
+
+        assertThat(resultRol).isNotNull();
+
     }
 }

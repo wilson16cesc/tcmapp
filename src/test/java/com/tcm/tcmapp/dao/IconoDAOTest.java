@@ -1,6 +1,8 @@
 package com.tcm.tcmapp.dao;
 
-import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.entity.BaseEntity;
+import com.tcm.tcmapp.entity.BaseEntityIdentity;
+import com.tcm.tcmapp.entity.Icono;
 import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.ArquillianExtension;
@@ -14,12 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @ExtendWith(ArquillianExtension.class)
@@ -59,8 +59,6 @@ public class IconoDAOTest extends BaseDAO {
     public void testFindFirst() {
         Icono primerIcono = iconoDAO.findFirst();
         assertThat(primerIcono).isNotNull();
-        //assertThat(primerIcono).isNull();
-        //assertNotNull(primerIcono);
         assertEquals("icon-name", primerIcono.getNombre());
     }
 }

@@ -2,6 +2,9 @@ package com.tcm.tcmapp.security;
 
 import com.tcm.tcmapp.dao.UsuarioDAO;
 import com.tcm.tcmapp.entity.Usuario;
+import com.tcm.tcmapp.view.LoginView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -14,7 +17,10 @@ import java.util.*;
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
 
 @ApplicationScoped
-public class IdentityStore4Authentication implements IdentityStore{
+public class IdentityStoreAuthentication implements IdentityStore{
+
+    @Inject
+    Logger logger;
 
     @Inject
     UsuarioDAO usuarioDAO;
@@ -24,6 +30,7 @@ public class IdentityStore4Authentication implements IdentityStore{
 
     @PostConstruct
     private void init() {
+        logger.info("Cargando datos para autenticación");
         List<Usuario> userList = usuarioDAO.findAllActive();
         userList.forEach(u-> users.put(u.getUsername(), u.getPassword()));
 

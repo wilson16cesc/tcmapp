@@ -13,6 +13,13 @@ public class Permiso extends BaseEntityIdentity {
     @Column(name = "descripcion")
     private String descripcion;
 
+    public Permiso() {
+    }
+
+    public Permiso(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
 
     public String getDescripcion() {
         return descripcion;

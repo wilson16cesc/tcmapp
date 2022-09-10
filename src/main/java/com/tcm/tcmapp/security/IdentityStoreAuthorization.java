@@ -3,6 +3,8 @@ package com.tcm.tcmapp.security;
 import com.tcm.tcmapp.dao.UsuarioDAO;
 import com.tcm.tcmapp.entity.Rol;
 import com.tcm.tcmapp.entity.Usuario;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -14,18 +16,24 @@ import java.util.stream.Collectors;
 
 
 @ApplicationScoped
-class IdentityStore4Authorization implements IdentityStore {
+class IdentityStoreAuthorization implements IdentityStore {
 
     private final Map<String, List<String>> userRoles = new HashMap<>();
 
-    public IdentityStore4Authorization() {
 
-    }
     @Inject
     UsuarioDAO usuarioDAO;
 
+    @Inject
+    Logger logger;
+
+    public IdentityStoreAuthorization() {
+
+    }
+
     @PostConstruct
     private void init() {
+        logger.info("Cargando datos para autorización");
         List<Usuario> usuariosConRoles = usuarioDAO.findAllWithRoles();
         usuariosConRoles.forEach(usuario-> {
             List<String> roles = usuario.getRoles().stream()

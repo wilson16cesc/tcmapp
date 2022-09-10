@@ -5,7 +5,6 @@
  */
 package com.tcm.tcmapp.dao;
 
-import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,15 +16,15 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
- *
- * @author MFIGUEROAG
  * @param <T>
+ * @author MFIGUEROAG
  */
 @Local
-public class BaseDAO<T>{
-    
+public class BaseDAO<T> {
+
     private Class<T> entityClass;
 
     @PersistenceContext(unitName = "tcm-PU")
@@ -33,20 +32,20 @@ public class BaseDAO<T>{
 
     public BaseDAO() {
     }
-    
-    public void setEntityClass(Class<T> entityClass){
+
+    public void setEntityClass(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
-    
+
     public void save(T entity) {
         getEntityManager().persist(entity);
     }
-    
+
     public void update(T entity) {
         getEntityManager().merge(entity);
     }
 
-    public void delete(Object id){
+    public void delete(Object id) {
         T entity = findById(id);
         getEntityManager().remove(entity);
     }
@@ -55,24 +54,44 @@ public class BaseDAO<T>{
     public T findById(Object id) {
         return getEntityManager().find(entityClass, id);
     }
+
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<T> findAll() {
-        CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
-        cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
-    }
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<T> findAllActive() {
-        CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
-        Root<T> root = cq.from(entityClass);
-        cq.where(root.get("activo").in(true));
-        cq.select(root);
-        return getEntityManager().createQuery(cq).getResultList();
+        CriteriaQuery<T> criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
+        criteriaQuery.select(criteriaQuery.from(entityClass));
+        return getEntityManager().createQuery(criteriaQuery).getResultList();
     }
 
-    public int deleteAll(){
-        CriteriaBuilder cb  = getEntityManager().getCriteriaBuilder();
-        CriteriaDelete<T> query = cb.createCriteriaDelete(entityClass);
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<T> findAllActive() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        Root<T> root = criteriaQuery.from(entityClass);
+        criteriaQuery.where(criteriaBuilder.equal(root.get("activo"), true));
+        criteriaQuery.select(root);
+        return getEntityManager().createQuery(criteriaQuery).getResultList();
+    }
+
+    public List<T> findActiveByField(String fieldName, Object value) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        Root<T> root = criteriaQuery.from(entityClass);
+        criteriaQuery.where(criteriaBuilder.equal(root.get(fieldName), value),
+                criteriaBuilder.equal(root.get("activo"), true));
+        criteriaQuery.select(root);
+        return getEntityManager().createQuery(criteriaQuery).getResultList();
+    }
+
+    public T findFirstActiveByField(String fieldName, Object value) {
+        List<T> resultList = findActiveByField(fieldName, value);
+        if (resultList.isEmpty())
+            return null;
+        return resultList.get(0);
+    }
+
+    public int deleteAll() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaDelete<T> query = criteriaBuilder.createCriteriaDelete(entityClass);
         return getEntityManager().createQuery(query).executeUpdate();
     }
 
@@ -80,20 +99,20 @@ public class BaseDAO<T>{
         return em;
     }
 
-    public void executeNativeQuery(String sql){
+    public void executeNativeQuery(String sql) {
         getEntityManager().createNativeQuery("BEGIN " + sql + " END;").executeUpdate();
     }
-    
-    public void flush(){
+
+    public void flush() {
         em.flush();
     }
 
-    public int executeJpqlUpdate(String jpql){
+    public int executeJpqlUpdate(String jpql) {
         return em.createQuery(jpql).executeUpdate();
     }
 
-    public T findFirst(){
-        CriteriaBuilder criteriaBuilder  = getEntityManager().getCriteriaBuilder();
+    public T findFirst() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
         Root<T> entityRoot = criteriaQuery.from(entityClass);
         criteriaQuery.select(entityRoot);

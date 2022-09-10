@@ -9,11 +9,7 @@ import org.omnifaces.util.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Miguel_Figueroa2
- */
-@Named(value = "logoutView")
+@Named
 @RequestScoped
 public class LogoutView {
     final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());

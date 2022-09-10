@@ -3,6 +3,7 @@ package com.tcm.tcmapp.integration;
 import com.tcm.tcmapp.bean.AppInitializer;
 import com.tcm.tcmapp.dao.*;
 import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.logging.LoggerProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -14,10 +15,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
 
 import javax.inject.Inject;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 @ExtendWith(ArquillianExtension.class)
 public class TransactionsIntgTest {
@@ -36,12 +40,19 @@ public class TransactionsIntgTest {
     IconoDAO iconoDAO;
 
     @Inject
+    PermisoDAO permisoDAO;
+
+    @Inject
     AppInitializer appInitializer;
+
+    @Inject
+    Logger logger;
 
     @Deployment
     public static WebArchive createDeployment() {
         PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");
         WebArchive war = ShrinkWrap.create(WebArchive.class)
+                .addAsLibraries(pomFile.resolve("org.assertj:assertj-core").withTransitivity().asFile())
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-api").withTransitivity().asFile())
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-simple").withTransitivity().asFile())
                 .addClass(BaseEntityIdentity.class)
@@ -55,9 +66,10 @@ public class TransactionsIntgTest {
                 .addClass(PaginaDAO.class)
                 .addClass(UsuarioDAO.class)
                 .addClass(RolDAO.class)
+                .addClass(PermisoDAO.class)
                 .addClass(IconoDAO.class)
                 .addClass(AppInitializer.class)
-
+                .addClass(LoggerProducer.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         return war;
@@ -74,18 +86,23 @@ public class TransactionsIntgTest {
         iconoDAO.deleteAll();
         usuarioDAO.deleteAll();
         rolDAO.deleteAll();
+        permisoDAO.deleteAll();
     }
 
     @Test
     public void validarAppInitializer() {
         Pagina primeraPagina = paginaDAO.findFirst();
+        Icono primerIcono = iconoDAO.findFirst();
         Usuario primerUsuario = usuarioDAO.findFirst();
         Rol primerRol = rolDAO.findFirst();
+        Permiso primerPermiso = permisoDAO.findFirst();
 
-        assertNotNull(appInitializer);
-        assertNotNull(primeraPagina);
-        assertNotNull(primerRol);
-        assertNotNull(primerUsuario);
+        assertThat(appInitializer).isNotNull();
+        assertThat(primeraPagina).isNotNull();
+        assertThat(primerIcono).isNotNull();
+        assertThat(primerRol).isNotNull();
+        assertThat(primerUsuario).isNotNull();
+        assertThat(primerPermiso).isNotNull();
     }
 
 

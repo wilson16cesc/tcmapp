@@ -1,13 +1,7 @@
 package com.tcm.tcmapp.bean;
 
-import com.tcm.tcmapp.dao.IconoDAO;
-import com.tcm.tcmapp.dao.PaginaDAO;
-import com.tcm.tcmapp.dao.RolDAO;
-import com.tcm.tcmapp.dao.UsuarioDAO;
-import com.tcm.tcmapp.entity.Icono;
-import com.tcm.tcmapp.entity.Pagina;
-import com.tcm.tcmapp.entity.Rol;
-import com.tcm.tcmapp.entity.Usuario;
+import com.tcm.tcmapp.dao.*;
+import com.tcm.tcmapp.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +34,9 @@ public class AppInitializer {
     RolDAO rolDAO;
 
     @Inject
+    PermisoDAO permisoDAO;
+
+    @Inject
     Pbkdf2PasswordHash passwordHash;
 
     @PostConstruct
@@ -64,9 +61,16 @@ public class AppInitializer {
             crearIconos();
         }
 
+        Permiso permiso = permisoDAO.findFirst();
+        if (Objects.isNull(permiso)) {
+            crearPermisos();
+        }
+
+
         logger.info("Datos de la aplicación inicializados");
 
     }
+
 
     private void eliminarDatosAplicacion() {
         logger.info("Eliminando datos de aplicación");
@@ -85,6 +89,25 @@ public class AppInitializer {
         Usuario usuario1 = new Usuario("mfigueroa", "12345",
                 new HashSet<>(Arrays.asList(rol1Admin, rolUser)));
         usuarioDAO.save(usuario1);
+    }
+
+    private void crearPermisos() {
+        Permiso editarMenuRead = new Permiso("EditarMenuRead", "Tiene permiso de lectura en la ventana 'Editar Menu'.");
+        Permiso editarMenuWrite = new Permiso("EditarMenuWrite", "Tiene permiso de escritura en la ventana 'Editar Menu");
+
+        permisoDAO.save(editarMenuRead);
+        permisoDAO.save(editarMenuWrite);
+
+        Rol adminRol = rolDAO.findFirstByNombre("ADMIN");
+        Rol userRol = rolDAO.findFirstByNombre("USER");
+
+        if (Objects.nonNull(adminRol) && Objects.nonNull(userRol)) {
+            adminRol.setPermisos(new HashSet<>(Arrays.asList(editarMenuRead, editarMenuWrite)));
+            userRol.setPermisos(new HashSet<>(Collections.singletonList(editarMenuRead)));
+        }
+
+        rolDAO.update(adminRol);
+        rolDAO.update(userRol);
     }
 
     private void crearPaginas() {

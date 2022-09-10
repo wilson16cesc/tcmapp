@@ -39,7 +39,6 @@ public class MenuView implements Serializable {
                 .collect(Collectors.toList());
         for (Pagina hijo : hijos) {
             String icono = ICON_PREFIX + hijo.getIcono();
-            logger.info("icono: {}", icono);
             if (hijo.getHoja()) {
                 DefaultMenuItem menuItem = DefaultMenuItem.builder()
                         .id(hijo.getId()+"")
@@ -60,7 +59,6 @@ public class MenuView implements Serializable {
         }
     }
 
-
     @PostConstruct
     public void init() {
         logger.info("Cargando datos del menu - {}", this.getClass().getSimpleName());
@@ -75,7 +73,6 @@ public class MenuView implements Serializable {
 
         paginasNivel1.forEach(pagina -> {
             String icono = ICON_PREFIX + pagina.getIcono();
-            logger.info("icono: {}", icono);
             DefaultSubMenu submenu = DefaultSubMenu.builder()
                     .id(pagina.getId()+"")
                     .label(pagina.getNombre())
