@@ -35,7 +35,9 @@ public class IdentityStoreAuthentication implements IdentityStore {
     private void init() {
         logger.info("Cargando datos para autenticación");
         List<Usuario> userList = usuarioDAO.findAllActive();
-        userList.forEach(u -> users.put(u.getUsername(), u.getPassword()));
+        userList.forEach(u -> 
+                users.put(u.getUsername(), u.getPassword())
+        );
 
     }
 

@@ -182,7 +182,9 @@ public class AppInitializer {
                 "sort-up", "sort", "th-large", "arrow-left", "arrow-right", "bars", "arrow-circle", "info", "info-circle",
                 "home", "spinner"));
 
-        nombresIconos.forEach(nombre -> iconoDAO.save(new Icono(nombre)));
+        nombresIconos.forEach(nombre ->
+                iconoDAO.save(new Icono(nombre))
+        );
     }
 
 }
