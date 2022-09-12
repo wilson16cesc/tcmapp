@@ -43,7 +43,7 @@ public class AppInitializer {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void initializeApp() {
 
-        //eliminarDatosAplicacion();
+        eliminarDatosAplicacion();
 
         logger.info("Inicializando datos de la aplicación");
         Pagina pagina = paginaDAO.findById(1L);
@@ -51,14 +51,14 @@ public class AppInitializer {
             crearPaginas();
         }
 
-        Usuario usuario = usuarioDAO.findFirst();
-        if (Objects.isNull(usuario)) {
-            crearUsuariosRoles();
-        }
-
         Icono icono = iconoDAO.findFirst();
         if (Objects.isNull(icono)) {
             crearIconos();
+        }
+
+        Usuario usuario = usuarioDAO.findFirst();
+        if (Objects.isNull(usuario)) {
+            crearUsuariosRoles();
         }
 
         Permiso permiso = permisoDAO.findFirst();
@@ -74,10 +74,11 @@ public class AppInitializer {
 
     private void eliminarDatosAplicacion() {
         logger.info("Eliminando datos de aplicación");
-        iconoDAO.deleteAll();
-        paginaDAO.deleteAll();
+//        paginaDAO.deleteAll();
+//        iconoDAO.deleteAll();
         usuarioDAO.deleteAll();
         rolDAO.deleteAll();
+        permisoDAO.deleteAll();
     }
 
     private void crearUsuariosRoles() {
@@ -86,7 +87,7 @@ public class AppInitializer {
         Rol rolUser = new Rol("USER");
         rolDAO.save(rol1Admin);
         rolDAO.save(rolUser);
-        Usuario usuario1 = new Usuario("mfigueroa", "12345",
+        Usuario usuario1 = new Usuario("mfigueroa", passwordHash.generate("12345".toCharArray()),
                 new HashSet<>(Arrays.asList(rol1Admin, rolUser)));
         usuarioDAO.save(usuario1);
     }

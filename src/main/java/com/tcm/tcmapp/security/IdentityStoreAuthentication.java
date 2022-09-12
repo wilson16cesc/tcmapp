@@ -15,9 +15,10 @@ import javax.security.enterprise.identitystore.IdentityStore;
 import java.util.*;
 
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
+import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 
 @ApplicationScoped
-public class IdentityStoreAuthentication implements IdentityStore{
+public class IdentityStoreAuthentication implements IdentityStore {
 
     @Inject
     Logger logger;
@@ -25,14 +26,16 @@ public class IdentityStoreAuthentication implements IdentityStore{
     @Inject
     UsuarioDAO usuarioDAO;
 
-    Map<String, String> users = new HashMap<>();
+    @Inject
+    Pbkdf2PasswordHash passwordHash;
 
+    Map<String, String> users = new HashMap<>();
 
     @PostConstruct
     private void init() {
         logger.info("Cargando datos para autenticación");
         List<Usuario> userList = usuarioDAO.findAllActive();
-        userList.forEach(u-> users.put(u.getUsername(), u.getPassword()));
+        userList.forEach(u -> users.put(u.getUsername(), u.getPassword()));
 
     }
 
@@ -47,8 +50,9 @@ public class IdentityStoreAuthentication implements IdentityStore{
     }
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
-        String password = users.get(credential.getCaller());
-        if (password != null && password.equals(credential.getPasswordAsString())) {
+        String storedPassword = users.get(credential.getCaller());
+        char[] charArrayPassword = credential.getPassword().getValue();
+        if (passwordHash.verify(charArrayPassword, storedPassword)) {
             return new CredentialValidationResult(credential.getCaller());
         }
         return INVALID_RESULT;
