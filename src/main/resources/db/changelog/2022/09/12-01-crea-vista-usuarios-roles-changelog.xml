@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet author="Miguel_Figueroa" id="2022-09-12-16-06">
+        <createView catalogName="dbo"
+                    encoding="UTF-8"
+                    fullDefinition="false"
+                    remarks="Vista personalizada para visualizar los roles y los permisos de usuario"
+                    replaceIfExists="false"
+                    viewName="vseg_usuarios_roles">
+            select newid() as id, username, rolename from
+            (select u.username, r.nombre as rolename from seg_usuarios u
+            inner join seg_usuarios_roles ur on u.id = ur.usuario_id
+            inner join seg_roles r on r.id = ur.rol_id
+            inner join seg_roles_permisos rp on rp.rol_id = r.id
+            inner join seg_permisos p on p.id = rp.permiso_id
+            union
+            select u.username, 'perm:'+p.nombre as rolename from seg_usuarios u
+            inner join seg_usuarios_roles ur on u.id = ur.usuario_id
+            inner join seg_roles r on r.id = ur.rol_id
+            inner join seg_roles_permisos rp on rp.rol_id = r.id
+            inner join seg_permisos p on p.id = rp.permiso_id) resultado
+        </createView>
+    </changeSet>
+</databaseChangeLog>

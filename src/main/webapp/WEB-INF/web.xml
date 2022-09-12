@@ -16,19 +16,34 @@
             <url-pattern>/pages/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ADMIN</role-name>
-            <role-name>USER</role-name>
+            <role-name>*</role-name>
         </auth-constraint>
     </security-constraint>
-
+    <security-constraint>
+        <display-name>ReportsPageConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Edit Menu Page</web-resource-name>
+            <description/>
+            <url-pattern>/pages/menuEdit.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>perm:EditarMenuRead</role-name>
+            <role-name>perm:EditarMenuWrite</role-name>
+        </auth-constraint>
+    </security-constraint>
     <security-role>
         <role-name>USER</role-name>
     </security-role>
     <security-role>
         <role-name>ADMIN</role-name>
     </security-role>    
-    
-    
+    <security-role>
+        <role-name>perm:EditarMenuRead</role-name>
+    </security-role>    
+    <security-role>
+        <role-name>perm:EditarMenuWrite</role-name>
+    </security-role>    
     <mime-mapping>
         <extension>woff</extension>
         <mime-type>application/font-woff</mime-type>

@@ -89,7 +89,10 @@ public class AppInitializer {
         rolDAO.save(rolUser);
         Usuario usuario1 = new Usuario("mfigueroa", passwordHash.generate("12345".toCharArray()),
                 new HashSet<>(Arrays.asList(rol1Admin, rolUser)));
+        Usuario usuario2 = new Usuario("usuario", passwordHash.generate("12345".toCharArray()),
+                new HashSet<>(Collections.singletonList(rolUser)));
         usuarioDAO.save(usuario1);
+        usuarioDAO.save(usuario2);
     }
 
     private void crearPermisos() {
