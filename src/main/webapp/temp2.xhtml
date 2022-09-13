@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>     
+        <style>
+            .ui-picklist .ui-picklist-list {
+                width: 400px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel id="menuEditPanel" header="Permisios Roles" style="width: 70%;">
+                <div>
+                    <h3 style="width: 45px; display: inline-block;">Rol:</h3>
+                    <p:selectOneMenu id="group" value="#{permisosRolesView.selectedRol}" converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="Select One" itemValue=""/>
+                        <f:selectItems value="#{datosAplicacion.roles}" var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol}" />
+                    </p:selectOneMenu>
+                </div>
+
+<!--                <p:pickList id="permisosPickList" value="#{datosAplicacion.permisos}" var="permiso" itemLabel="#{permiso.nombre}" itemValue="#{permiso}" transferOnCheckboxClick="false"
+                             showSourceControls="false" showTargetControls="false" />-->
+                <h3 style="width: 45px; display: inline-block;">Permisos:</h3>
+                <p:pickList value="#{permisosRolesView.permisosModel}" var="permiso" itemValue="#{permiso}" itemLabel="#{permiso.nombre} - #{permiso.descripcion}" 
+                            showCheckbox="true" transferOnCheckboxClick="false" >
+                    <o:converter converterId="omnifaces.ListIndexConverter" list="#{datosAplicacion.permisos}" />
+                    <f:facet name="sourceCaption">Disponibles</f:facet>
+                    <f:facet name="targetCaption">Seleccionados</f:facet>
+                    
+                    <p:ajax event="transfer" listener="#{permisosRolesView.transfer()}"/>
+                </p:pickList>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+

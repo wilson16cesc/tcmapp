@@ -5,10 +5,9 @@ import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.dao.BaseDAO;
 import com.tcm.tcmapp.dao.IconoDAO;
 import com.tcm.tcmapp.dao.PaginaDAO;
-import com.tcm.tcmapp.entity.BaseEntity;
-import com.tcm.tcmapp.entity.BaseEntityIdentity;
-import com.tcm.tcmapp.entity.Icono;
-import com.tcm.tcmapp.entity.Pagina;
+import com.tcm.tcmapp.dao.PermisoDAO;
+import com.tcm.tcmapp.dao.RolDAO;
+import com.tcm.tcmapp.entity.*;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.view.MenuEditView;
 import com.tcm.tcmapp.view.MenuInfo;
@@ -59,12 +58,16 @@ public class MenuEditViewIntgTest {
                 .addClass(MenuInfo.class)
                 .addClass(Pagina.class)
                 .addClass(Icono.class)
+                .addClass(Rol.class)
+                .addClass(Permiso.class)
                 .addClass(BaseEntityIdentity.class)
                 .addClass(BaseEntity.class)
                 .addClass(PaginasService.class)
                 .addClass(PaginaDAO.class)
                 .addClass(BaseDAO.class)
                 .addClass(IconoDAO.class)
+                .addClass(RolDAO.class)
+                .addClass(PermisoDAO.class)
                 .addClass(MenuCounter.class)
                 .addClass(DatosAplicacion.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")

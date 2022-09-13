@@ -2,8 +2,13 @@ package com.tcm.tcmapp.bean;
 
 
 import com.tcm.tcmapp.dao.IconoDAO;
+import com.tcm.tcmapp.dao.PermisoDAO;
+import com.tcm.tcmapp.dao.RolDAO;
 import com.tcm.tcmapp.entity.Icono;
+import com.tcm.tcmapp.entity.Permiso;
+import com.tcm.tcmapp.entity.Rol;
 import org.omnifaces.cdi.Eager;
+import org.primefaces.model.DualListModel;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -21,11 +26,22 @@ public class DatosAplicacion {
     @Inject
     IconoDAO iconoDAO;
 
+    @Inject
+    RolDAO rolDAO;
+
+    @Inject
+    PermisoDAO permisoDAO;
+
+
     private List<Icono> iconos = new ArrayList<>();
+    private List<Rol> roles = new ArrayList<>();
+    private List<Permiso> permisos = new ArrayList<>();
 
     @PostConstruct
     public void initApplicationData() {
         iconos = iconoDAO.findAllActive();
+        roles = rolDAO.findAllActive();
+        permisos = permisoDAO.findAllActive();
 
     }
 
@@ -36,4 +52,21 @@ public class DatosAplicacion {
     public void setIconos(List<Icono> iconos) {
         this.iconos = iconos;
     }
+
+    public List<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
+    }
+
+    public List<Permiso> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(List<Permiso> permisos) {
+        this.permisos = permisos;
+    }
+
 }

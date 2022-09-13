@@ -10,8 +10,6 @@
     <ui:define name="content">
         <h:form id="editMenuForm">
             <p:panel id="menuEditPanel" header="Editar Menu" style="width: 70%;">
-                <p:outputLabel value="EditarMenuRead: #{viewHelper.hasPermission('EditarMenuRead')}"/>
-                <p:outputLabel value="EditarMenuWrite: #{viewHelper.hasPermission('EditarMenuWrite')}"/>
                 <p:messages id="menuEditMessages"/>
                 <p:panelGrid id="menuEditPanelGrid" columns="2" layout="grid" >
                     <p:tree id="editMenuTree" value="#{menuEditView.menuRoot}"  var="node" selectionMode="single" 

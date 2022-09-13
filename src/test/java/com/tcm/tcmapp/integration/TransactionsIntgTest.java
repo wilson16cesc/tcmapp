@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import javax.security.enterprise.identitystore.IdentityStore;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,6 +48,7 @@ public class TransactionsIntgTest {
 
     @Inject
     Logger logger;
+
 
     @Deployment
     public static WebArchive createDeployment() {

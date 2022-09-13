@@ -22,9 +22,6 @@ class IdentityStoreAuthorization implements IdentityStore {
 
 
     @Inject
-    UsuarioDAO usuarioDAO;
-
-    @Inject
     VUsuarioRolDAO vUsuarioRolDAO;
 
     @Inject
@@ -41,8 +38,8 @@ class IdentityStoreAuthorization implements IdentityStore {
         usuariosRoles.forEach(ur -> {
             userRoles.putIfAbsent(ur.getUsername(), new ArrayList<>());
             userRoles.get(ur.getUsername()).add(ur.getRolename());
-            userRoles.put(ur.getUsername(), null);
         });
+        logger.info("UserRoles - keySet: {} - values: {}", userRoles.keySet().toString(), userRoles.values().toString());
     }
 
     @Override
