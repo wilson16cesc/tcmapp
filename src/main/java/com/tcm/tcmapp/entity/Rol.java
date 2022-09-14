@@ -1,9 +1,7 @@
 package com.tcm.tcmapp.entity;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "seg_roles")
@@ -16,7 +14,7 @@ public class Rol extends BaseEntityIdentity {
         this.nombre = nombre;
     }
 
-    public Rol(String nombre, Set<Permiso> permisos) {
+    public Rol(String nombre, List<Permiso> permisos) {
         this.nombre = nombre;
         this.permisos = permisos;
     }
@@ -24,17 +22,17 @@ public class Rol extends BaseEntityIdentity {
     @Column(name = "nombre", nullable = false, unique = true, length = 100)
     private String nombre;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     @JoinTable(name = "seg_roles_permisos",
             joinColumns = @JoinColumn(name = "rol_id"),
             inverseJoinColumns = @JoinColumn(name = "permiso_id"))
-    private Set<Permiso> permisos = new LinkedHashSet<>();
+    private List<Permiso> permisos = new ArrayList<>();
 
-    public Set<Permiso> getPermisos() {
+    public List<Permiso> getPermisos() {
         return permisos;
     }
 
-    public void setPermisos(Set<Permiso> permisos) {
+    public void setPermisos(List<Permiso> permisos) {
         this.permisos = permisos;
     }
 

@@ -19,4 +19,15 @@ public class RolDAO extends BaseDAO<Rol> {
         return findFirstActiveByField(NOMBRE, nombre);
     }
 
+    public List<Rol> findAllActiveWithPermissions() {
+        List<Rol> rolesActivos = super.findAllActive();
+        rolesActivos.forEach(r-> r.getPermisos());
+        return rolesActivos;
+    }
+
+    public Rol findFirstByNombreWithPermissions(String nombre) {
+        Rol rol = findFirstActiveByField(NOMBRE, nombre);
+        rol.getPermisos();
+        return rol;
+    }
 }

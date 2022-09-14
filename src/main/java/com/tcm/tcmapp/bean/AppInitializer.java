@@ -96,18 +96,28 @@ public class AppInitializer {
     }
 
     private void crearPermisos() {
-        Permiso editarMenuRead = new Permiso("EditarMenuRead", "Tiene permiso de lectura en la ventana 'Editar Menu'.");
-        Permiso editarMenuWrite = new Permiso("EditarMenuWrite", "Tiene permiso de escritura en la ventana 'Editar Menu");
+        Permiso editarMenuRead = new Permiso("EditarMenuRead", "Permite leer la ventana 'Editar Menu'.");
+        Permiso editarMenuWrite = new Permiso("EditarMenuWrite", "Permite escribir en la ventana 'Editar Menu");
+        Permiso permisosRolesRead = new Permiso("PermisosRolesRead", "Tiene permiso de lectura en la ventana Permisos Roles");
+        Permiso permisosRolesWrite = new Permiso("PermisosRolesWrite", "Tiene permiso de escritura en la ventana Permisos Roles");
 
-        permisoDAO.save(editarMenuRead);
-        permisoDAO.save(editarMenuWrite);
+        List<Permiso> permisos = new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite, permisosRolesWrite, permisosRolesRead));
+
+        permisos.add(new Permiso("UsuarioRead", "Tiene permiso de lectura en la ventana Usuarios"));
+        permisos.add(new Permiso("UsuarioEdit", "Tiene permiso de escritura en la ventana Usuarios"));
+        permisos.add(new Permiso("RolesRead", "Tiene permiso de lectura en la ventana Roles"));
+        permisos.add(new Permiso("RolesEdit", "Tiene permiso de escritura en la ventana Roles"));
+
+        permisos.forEach(permiso ->
+                permisoDAO.save(permiso)
+        );
 
         Rol adminRol = rolDAO.findFirstByNombre("ADMIN");
         Rol userRol = rolDAO.findFirstByNombre("USER");
 
         if (Objects.nonNull(adminRol) && Objects.nonNull(userRol)) {
-            adminRol.setPermisos(new HashSet<>(Arrays.asList(editarMenuRead, editarMenuWrite)));
-            userRol.setPermisos(new HashSet<>(Collections.singletonList(editarMenuRead)));
+            adminRol.setPermisos(Arrays.asList(editarMenuWrite, permisosRolesWrite));
+            userRol.setPermisos(Arrays.asList(editarMenuRead, permisosRolesRead));
         }
 
         rolDAO.update(adminRol);

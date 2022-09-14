@@ -5,15 +5,45 @@
                 template="/WEB-INF/template/mainTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:o="http://omnifaces.org/ui">
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
         <h:form id="permisosRolesForm">
-            <p:panel id="menuEditPanel" header="Permisios Roles" style="width: 70%;">
+            <p:panel id="pemisosRolesPanel" header="Permisios Roles" style="width: 50%;">
+                <p:messages id="permisosRolesMessages"/>
                 <div>
-                    <h2>Rol:</h2>
-                    
+                    <h3 style="width: 45px; display: inline-block;">Rol:</h3>
+                    <p:selectOneMenu id="selectOneRole" value="#{permisosRolesView.selectedRol}" converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="" itemValue=""/>
+                        <f:selectItems value="#{datosAplicacion.roles}" var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol}" />
+                        <p:ajax listener="#{permisosRolesView.cargarDatosRol()}" update="permisosRolesForm:permisosRolesPanelGroup permisosRolesForm:buttonsPanel"/>
+                    </p:selectOneMenu>
                 </div>
+                <!--                <p:panelGrid id="permisosRolesPanelGrid" columns="1" layout="grid" >-->
+
+                <h:panelGroup id="permisosRolesPanelGroup">
+                    <h:panelGroup rendered="#{not empty permisosRolesView.selectedRol.id}">
+                        <h3 style="width: 45px;">Permisos:</h3>
+                        <p:pickList  value="#{permisosRolesView.permisosModel}" id="permisosPickList" var="permiso" itemValue="#{permiso}" itemLabel="#{permiso.nombre} - #{permiso.descripcion}" 
+                                     showCheckbox="true" transferOnCheckboxClick="false" >
+                            <o:converter converterId="omnifaces.ListIndexConverter" list="#{permisosRolesView.permisos}" />
+                            <f:facet name="sourceCaption">Disponibles</f:facet>
+                            <f:facet name="targetCaption">Seleccionados</f:facet>
+                            <p:ajax event="transfer" listener="#{permisosRolesView.transfer()}"/>
+                        </p:pickList>
+                    </h:panelGroup>
+                </h:panelGroup>
+                <!--                </p:panelGrid>-->
+                <h:panelGroup layout="block" style="text-align: right; margin-top: 8px;" id="buttonsPanel"> 
+                    <p:commandButton value="Guardar" update="permisosRolesForm:permisosRolesMessages" rendered="#{not empty permisosRolesView.selectedRol.id}" actionListener="#{permisosRolesView.guardarPermisos()}">
+                        <p:confirm header="Confirmación" message="¿Desea guardar los cambios?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>                    
+                </h:panelGroup>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+                </p:confirmDialog>
             </p:panel>
         </h:form>
     </ui:define>

@@ -1,9 +1,11 @@
 package com.tcm.tcmapp.view;
 
 import com.tcm.tcmapp.bean.DatosAplicacion;
-import com.tcm.tcmapp.entity.BaseEntityIdentity;
 import com.tcm.tcmapp.entity.Permiso;
 import com.tcm.tcmapp.entity.Rol;
+import com.tcm.tcmapp.service.RolesService;
+import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Messages;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 
@@ -16,9 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 @Named
-@SessionScoped
+@ViewScoped
 public class PermisosRolesView implements Serializable {
 
     @Inject
@@ -27,33 +28,26 @@ public class PermisosRolesView implements Serializable {
     @Inject
     DatosAplicacion datosAplicacion;
 
-    private DualListModel<Permiso> permisosModel;
-    private List<Permiso> permisosOrigen = new ArrayList<>();
-    private List<Permiso> permisosDestino = new ArrayList<>();
+    @Inject
+    RolesService rolesService;
 
-    private List<Rol> roles;
+    private DualListModel<Permiso> permisosModel;
+    private List<Permiso> permisos;
+    //private List<Rol> roles;
     private Rol selectedRol;
 
     public PermisosRolesView() {
-
+        selectedRol = new Rol();
+        permisos = new ArrayList<>();
     }
 
     @PostConstruct
     public void init() {
-        permisosOrigen = datosAplicacion.getPermisos();
+        permisos = new ArrayList<>(datosAplicacion.getPermisos());
 
         permisosModel = new DualListModel<>(
-                permisosOrigen,
-                permisosDestino
-        );
-    }
-
-    public List<Rol> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Rol> roles) {
-        this.roles = roles;
+                new ArrayList<>(permisos),
+                new ArrayList<>());
     }
 
     public Rol getSelectedRol() {
@@ -64,7 +58,7 @@ public class PermisosRolesView implements Serializable {
         this.selectedRol = selectedRol;
     }
 
-    public DualListModel<? extends BaseEntityIdentity> getPermisosModel() {
+    public DualListModel<Permiso> getPermisosModel() {
         return permisosModel;
     }
 
@@ -72,25 +66,36 @@ public class PermisosRolesView implements Serializable {
         this.permisosModel = permisosModel;
     }
 
-    public List<Permiso> getPermisosOrigen() {
-        return permisosOrigen;
-    }
-
-    public void setPermisosOrigen(List<Permiso> permisosOrigen) {
-        this.permisosOrigen = permisosOrigen;
-    }
-
-    public List<Permiso> getPermisosDestino() {
-        return permisosDestino;
-    }
-
-    public void setPermisosDestino(List<Permiso> permisosDestino) {
-        this.permisosDestino = permisosDestino;
-    }
-
     public void transfer() {
         logger.info("origen: {} - destino: {}",
                 Arrays.toString(permisosModel.getSource().toArray()), Arrays.toString(permisosModel.getTarget().toArray()));
-
     }
+
+    public void cargarDatosRol() {
+        logger.info("Permisos del rol: {} - {}",
+                selectedRol.getNombre(), Arrays.toString(selectedRol.getPermisos().toArray()));
+
+        ArrayList<Permiso> permisosOrigen = new ArrayList<>(permisos);
+        permisosOrigen.removeAll(selectedRol.getPermisos());
+        permisosModel = new DualListModel<>(
+                permisosOrigen,
+                new ArrayList<>(selectedRol.getPermisos())
+        );
+    }
+
+    public void guardarPermisos() {
+        List<Permiso> selectedPermisos = permisosModel.getTarget();
+        selectedRol.setPermisos(selectedPermisos);
+        rolesService.update(selectedRol);
+        Messages.addInfo(null,"Datos guardados correctamente");
+    }
+
+    public List<Permiso> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(List<Permiso> permisos) {
+        this.permisos = permisos;
+    }
+
 }

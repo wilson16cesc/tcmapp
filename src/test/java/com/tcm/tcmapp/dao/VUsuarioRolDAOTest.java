@@ -1,6 +1,7 @@
 package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.logging.LoggerProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -24,13 +24,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(ArquillianExtension.class)
-@Disabled
+@Disabled ////////////////////////////////DESHABILITADO POR QUE SIEMPRE EVALUA LOS ASSERT COMO TRUE ////////////////////////////
 class VUsuarioRolDAOTest {
 
     public static final String ADMIN1 = "admin1";
     public static final String USUARIO1 = "usuario1";
-    @Inject
-    Logger logger;
+
 
     @Inject
     RolDAO rolDAO;
@@ -50,6 +49,7 @@ class VUsuarioRolDAOTest {
         PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addAsLibraries(pomFile.resolve("org.assertj:assertj-core").withTransitivity().asFile())
+                .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-api").withTransitivity().asFile())
                 .addClass(Usuario.class)
                 .addClass(Rol.class)
                 .addClass(Permiso.class)
@@ -60,6 +60,7 @@ class VUsuarioRolDAOTest {
                 .addClass(UsuarioDAO.class)
                 .addClass(RolDAO.class)
                 .addClass(VUsuarioRolDAO.class)
+                .addClass(LoggerProducer.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(war.toString(true));
@@ -69,21 +70,12 @@ class VUsuarioRolDAOTest {
     @BeforeEach
     void setUp() {
         System.out.println("Preparando test...");
-        //crear vista en db h2
-        String sql = "CREATE VIEW IF NOT EXISTS vseg_usuarios_roles AS select random_uuid() as id, username, rolename from\n" +
-                "            (select u.username, r.nombre as rolename from seg_usuarios u\n" +
-                "            inner join seg_usuarios_roles ur on u.id = ur.usuario_id\n" +
-                "            inner join seg_roles r on r.id = ur.rol_id\n" +
-                "            inner join seg_roles_permisos rp on rp.rol_id = r.id\n" +
-                "            inner join seg_permisos p on p.id = rp.permiso_id\n" +
-                "            union\n" +
-                "            select u.username, 'perm:'+p.nombre as rolename from seg_usuarios u\n" +
-                "            inner join seg_usuarios_roles ur on u.id = ur.usuario_id\n" +
-                "            inner join seg_roles r on r.id = ur.rol_id\n" +
-                "            inner join seg_roles_permisos rp on rp.rol_id = r.id\n" +
-                "            inner join seg_permisos p on p.id = rp.permiso_id) resultado";
-        usuarioDAO.executeNativeQuery(sql);
+        usuarioDAO.deleteAll();
+        rolDAO.deleteAll();
+        permisoDAO.deleteAll();
+
     }
+
 
     @AfterEach
     void tearDown() {
@@ -94,13 +86,15 @@ class VUsuarioRolDAOTest {
 
     @Test
     void findByUsername() {
+        crearVistaRolesUsuarios();
+        crearUsuariosRolesPermisos();
         List<VUsuarioRol> usuarioRoles = vUsuarioRolDAO.findByUsername(ADMIN1);
-        logger.info("Usuarios roles: {}",Arrays.toString(usuarioRoles.toArray()));
-        assertThat(usuarioRoles).size().isEqualTo(2);
+//        logger.info("Usuarios roles: {}", Arrays.toString(usuarioRoles.toArray()));
+        assertThat(usuarioRoles).size().isEqualTo(10);
     }
 
     private void crearUsuariosRolesPermisos() {
-        logger.info("Creando roles usuarios y permisos en la base de datos");
+//        logger.info("Creando roles usuarios y permisos en la base de datos");
         Rol rol1Admin = new Rol("ADMIN");
         Rol rolUser = new Rol("USER");
         rolDAO.save(rol1Admin);
@@ -118,10 +112,26 @@ class VUsuarioRolDAOTest {
         permisoDAO.save(editarMenuRead);
         permisoDAO.save(editarMenuWrite);
 
-        rol1Admin.setPermisos(new HashSet<>(Arrays.asList(editarMenuRead, editarMenuWrite)));
-        rolUser.setPermisos(new HashSet<>(Collections.singletonList(editarMenuRead)));
+        rol1Admin.setPermisos(Arrays.asList(editarMenuRead, editarMenuWrite));
+        rolUser.setPermisos(Collections.singletonList(editarMenuRead));
 
         rolDAO.update(rol1Admin);
         rolDAO.update(rolUser);
+    }
+
+    private void crearVistaRolesUsuarios() {
+        String sql = "CREATE VIEW IF NOT EXISTS vseg_usuarios_roles AS select random_uuid() as id, username, rolename from\n" +
+                "            (select u.username, r.nombre as rolename from seg_usuarios u\n" +
+                "            inner join seg_usuarios_roles ur on u.id = ur.usuario_id\n" +
+                "            inner join seg_roles r on r.id = ur.rol_id\n" +
+                "            inner join seg_roles_permisos rp on rp.rol_id = r.id\n" +
+                "            inner join seg_permisos p on p.id = rp.permiso_id\n" +
+                "            union\n" +
+                "            select u.username, 'perm:'+p.nombre as rolename from seg_usuarios u\n" +
+                "            inner join seg_usuarios_roles ur on u.id = ur.usuario_id\n" +
+                "            inner join seg_roles r on r.id = ur.rol_id\n" +
+                "            inner join seg_roles_permisos rp on rp.rol_id = r.id\n" +
+                "            inner join seg_permisos p on p.id = rp.permiso_id) resultado";
+        usuarioDAO.executeNativeQuery(sql);
     }
 }

@@ -49,4 +49,10 @@ public class Permiso extends BaseEntityIdentity {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Permiso{" + "nombre=" + nombre + '}';
+    }
+    
 }

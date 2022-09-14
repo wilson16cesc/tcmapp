@@ -11,4 +11,7 @@ public class PermisoDAO extends BaseDAO<Permiso> {
         super.setEntityClass(Permiso.class);
     }
 
+    public Permiso findByNombre(String nombrePermiso) {
+        return findFirstActiveByField("nombre", nombrePermiso);
+    }
 }

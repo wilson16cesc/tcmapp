@@ -33,14 +33,14 @@ public class DatosAplicacion {
     PermisoDAO permisoDAO;
 
 
-    private List<Icono> iconos = new ArrayList<>();
-    private List<Rol> roles = new ArrayList<>();
-    private List<Permiso> permisos = new ArrayList<>();
+    private List<Icono> iconos;
+    private List<Rol> roles;
+    private List<Permiso> permisos;
 
     @PostConstruct
     public void initApplicationData() {
         iconos = iconoDAO.findAllActive();
-        roles = rolDAO.findAllActive();
+        roles = rolDAO.findAllActiveWithPermissions();
         permisos = permisoDAO.findAllActive();
 
     }
