@@ -13,6 +13,6 @@ public class VUsuarioRolDAO extends BaseDAO<VUsuarioRol> {
     }
 
     public List<VUsuarioRol> findByUsername(String username) {
-        return findActiveByField("username", username);
+        return findByField("username", username);
     }
 }

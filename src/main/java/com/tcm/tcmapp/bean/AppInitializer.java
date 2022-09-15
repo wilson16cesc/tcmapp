@@ -43,7 +43,7 @@ public class AppInitializer {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void initializeApp() {
 
-        eliminarDatosAplicacion();
+        //eliminarDatosAplicacion();
 
         logger.info("Inicializando datos de la aplicación");
         Pagina pagina = paginaDAO.findById(1L);

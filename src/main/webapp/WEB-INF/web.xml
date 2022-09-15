@@ -30,7 +30,7 @@
             <description/>
             <role-name>perm:EditarMenuRead</role-name>
             <role-name>perm:EditarMenuWrite</role-name>
-        </auth-constraint>
+        </auth-constraint>     
     </security-constraint>
     <security-role>
         <role-name>USER</role-name>
@@ -43,6 +43,12 @@
     </security-role>    
     <security-role>
         <role-name>perm:EditarMenuWrite</role-name>
+    </security-role>    
+    <security-role>
+        <role-name>perm:PermisosRolesRead</role-name>
+    </security-role>    
+    <security-role>
+        <role-name>perm:PermisosRolesWrite</role-name>
     </security-role>    
     <mime-mapping>
         <extension>woff</extension>

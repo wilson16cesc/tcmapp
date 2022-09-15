@@ -82,6 +82,15 @@ public class BaseDAO<T> {
         return getEntityManager().createQuery(criteriaQuery).getResultList();
     }
 
+    public List<T> findByField(String fieldName, Object value) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        Root<T> root = criteriaQuery.from(entityClass);
+        criteriaQuery.where(criteriaBuilder.equal(root.get(fieldName), value));
+        criteriaQuery.select(root);
+        return getEntityManager().createQuery(criteriaQuery).getResultList();
+    }
+
     public T findFirstActiveByField(String fieldName, Object value) {
         List<T> resultList = findActiveByField(fieldName, value);
         if (resultList.isEmpty())

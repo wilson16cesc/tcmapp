@@ -19,12 +19,14 @@
             inner join seg_roles r on r.id = ur.rol_id
             inner join seg_roles_permisos rp on rp.rol_id = r.id
             inner join seg_permisos p on p.id = rp.permiso_id
+            where u.activo = 1 and r.activo = 1 and p.activo = 1
             union
             select u.username, 'perm:'+p.nombre as rolename from seg_usuarios u
             inner join seg_usuarios_roles ur on u.id = ur.usuario_id
             inner join seg_roles r on r.id = ur.rol_id
             inner join seg_roles_permisos rp on rp.rol_id = r.id
-            inner join seg_permisos p on p.id = rp.permiso_id) resultado
+            inner join seg_permisos p on p.id = rp.permiso_id
+            where u.activo = 1 and r.activo = 1 and p.activo = 1) resultado
         </createView>
     </changeSet>
 </databaseChangeLog>

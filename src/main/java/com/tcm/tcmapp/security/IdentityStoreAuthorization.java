@@ -11,33 +11,14 @@ import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
 import java.util.*;
 
-
 @ApplicationScoped
 class IdentityStoreAuthorization implements IdentityStore {
-
-    private final Map<String, List<String>> userRoles = new HashMap<>();
-
 
     @Inject
     VUsuarioRolDAO vUsuarioRolDAO;
 
     @Inject
     Logger logger;
-
-    public IdentityStoreAuthorization() {
-
-    }
-
-    @PostConstruct
-    private void init() {
-        logger.info("Cargando datos para autorización");
-        List<VUsuarioRol> usuariosRoles = vUsuarioRolDAO.findAll();
-        usuariosRoles.forEach(ur -> {
-            userRoles.putIfAbsent(ur.getUsername(), new ArrayList<>());
-            userRoles.get(ur.getUsername()).add(ur.getRolename());
-        });
-        logger.info("UserRoles - keySet: {} - values: {}", userRoles.keySet().toString(), userRoles.values().toString());
-    }
 
     @Override
     public int priority() {
@@ -51,7 +32,12 @@ class IdentityStoreAuthorization implements IdentityStore {
 
     @Override
     public Set<String> getCallerGroups(CredentialValidationResult validationResult) {
-        List<String> roles = userRoles.get(validationResult.getCallerPrincipal().getName());
+        List<VUsuarioRol> userRoles = vUsuarioRolDAO.findByUsername(validationResult.getCallerPrincipal().getName());
+        List<String> roles = new ArrayList<>();
+        userRoles.forEach(ur -> roles.add(ur.getRolename()));
+
+        logger.info("Usuario autenticado: {}, roles asignados: {}",
+                validationResult.getCallerPrincipal().getName(), Arrays.toString(roles.toArray()));
         return new HashSet<>(roles);
     }
 
