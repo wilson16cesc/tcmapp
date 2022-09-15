@@ -2,26 +2,22 @@ package com.tcm.tcmapp.integration;
 
 import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.bean.MenuCounter;
-import com.tcm.tcmapp.dao.BaseDAO;
-import com.tcm.tcmapp.dao.IconoDAO;
-import com.tcm.tcmapp.dao.PaginaDAO;
-import com.tcm.tcmapp.dao.PermisoDAO;
-import com.tcm.tcmapp.dao.RolDAO;
+import com.tcm.tcmapp.dao.*;
 import com.tcm.tcmapp.entity.*;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.view.MenuEditView;
 import com.tcm.tcmapp.view.MenuInfo;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.model.TreeNode;
@@ -32,9 +28,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 
-@ExtendWith(ArquillianExtension.class)
+@RunWith(Arquillian.class)
 public class MenuEditViewIntgTest {
 
     @Inject
@@ -75,13 +71,13 @@ public class MenuEditViewIntgTest {
         return war;
     }
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         paginaDAO.deleteAll();
         crearPaginas();
     }
 
-    @AfterEach
+    @After
     public void tearDown() throws Exception {
         paginaDAO.deleteAll();
     }
@@ -118,6 +114,7 @@ public class MenuEditViewIntgTest {
      * |        --17
      * |        --18
      */
+
     protected void crearPaginas() {
         Pagina primero = new Pagina(1L, "Item 1", "http://item1.com", false, "save", 0L, LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(primero);
@@ -152,5 +149,7 @@ public class MenuEditViewIntgTest {
         paginaDAO.save(new Pagina(18L, "Item 18", "http://item18.com", true, "save", dieciseis.getId(), LocalDateTime.now(), "mfigueroa", true));
 
     }
+
+
 
 }

@@ -4,13 +4,13 @@ import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.entity.Permiso;
 import com.tcm.tcmapp.entity.Rol;
 import com.tcm.tcmapp.service.RolesService;
-import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Messages;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Named
-@ViewScoped
+@SessionScoped
 public class PermisosRolesView implements Serializable {
 
     @Inject

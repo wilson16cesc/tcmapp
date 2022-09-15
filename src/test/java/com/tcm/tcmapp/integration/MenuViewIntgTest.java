@@ -10,16 +10,16 @@ import com.tcm.tcmapp.entity.Pagina;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.view.MenuView;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.model.menu.MenuModel;
 
@@ -30,11 +30,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 //@Ignore("Class not ready for tests")
-@ExtendWith(ArquillianExtension.class)
+@RunWith(Arquillian.class)
 public class MenuViewIntgTest {
 
     @Inject
@@ -70,13 +70,13 @@ public class MenuViewIntgTest {
         return war;
     }
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         paginaDAO.deleteAll();
         crearPaginas();
     }
 
-    @AfterEach
+    @After
     public void tearDown() throws Exception {
         paginaDAO.deleteAll();
     }
@@ -98,8 +98,6 @@ public class MenuViewIntgTest {
 
         assertThat(menuFirstLevelIds)
                 .contains(menuModel.getElements().get(0).getId());
-//        assertTrue(menuFirstLevelIds
-//                .contains(menuModel.getElements().get(0).getId()));
         assertTrue(menuFirstLevelIds
                 .contains(menuModel.getElements().get(1).getId()));
         assertTrue(menuFirstLevelIds
@@ -125,6 +123,7 @@ public class MenuViewIntgTest {
      * |        --17
      * |        --18
      */
+
     protected void crearPaginas() {
         Pagina primero = new Pagina(1L, "Item 1", "http://item1.com", false, "save", 0L, LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(primero);

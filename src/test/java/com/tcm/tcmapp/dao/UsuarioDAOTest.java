@@ -2,15 +2,16 @@ package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.entity.*;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
@@ -18,9 +19,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(ArquillianExtension.class)
+@RunWith(Arquillian.class)
 public class UsuarioDAOTest {
 
     public static final String USER_ROLE = "user_role";
@@ -38,16 +39,23 @@ public class UsuarioDAOTest {
 
     @Deployment
     public static WebArchive createDeployment() {
+        PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");
         WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addClasses(Usuario.class, Rol.class, Permiso.class, BaseEntityIdentity.class, BaseEntity.class,
-                        UsuarioDAO.class, RolDAO.class, BaseDAO.class)
+                .addAsLibraries(pomFile.resolve("org.assertj:assertj-core").withTransitivity().asFile())
+                .addClass(Usuario.class)
+                .addClass(Rol.class)
+                .addClass(Permiso.class)
+                .addClass(BaseEntityIdentity.class)
+                .addClass(BaseEntity.class)
+                .addClass(UsuarioDAO.class)
+                .addClass(RolDAO.class)
+                .addClass(BaseDAO.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        //System.out.println(war.toString(true));
         return war;
     }
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
 
         Rol rol1 = new Rol(USER_ROLE);
@@ -59,7 +67,7 @@ public class UsuarioDAOTest {
         usuarioDAO.save(usuario1);
     }
 
-    @AfterEach
+    @After
     public void tearDown() throws Exception {
         usuarioDAO.deleteAll();
         rolDAO.deleteAll();
@@ -68,25 +76,15 @@ public class UsuarioDAOTest {
     @Test
     public void findByUsername() {
         Usuario usuario = usuarioDAO.findByUsername(USUARIO_DEMO);
-        assertNotNull(usuario);
-    }
-
-    @Test
-    @Disabled
-    public void dadoUsuarioConPasswordEncriptado_cuandoConsultaUsuario_entoncesDebeCoincidirElPassword() {
-        Usuario usuario = usuarioDAO.findByUsername(USUARIO_DEMO);
-
-        char[] unencriptedPassword = "12345".toCharArray();
-        assertTrue(passwordHash.verify(unencriptedPassword, usuario.getPassword()));
-
+        assertThat(usuario).isNotNull();
     }
 
     @Test
     public void dadoUsuariosExistentes_cuandoConsultaUsuariosYRoles_entoncesDebeDevolverUsuariosConSusRoles() {
         List<Usuario> usuariosConRoles = usuarioDAO.findAllWithRoles();
 
-        assertEquals(1, usuariosConRoles.size());
-        assertEquals(2, usuariosConRoles.get(0).getRoles().size());
+        assertThat(usuariosConRoles).size().isEqualTo(1);
+        assertThat(usuariosConRoles.get(0).getRoles()).size().isEqualTo(2);
     }
 
     @Test
@@ -94,8 +92,7 @@ public class UsuarioDAOTest {
 
         Usuario usuario = usuarioDAO.findWithRoles(USUARIO_DEMO, PASSWORD_SIMPLE);
 
-        assertNotNull(usuario);
-        assertEquals(2, usuario.getRoles().size());
+        assertThat(usuario).isNotNull();
+        assertThat(usuario.getRoles()).size().isEqualTo(2);
     }
-
 }

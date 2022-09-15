@@ -10,7 +10,9 @@
 
     <ui:define name="content">
         <h:form id="permisosRolesForm">
-            <p:panel id="pemisosRolesPanel" header="Permisios Roles" style="width: 50%;">
+            <p:panel id="pemisosRolesPanel" header="Permisos Roles" style="width: 70%;">
+                <h:outputText value="viewHelper.hasPermission('PermisosRolesWrite') #{viewHelper.hasPermission('PermisosRolesWrite')}"/>
+                <h:outputText value="viewHelper.hasPermission('PermisosRolesRead') #{viewHelper.hasPermission('PermisosRolesRead')}"/>
                 <p:messages id="permisosRolesMessages"/>
                 <div>
                     <h3 style="width: 45px; display: inline-block;">Rol:</h3>
@@ -35,7 +37,7 @@
                     </h:panelGroup>
                 </h:panelGroup>
                 <!--                </p:panelGrid>-->
-                <h:panelGroup layout="block" style="text-align: right; margin-top: 8px;" id="buttonsPanel"> 
+                <h:panelGroup layout="block" style="text-align: right; margin-top: 8px;" id="buttonsPanel" rendered="#{viewHelper.hasPermission('PermisosRolesWrite')}"> 
                     <p:commandButton value="Guardar" update="permisosRolesForm:permisosRolesMessages" rendered="#{not empty permisosRolesView.selectedRol.id}" actionListener="#{permisosRolesView.guardarPermisos()}">
                         <p:confirm header="Confirmación" message="¿Desea guardar los cambios?" icon="pi pi-exclamation-triangle"/>
                     </p:commandButton>                    

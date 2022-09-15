@@ -74,7 +74,7 @@ public class AppInitializer {
 
     private void eliminarDatosAplicacion() {
         logger.info("Eliminando datos de aplicación");
-//        paginaDAO.deleteAll();
+        paginaDAO.deleteAll();
 //        iconoDAO.deleteAll();
         usuarioDAO.deleteAll();
         rolDAO.deleteAll();
@@ -140,7 +140,7 @@ public class AppInitializer {
         Pagina sexto = new Pagina(6L, "Item 6", "http://item6.com", false, "save", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(sexto);
 
-        paginaDAO.save(new Pagina(7L, "Item 7", "http://item7.com", true, "save", sexto.getId(), LocalDateTime.now(), "mfigueroa", true));
+        paginaDAO.save(new Pagina(7L, "Permisos Roles", "/pages/permisosRoles.xhtml", true, "save", sexto.getId(), LocalDateTime.now(), "mfigueroa", true));
         Pagina octavo = new Pagina(8L, "Reportes Financieros", "http://item8.com", false, "save", 0L, LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(octavo);
 

@@ -5,28 +5,24 @@ import com.tcm.tcmapp.dao.*;
 import com.tcm.tcmapp.entity.*;
 import com.tcm.tcmapp.logging.LoggerProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
-import javax.security.enterprise.identitystore.IdentityStore;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
-@ExtendWith(ArquillianExtension.class)
+@RunWith(Arquillian.class)
 public class TransactionsIntgTest {
-
 
     @Inject
     PaginaDAO paginaDAO;
@@ -77,12 +73,12 @@ public class TransactionsIntgTest {
         return war;
     }
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
 
     }
 
-    @AfterEach
+    @After
     public void tearDown() throws Exception {
         paginaDAO.deleteAll();
         iconoDAO.deleteAll();
@@ -106,6 +102,5 @@ public class TransactionsIntgTest {
         assertThat(primerUsuario).isNotNull();
         assertThat(primerPermiso).isNotNull();
     }
-
 
 }

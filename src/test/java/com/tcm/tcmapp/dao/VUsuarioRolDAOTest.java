@@ -1,32 +1,12 @@
 package com.tcm.tcmapp.dao;
 
-import com.tcm.tcmapp.entity.*;
-import com.tcm.tcmapp.logging.LoggerProducer;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit5.ArquillianExtension;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@ExtendWith(ArquillianExtension.class)
-@Disabled ////////////////////////////////DESHABILITADO POR QUE SIEMPRE EVALUA LOS ASSERT COMO TRUE ////////////////////////////
+//@RunWith(Arquillian.class)
+//@Disabled ////////////////////////////////DESHABILITADO POR QUE SIEMPRE EVALUA LOS ASSERT COMO TRUE ////////////////////////////
 class VUsuarioRolDAOTest {
-
+/*
     public static final String ADMIN1 = "admin1";
     public static final String USUARIO1 = "usuario1";
 
@@ -67,7 +47,7 @@ class VUsuarioRolDAOTest {
         return war;
     }
 
-    @BeforeEach
+    @Before
     void setUp() {
         System.out.println("Preparando test...");
         usuarioDAO.deleteAll();
@@ -77,7 +57,7 @@ class VUsuarioRolDAOTest {
     }
 
 
-    @AfterEach
+    @After
     void tearDown() {
         usuarioDAO.deleteAll();
         rolDAO.deleteAll();
@@ -134,4 +114,6 @@ class VUsuarioRolDAOTest {
                 "            inner join seg_permisos p on p.id = rp.permiso_id) resultado";
         usuarioDAO.executeNativeQuery(sql);
     }
+
+ */
 }

@@ -1,19 +1,18 @@
 package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.entity.*;
-
 import com.tcm.tcmapp.logging.LoggerProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -21,10 +20,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(ArquillianExtension.class)
+@RunWith(Arquillian.class)
 public class RolDAOTest {
+
     public static final String ROL_ADMIN = "ADMIN";
     public static final String EDITAR_MENU_READ = "EditarMenuRead";
     public static final String EDITAR_MENU_WRITE = "EditarMenuWrite";
@@ -62,20 +61,20 @@ public class RolDAOTest {
         return war;
     }
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         rolDAO.deleteAll();
         permisoDAO.deleteAll();
     }
 
-    @AfterEach
+    @After
     public void tearDown() throws Exception {
         rolDAO.deleteAll();
         permisoDAO.deleteAll();
     }
 
     @Test
-    void findFirstByName() {
+    public void findFirstByName() {
         Rol adminRol = new Rol(ROL_ADMIN);
         rolDAO.save(adminRol);
 
@@ -86,7 +85,7 @@ public class RolDAOTest {
     }
 
     @Test
-    void testFindAllActive() {
+    public void testFindAllActive() {
         Rol adminRol = new Rol("USER");
         rolDAO.save(adminRol);
 
@@ -95,7 +94,7 @@ public class RolDAOTest {
     }
 
     @Test
-    void cuandoRemuevePermisosDelObjetoRol_entoncesActualizaPermisosAlActualizarElRol() {
+    public void cuandoRemuevePermisosDelObjetoRol_entoncesActualizaPermisosAlActualizarElRol() {
         crearRolConPermisos();
         Permiso editarMenuRead = permisoDAO.findByNombre(EDITAR_MENU_READ);
         Rol rolAdmin = rolDAO.findFirstByNombreWithPermissions(ROL_ADMIN);

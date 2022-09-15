@@ -1,8 +1,6 @@
 package com.tcm.tcmapp.security;
 
-import com.tcm.tcmapp.dao.UsuarioDAO;
 import com.tcm.tcmapp.dao.VUsuarioRolDAO;
-import com.tcm.tcmapp.entity.Rol;
 import com.tcm.tcmapp.entity.VUsuarioRol;
 import org.slf4j.Logger;
 
@@ -12,7 +10,6 @@ import javax.inject.Inject;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @ApplicationScoped
