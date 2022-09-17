@@ -126,21 +126,27 @@ public class AppInitializer {
 
     private void crearPaginas() {
         logger.info("Creando páginas en la base de datos");
-        Pagina primero = new Pagina(1L, "Panel de Administracion", "http://item1.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
+        Pagina primero = new Pagina(1L, "Administracion", "http://item1.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(primero);
-        Pagina segundo = new Pagina(2L, "Item 2", "http://item2.com", false, "user-edit", primero.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(segundo);
-        Pagina tercero = new Pagina(3L, "Item 3", "http://item3.com", false, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(tercero);
-        Pagina cuarto = new Pagina(4L, "Editar Menu", "/pages/menuEdit.xhtml", true, "user-edit", tercero.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(cuarto);
-        Pagina quinto = new Pagina(5L, "Pagina de Inicio", "/pages/home.xhtml", true, "user-edit", tercero.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(quinto);
+            Pagina segundo = new Pagina(2L, "Seguridad", null, false, "user-edit", primero.getId(), LocalDateTime.now(), "mfigueroa", true);
+            paginaDAO.save(segundo);
+//                Pagina tercero = new Pagina(3L, "Item 3", "http://item3.com", false, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+//                paginaDAO.save(tercero);
+                    Pagina tercero = new Pagina(3L, "Usuarios", "/pages/usuarios.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+                    paginaDAO.save(tercero);
+                    Pagina cuarto = new Pagina(4L, "Permisos", "/pages/home.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+                    paginaDAO.save(cuarto);
+                    Pagina quinto = new Pagina(5L, "Roles Permisos", "/pages/permisosRoles.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+                    paginaDAO.save(quinto);
+                    Pagina sexto = new Pagina(6L, "Editar Menu", "/pages/menuEdit.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+                    paginaDAO.save(sexto);
 
-        Pagina sexto = new Pagina(6L, "Item 6", "http://item6.com", false, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(sexto);
+//                Pagina sexto = new Pagina(6L, "Item 6", "http://item6.com", false, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+//                paginaDAO.save(sexto);
+//
+//                    paginaDAO.save(new Pagina(7L, "Permisos Roles", "/pages/permisosRoles.xhtml", true, "user-edit", sexto.getId(), LocalDateTime.now(), "mfigueroa", true));
 
-        paginaDAO.save(new Pagina(7L, "Permisos Roles", "/pages/permisosRoles.xhtml", true, "user-edit", sexto.getId(), LocalDateTime.now(), "mfigueroa", true));
+
         Pagina octavo = new Pagina(8L, "Reportes Financieros", "http://item8.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(octavo);
 
