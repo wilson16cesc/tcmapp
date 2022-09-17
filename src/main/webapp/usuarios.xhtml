@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>     
+    </h:head>
+    <h:body>
+        <h:form id="usuariosForm">
+            <p:panel id="usuariosPanel" header="Usuarios" style="width: 50%;">
+                <p:messages id="usuariosMessages"/>
+                <p:dataTable value="#{usuariosView.usuarios}" var="usuario" rows="20" paginator="true" paginatorPosition="bottom">
+                    <p:column headerText="Id">
+                        <h:outputText value="#{usuario.id}"/>
+                    </p:column>
+                    <p:column headerText="Usuario">
+                        <h:outputText value="#{usuario.username}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{usuario.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Fecha Creación">
+                        <h:outputText value="#{usuario.fechaCrea}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <p:commandButton icon="pi-pencil" />
+                        <h:commandLink value="Editar"  action="usuarioEdit.xhtml">
+                            <f:param name="userId" value="#{usuario.id}"/>
+                            <f:param name="accion" value="editar"/>
+                        </h:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <h:panelGroup layout="block">
+                <p:commandButton value="Nuevo" action="usuarioEdit.xhtml">
+                    <f:param name="accion" value="crear"/>
+                </p:commandButton>
+            </h:panelGroup>
+        </h:form>
+    </h:body>
+</html>
+

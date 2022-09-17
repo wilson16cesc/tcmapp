@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -62,8 +63,8 @@ public class UsuarioDAOTest {
         Rol rol2 = new Rol(ADMIN_ROLE);
         rolDAO.save(rol1);
         rolDAO.save(rol2);
-        Usuario usuario1 = new Usuario(USUARIO_DEMO, PASSWORD_SIMPLE,
-                new HashSet<>(Arrays.asList(rol1, rol2)));
+        Usuario usuario1 = new Usuario(USUARIO_DEMO, PASSWORD_SIMPLE, "Pedro Perez",
+                Arrays.asList(rol1, rol2));
         usuarioDAO.save(usuario1);
     }
 
@@ -90,7 +91,7 @@ public class UsuarioDAOTest {
     @Test
     public void dadoUsuarioExistente_cuandoConsultaUsuarioPorUsuarioYContrasena_entoncesDebeDevolverUsuarioConSusRoles() {
 
-        Usuario usuario = usuarioDAO.findWithRoles(USUARIO_DEMO, PASSWORD_SIMPLE);
+        Usuario usuario = usuarioDAO.findByUsernameWithRoles(USUARIO_DEMO, PASSWORD_SIMPLE);
 
         assertThat(usuario).isNotNull();
         assertThat(usuario.getRoles()).size().isEqualTo(2);

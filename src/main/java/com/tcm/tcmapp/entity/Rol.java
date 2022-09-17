@@ -8,6 +8,7 @@ import java.util.*;
 public class Rol extends BaseEntityIdentity {
 
     public Rol() {
+        this.permisos = new ArrayList<>();
     }
 
     public Rol(String nombre) {

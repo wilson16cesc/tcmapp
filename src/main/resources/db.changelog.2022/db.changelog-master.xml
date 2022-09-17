@@ -12,4 +12,5 @@
     <include file="db/changelog/2022/09/02-01-elimina-roles_paginas-crea-roles_permisos-changelog.xml"/>
     <include file="db/changelog/2022/09/07-01-crea-tabla-iconos-changelog.xml"/>
     <include file="db/changelog/2022/09/12-01-crea-vista-usuarios-roles-changelog.xml"/>
+    <include file="db/changelog/2022/09/16-01-agregar-nombre-tabla-usuario-changelog.xml"/>
 </databaseChangeLog>

@@ -1,7 +1,9 @@
 package com.tcm.tcmapp.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,27 +18,31 @@ public class Usuario extends BaseEntityIdentity {
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "nombre", length = 100)
+    private String nombre;
+
     @ManyToMany
     @JoinTable(name = "seg_usuarios_roles",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
 
-    private Set<Rol> roles = new LinkedHashSet<>();
+    private List<Rol> roles = new ArrayList<>();
 
     public Usuario() {
     }
 
-    public Usuario(String username, String password, Set<Rol> roles) {
+    public Usuario(String username, String password, String nombre, List<Rol> roles) {
         this.username = username;
         this.password = password;
+        this.nombre = nombre;
         this.roles = roles;
     }
 
-    public Set<Rol> getRoles() {
+    public List<Rol> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Rol> roles) {
+    public void setRoles(List<Rol> roles) {
         this.roles = roles;
     }
 
@@ -54,5 +60,20 @@ public class Usuario extends BaseEntityIdentity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "username='" + username + '\'' +
+                '}';
     }
 }

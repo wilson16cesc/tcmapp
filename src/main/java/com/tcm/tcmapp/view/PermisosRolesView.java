@@ -5,12 +5,12 @@ import com.tcm.tcmapp.entity.Permiso;
 import com.tcm.tcmapp.entity.Rol;
 import com.tcm.tcmapp.service.RolesService;
 import org.omnifaces.util.Messages;
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -33,17 +33,23 @@ public class PermisosRolesView implements Serializable {
 
     private DualListModel<Permiso> permisosModel;
     private List<Permiso> permisos;
-    //private List<Rol> roles;
+
     private Rol selectedRol;
+    private Rol rolEditar;
+    private List<Rol> roles;
 
     public PermisosRolesView() {
         selectedRol = new Rol();
         permisos = new ArrayList<>();
+        roles = new ArrayList<>();
+        rolEditar = new Rol();
     }
 
     @PostConstruct
     public void init() {
         permisos = new ArrayList<>(datosAplicacion.getPermisos());
+        //roles = datosAplicacion.getRoles();
+        roles = rolesService.findAllActiveWithPermisos();
 
         permisosModel = new DualListModel<>(
                 new ArrayList<>(permisos),
@@ -87,9 +93,21 @@ public class PermisosRolesView implements Serializable {
         List<Permiso> selectedPermisos = permisosModel.getTarget();
         selectedRol.setPermisos(selectedPermisos);
         rolesService.update(selectedRol);
-        Messages.addInfo(null,"Datos guardados correctamente");
+        Messages.addInfo(null, "Datos guardados correctamente");
     }
 
+    public void guardarRol() {
+        rolesService.save(rolEditar);
+        selectedRol = rolEditar;
+        roles.add(rolEditar);
+        cargarDatosRol();
+        PrimeFaces.current().executeScript("PF('dlgRol').hide();");
+    }
+    
+    public void crearEditarRol(){
+        rolEditar = new Rol();
+        PrimeFaces.current().executeScript("PF('dlgRol').show();");
+    }
     public List<Permiso> getPermisos() {
         return permisos;
     }
@@ -98,4 +116,19 @@ public class PermisosRolesView implements Serializable {
         this.permisos = permisos;
     }
 
+    public Rol getRolEditar() {
+        return rolEditar;
+    }
+
+    public void setRolEditar(Rol rolEditar) {
+        this.rolEditar = rolEditar;
+    }
+
+    public List<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
+    }
 }
