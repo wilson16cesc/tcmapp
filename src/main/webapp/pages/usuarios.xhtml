@@ -10,37 +10,50 @@
         <h:form id="usuariosForm">
             <p:panel id="usuariosPanel" header="Usuarios" style="width: 70%;">
                 <p:messages id="usuariosMessages"/>
-                <p:dataTable value="#{usuariosView.usuarios}" var="usuario" rows="20" paginator="true" paginatorPosition="bottom">
-                    <p:column headerText="Id">
+                <p:dataTable value="#{usuariosView.usuarios}" var="usuario" rows="20" paginator="true" 
+                             paginatorPosition="bottom" widgetVar="tblUsuarios"
+                             globalFilterOnly="true">
+                    <f:facet name="header">
+                        <div class="flex align-items-center justify-content-between">
+                            <div>
+                                <h:outputText value="Buscar: "/>
+                                <p:inputText id="globalFilter" onkeyup="PF('tblUsuarios').filter()" style="width:15rem"
+                                             placeholder="Digite valor buscado" />
+                            </div>
+                        </div>
+                    </f:facet>                
+                    <p:column headerText="Id" width="8%">
                         <h:outputText value="#{usuario.id}"/>
                     </p:column>
-                    <p:column headerText="Usuario">
+                    <p:column headerText="Usuario" width="10%" filterBy="#{usuario.username}">
                         <h:outputText value="#{usuario.username}"/>
                     </p:column>
-                    <p:column headerText="Nombre">
+                    <p:column headerText="Nombre" width="20%" filterBy="#{usuario.nombre}">
                         <h:outputText value="#{usuario.nombre}"/>
                     </p:column>
-                    <p:column headerText="Fecha Creación">
-                        <h:outputText value="#{usuario.fechaCrea}"/>
+                    <p:column headerText="Activo" width="5%">
+                        <h:outputText value="#{usuario.activo}"/>
                     </p:column>
-                    <p:column style="text-align: center;">
+                    <p:column headerText="Fecha Creación" width="30%">
+                        <h:outputText value="#{usuario.fechaCrea}" >
+                            <f:convertDateTime type="localDate" pattern="#{viewHelper.dateTimePattern}"
+                                               timeZone="#{viewHelper.timeZone}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column style="text-align: center;" width="8%">
                         <p:commandButton icon="pi pi-pencil" action="usuarioEdit.xhtml" styleClass="rounded-button ui-button-flat" >
                             <f:param name="userId" value="#{usuario.id}"/>
                             <f:param name="accion" value="editar"/>
                         </p:commandButton>
-<!--                        <h:commandLink value="Editar"  action="usuarioEdit.xhtml">
-                            <f:param name="userId" value="#{usuario.id}"/>
-                            <f:param name="accion" value="editar"/>
-                        </h:commandLink>-->
                     </p:column>
                 </p:dataTable>
             </p:panel>
-            <h:panelGroup layout="block">
+            <h:panelGroup layout="block" style="margin-top: 5px; text-align: right;width: 70%;" rendered="#{viewHelper.hasPermission('UsuarioWrite')}">
                 <p:commandButton value="Nuevo" action="usuarioEdit.xhtml">
                     <f:param name="accion" value="crear"/>
                 </p:commandButton>
             </h:panelGroup>
-        </h:form>    
+        </h:form>
     </ui:define>
 
 </ui:composition>

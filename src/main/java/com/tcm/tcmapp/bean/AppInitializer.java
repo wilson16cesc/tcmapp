@@ -43,7 +43,7 @@ public class AppInitializer {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void initializeApp() {
 
-        eliminarDatosAplicacion();
+        //eliminarDatosAplicacion();
 
         logger.info("Inicializando datos de la aplicación");
         Pagina pagina = paginaDAO.findById(1L);
@@ -100,14 +100,12 @@ public class AppInitializer {
         Permiso editarMenuWrite = new Permiso("EditarMenuWrite", "Permite escribir en la ventana 'Editar Menu");
         Permiso permisosRolesRead = new Permiso("PermisosRolesRead", "Tiene permiso de lectura en la ventana Permisos Roles");
         Permiso permisosRolesWrite = new Permiso("PermisosRolesWrite", "Tiene permiso de escritura en la ventana Permisos Roles");
+        Permiso usuarioRead = new Permiso("UsuarioRead", "Tiene permiso de lectura en la ventana Usuarios");
+        Permiso usuarioWrite = new Permiso("UsuarioWrite", "Tiene permiso de escritura en la ventana Usuarios");
+        Permiso rolesWrite = new Permiso("RolesWrite", "Tiene permiso de escritura en la ventana Roles");
 
-        List<Permiso> permisos = new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite, permisosRolesWrite, permisosRolesRead));
-
-        permisos.add(new Permiso("UsuarioRead", "Tiene permiso de lectura en la ventana Usuarios"));
-        permisos.add(new Permiso("UsuarioEdit", "Tiene permiso de escritura en la ventana Usuarios"));
-        permisos.add(new Permiso("RolesRead", "Tiene permiso de lectura en la ventana Roles"));
-        permisos.add(new Permiso("RolesEdit", "Tiene permiso de escritura en la ventana Roles"));
-
+        List<Permiso> permisos = new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite, permisosRolesWrite,
+                permisosRolesRead, usuarioRead, usuarioWrite, rolesWrite));
         permisos.forEach(permiso ->
                 permisoDAO.save(permiso)
         );
@@ -116,7 +114,7 @@ public class AppInitializer {
         Rol userRol = rolDAO.findFirstByNombre("USER");
 
         if (Objects.nonNull(adminRol) && Objects.nonNull(userRol)) {
-            adminRol.setPermisos(Arrays.asList(editarMenuWrite, permisosRolesWrite));
+            adminRol.setPermisos(Arrays.asList(editarMenuWrite, permisosRolesWrite, usuarioWrite, rolesWrite));
             userRol.setPermisos(Arrays.asList(editarMenuRead, permisosRolesRead));
         }
 
@@ -128,18 +126,18 @@ public class AppInitializer {
         logger.info("Creando páginas en la base de datos");
         Pagina primero = new Pagina(1L, "Administracion", "http://item1.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
         paginaDAO.save(primero);
-            Pagina segundo = new Pagina(2L, "Seguridad", null, false, "user-edit", primero.getId(), LocalDateTime.now(), "mfigueroa", true);
-            paginaDAO.save(segundo);
+        Pagina segundo = new Pagina(2L, "Seguridad", null, false, "user-edit", primero.getId(), LocalDateTime.now(), "mfigueroa", true);
+        paginaDAO.save(segundo);
 //                Pagina tercero = new Pagina(3L, "Item 3", "http://item3.com", false, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
 //                paginaDAO.save(tercero);
-                    Pagina tercero = new Pagina(3L, "Usuarios", "/pages/usuarios.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-                    paginaDAO.save(tercero);
-                    Pagina cuarto = new Pagina(4L, "Permisos", "/pages/home.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-                    paginaDAO.save(cuarto);
-                    Pagina quinto = new Pagina(5L, "Roles Permisos", "/pages/permisosRoles.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-                    paginaDAO.save(quinto);
-                    Pagina sexto = new Pagina(6L, "Editar Menu", "/pages/menuEdit.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-                    paginaDAO.save(sexto);
+        Pagina tercero = new Pagina(3L, "Usuarios", "/pages/usuarios.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+        paginaDAO.save(tercero);
+        Pagina cuarto = new Pagina(4L, "Permisos", "/pages/home.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+        paginaDAO.save(cuarto);
+        Pagina quinto = new Pagina(5L, "Roles Permisos", "/pages/permisosRoles.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+        paginaDAO.save(quinto);
+        Pagina sexto = new Pagina(6L, "Editar Menu", "/pages/menuEdit.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
+        paginaDAO.save(sexto);
 
 //                Pagina sexto = new Pagina(6L, "Item 6", "http://item6.com", false, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
 //                paginaDAO.save(sexto);

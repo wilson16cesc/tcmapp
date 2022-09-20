@@ -50,6 +50,15 @@
     <security-role>
         <role-name>perm:PermisosRolesWrite</role-name>
     </security-role>    
+    <security-role>
+        <role-name>perm:UsuarioRead</role-name>
+    </security-role>    
+    <security-role>
+        <role-name>perm:UsuarioWrite</role-name>
+    </security-role>    
+    <security-role>
+        <role-name>perm:RolesWrite</role-name>
+    </security-role>    
     <mime-mapping>
         <extension>woff</extension>
         <mime-type>application/font-woff</mime-type>
@@ -66,4 +75,19 @@
     <welcome-file-list>
         <welcome-file>pages/home.xhtml</welcome-file>
     </welcome-file-list>
+    <env-entry>
+        <env-entry-name>com.tcm.dates.timezone</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>America/Bogota</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>com.tcm.dates.datePattern</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>dd/MM/yyyy</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>com.tcm.dates.dateTimePattern</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>dd/MM/yyyy hh:mm a</env-entry-value>
+    </env-entry>
 </web-app>

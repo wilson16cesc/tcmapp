@@ -26,6 +26,7 @@ public class WelcomeServlet extends HttpServlet {
                 "Caller Principal :" + securityContext.getCallerPrincipal().getName() + "\n" +
                 "User in Role USER_ROLE :" + securityContext.isCallerInRole("USER") + "\n" +
                 "User in Role ADMIN_ROLE :" + securityContext.isCallerInRole("ADMIN") + "\n" +
+                "User in Role perm:UsuarioWrite :" + securityContext.isCallerInRole("perm:UsuarioWrite") + "\n" +
                 "");
     }
 }

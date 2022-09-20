@@ -9,6 +9,7 @@ import org.omnifaces.util.Messages;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -92,5 +93,10 @@ public class UsuariosView implements Serializable {
 
     public void setRoles(List<Rol> roles) {
         this.roles = roles;
+    }
+
+    public void nuevoUsuario(){
+        logger.info("ejecutando metodo: nuevoUsuario");
+        selectedUsuario = new Usuario();
     }
 }
