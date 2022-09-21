@@ -46,6 +46,7 @@ public class UsuarioDAOTest {
                 .addClass(Usuario.class)
                 .addClass(Rol.class)
                 .addClass(Permiso.class)
+                .addClass(Pagina.class)
                 .addClass(BaseEntityIdentity.class)
                 .addClass(BaseEntity.class)
                 .addClass(UsuarioDAO.class)

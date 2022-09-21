@@ -7,6 +7,7 @@ import com.tcm.tcmapp.dao.PermisoDAO;
 import com.tcm.tcmapp.dao.RolDAO;
 import com.tcm.tcmapp.entity.*;
 import com.tcm.tcmapp.logging.LoggerProducer;
+import com.tcm.tcmapp.service.PermisosService;
 import com.tcm.tcmapp.service.RolesService;
 import com.tcm.tcmapp.view.PermisosRolesView;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -36,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(Arquillian.class)
-public class PermisosRolesViewTest {
+public class PermisosRolesViewIntgTest {
 
     public static final String ROL_ADMIN = "rol_admin";
     public static final String EDITAR_MENU_WRITE = "editarMenuWrite";
@@ -71,6 +72,7 @@ public class PermisosRolesViewTest {
                 .addClass(Icono.class)
                 .addClass(Rol.class)
                 .addClass(Permiso.class)
+                .addClass(Pagina.class)
                 .addClass(BaseEntityIdentity.class)
                 .addClass(BaseEntity.class)
                 .addClass(BaseDAO.class)
@@ -81,6 +83,7 @@ public class PermisosRolesViewTest {
                 .addClass(RolesService.class)
                 .addClass(PermisosRolesView.class)
                 .addClass(LoggerProducer.class)
+                .addClass(PermisosService.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(war.toString(true));

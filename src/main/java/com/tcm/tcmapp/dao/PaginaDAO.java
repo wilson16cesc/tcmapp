@@ -20,4 +20,10 @@ public class PaginaDAO extends BaseDAO<Pagina> {
         return getEntityManager().createNamedQuery("Pagina.findMaxId", Long.class)
                 .getSingleResult();
     }
+
+    public Pagina findByIdWithPermisos(Long id) {
+        Pagina pagina = findById(id);
+        pagina.getPermisos();
+        return pagina;
+    }
 }

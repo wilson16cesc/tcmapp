@@ -1,11 +1,11 @@
 <persistence-unit name="tcm-PU" transaction-type="JTA">
     <jta-data-source>jdbc/tcmTest</jta-data-source>
     <properties>
-        <class>com.tcm.tcmapp.business.Pagina</class>
-        <class>com.tcm.tcmapp.business.Usuario</class>
-        <class>com.tcm.tcmapp.business.Rol</class>
-        <class>com.tcm.tcmapp.business.Icono</class>
-        <class>com.tcm.tcmapp.business.Permiso</class>
+        <class>com.tcm.tcmapp.entity.Permiso</class>
+        <class>com.tcm.tcmapp.entity.Pagina</class>
+        <class>com.tcm.tcmapp.entity.Usuario</class>
+        <class>com.tcm.tcmapp.entity.Rol</class>
+        <class>com.tcm.tcmapp.entity.Icono</class>
 <!--        <class>com.tcm.tcmapp.business.VUsuarioRol</class>-->
 
         <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>

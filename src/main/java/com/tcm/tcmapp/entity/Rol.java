@@ -49,12 +49,21 @@ public class Rol extends BaseEntityIdentity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Rol rol = (Rol) o;
-        return getId() != null && Objects.equals(getId(), rol.getId());
+
+        return nombre.equals(rol.nombre);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return nombre.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Rol{" +
+                "nombre='" + nombre + '\'' +
+                '}';
     }
 }

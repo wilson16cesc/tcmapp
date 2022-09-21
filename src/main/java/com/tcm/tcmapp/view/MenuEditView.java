@@ -4,7 +4,9 @@ import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
+import com.tcm.tcmapp.entity.Permiso;
 import com.tcm.tcmapp.service.PaginasService;
+import com.tcm.tcmapp.service.PermisosService;
 import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultTreeNode;
@@ -39,7 +41,8 @@ public class MenuEditView implements Serializable {
     @Inject
     DatosAplicacion datosAplicacion;
 
-    //private Icono selectedIcono;
+    @Inject
+    PermisosService permisosService;
 
     private TreeNode<MenuInfo> menuRoot;
 
@@ -48,6 +51,7 @@ public class MenuEditView implements Serializable {
     private Pagina selectedPagina;
     private Pagina paginaEditar;
     private List<String> iconos;
+    private List<Permiso> permisos;
 
     public MenuEditView() {
         this.paginaEditar = new Pagina();
@@ -58,6 +62,7 @@ public class MenuEditView implements Serializable {
     public void init() {
         logger.info("Ejecutando metodo init - {}", this.getClass().getSimpleName());
         this.paginas = paginasService.getPaginasParaMenu();
+        this.permisos = permisosService.findAllActive();
         this.iconos = datosAplicacion.getIconos()
                 .stream().map(Icono::getNombre)
                 .collect(Collectors.toList());
@@ -258,12 +263,24 @@ public class MenuEditView implements Serializable {
                 .filter(icono -> icono.contains(query))
                 .collect(Collectors.toList());
     }
-
+    public List<Permiso> completePermiso(String query) {
+        return this.permisos.stream()
+                .filter(permiso -> permiso.getNombre().contains(query))
+                .collect(Collectors.toList());
+    }
     public List<String> getIconos() {
         return iconos;
     }
 
     public void setIconos(List<String> iconos) {
         this.iconos = iconos;
+    }
+
+    public List<Permiso> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(List<Permiso> permisos) {
+        this.permisos = permisos;
     }
 }

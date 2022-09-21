@@ -1,6 +1,12 @@
 package com.tcm.tcmapp.entity;
 
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +18,17 @@ public class Permiso extends BaseEntityIdentity {
 
     @Column(name = "descripcion")
     private String descripcion;
+
+    @ManyToMany(mappedBy = "permisos")
+    private List<Pagina> paginas = new ArrayList<>();
+
+    public List<Pagina> getPaginas() {
+        return paginas;
+    }
+
+    public void setPaginas(List<Pagina> paginas) {
+        this.paginas = paginas;
+    }
 
     public Permiso() {
     }
@@ -37,22 +54,24 @@ public class Permiso extends BaseEntityIdentity {
         this.nombre = nombre;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Permiso permiso = (Permiso) o;
-        return getId() != null && Objects.equals(getId(), permiso.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 
     @Override
     public String toString() {
         return "Permiso{" + "nombre=" + nombre + '}';
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Permiso permiso = (Permiso) o;
+
+        return nombre.equals(permiso.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return nombre.hashCode();
+    }
 }

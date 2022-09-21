@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.omnifaces.util.Faces;
+import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -42,6 +43,7 @@ public class MenuEditViewTest extends MenuBaseTest {
     private MenuCounter menuCounter;
     @Mock
     private PrimeFaces primeFacesMock;
+
     @Mock
     private FacesContext facesContextMock;
     private List<Pagina> paginas;

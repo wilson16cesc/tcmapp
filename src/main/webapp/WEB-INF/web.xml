@@ -51,10 +51,16 @@
         <role-name>perm:PermisosRolesWrite</role-name>
     </security-role>    
     <security-role>
-        <role-name>perm:UsuarioRead</role-name>
+        <role-name>perm:UsuariosRead</role-name>
     </security-role>    
     <security-role>
-        <role-name>perm:UsuarioWrite</role-name>
+        <role-name>perm:UsuariosWrite</role-name>
+    </security-role>    
+    <security-role>
+        <role-name>perm:PermisosRead</role-name>
+    </security-role>    
+    <security-role>
+        <role-name>perm:PermisosWrite</role-name>
     </security-role>    
     <security-role>
         <role-name>perm:RolesWrite</role-name>

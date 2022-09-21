@@ -45,6 +45,7 @@ public class RolDAOTest {
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-api").withTransitivity().asFile())
                 .addClass(Rol.class)
                 .addClass(Permiso.class)
+                .addClass(Pagina.class)
                 .addClass(Icono.class)
                 .addClass(Usuario.class)
                 .addClass(BaseEntityIdentity.class)

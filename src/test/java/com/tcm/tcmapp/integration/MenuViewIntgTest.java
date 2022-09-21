@@ -3,10 +3,7 @@ package com.tcm.tcmapp.integration;
 import com.tcm.tcmapp.dao.BaseDAO;
 import com.tcm.tcmapp.dao.IconoDAO;
 import com.tcm.tcmapp.dao.PaginaDAO;
-import com.tcm.tcmapp.entity.BaseEntity;
-import com.tcm.tcmapp.entity.BaseEntityIdentity;
-import com.tcm.tcmapp.entity.Icono;
-import com.tcm.tcmapp.entity.Pagina;
+import com.tcm.tcmapp.entity.*;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.view.MenuView;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -58,6 +55,7 @@ public class MenuViewIntgTest {
                 .addPackage(MenuModel.class.getPackage())
                 .addClass(MenuView.class)
                 .addClass(Pagina.class)
+                .addClass(Permiso.class)
                 .addClass(Icono.class)
                 .addClass(BaseEntityIdentity.class)
                 .addClass(BaseEntity.class)

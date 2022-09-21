@@ -62,7 +62,7 @@
                 <p:panelGrid id="newPaginaGrid" columns="2" layout="grid" columnClasses="ui-g-10 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
                     <p:outputLabel value="Página:" rendered="#{empty menuEditView.paginaEditar.id}"/>
                     <p:selectBooleanCheckbox value="#{menuEditView.paginaEditar.hoja}" rendered="#{empty menuEditView.paginaEditar.id}">
-                        <p:ajax event="blur" update="newPaginaForm:newPaginaGrid"/>
+                        <p:ajax update="@parent"/>
                     </p:selectBooleanCheckbox> 
                     <p:outputLabel value="Nombre"/>
                     <p:inputText value="#{menuEditView.paginaEditar.nombre}" required="true" label="Nombre"/>
@@ -72,13 +72,18 @@
                                     completeMethod="#{menuEditView.completeIcono}"
                                     var="icono" itemLabel="#{icono}" itemValue="#{icono}"
                                     forceSelection="true" scrollHeight="250">
-                        <!--<o:converter converterId="omnifaces.ListConverter" list="#{datosAplicacion.iconos}" />-->
                         <p:column>
                             <i class="pi pi-#{icono}"></i>
                             <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{icono}"/>
                         </p:column>
-                    </p:autoComplete>                    
-
+                    </p:autoComplete>
+                    <p:outputLabel value="Permisos"/>
+                    <p:autoComplete id="autoPermisos" value="#{menuEditView.selectedPagina.permisos}" label="Permisos" unique="true"
+                                    completeMethod="#{menuEditView.completePermiso}" multiple="true"
+                                    var="permiso" itemLabel="#{permiso.nombre}" itemValue="#{permiso}"
+                                    forceSelection="true" scrollHeight="250">
+                        <o:converter converterId="omnifaces.ListConverter" list="#{menuEditView.permisos}" />
+                    </p:autoComplete>
                     <p:outputLabel value="Url" rendered="#{menuEditView.paginaEditar.hoja}"/>
                     <p:inputText value="#{menuEditView.paginaEditar.url}" rendered="#{menuEditView.paginaEditar.hoja}" required="true" label="Url"/>  
                 </p:panelGrid>

@@ -3,6 +3,7 @@ package com.tcm.tcmapp.view;
 import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.entity.Permiso;
 import com.tcm.tcmapp.entity.Rol;
+import com.tcm.tcmapp.service.PermisosService;
 import com.tcm.tcmapp.service.RolesService;
 import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
@@ -26,10 +27,10 @@ public class PermisosRolesView implements Serializable {
     Logger logger;
 
     @Inject
-    DatosAplicacion datosAplicacion;
+    RolesService rolesService;
 
     @Inject
-    RolesService rolesService;
+    PermisosService permisosService;
 
     private DualListModel<Permiso> permisosModel;
     private List<Permiso> permisos;
@@ -47,8 +48,7 @@ public class PermisosRolesView implements Serializable {
 
     @PostConstruct
     public void init() {
-        permisos = new ArrayList<>(datosAplicacion.getPermisos());
-        //roles = datosAplicacion.getRoles();
+        permisos = new ArrayList<>(permisosService.findAllActive());
         roles = rolesService.findAllActiveWithPermisos();
 
         permisosModel = new DualListModel<>(

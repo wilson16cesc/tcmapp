@@ -2,7 +2,7 @@ package com.tcm.tcmapp.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "seg_paginas")
@@ -30,7 +30,22 @@ public class Pagina extends BaseEntity {
     @Transient
     private Boolean creado = Boolean.FALSE;
 
+    @ManyToMany
+    @JoinTable(name = "seg_paginas_permisos",
+            joinColumns = @JoinColumn(name = "pagina_id"),
+            inverseJoinColumns = @JoinColumn(name = "permiso_id"))
+    private List<Permiso> permisos = new ArrayList<>();
+
+    public List<Permiso> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(List<Permiso> permisos) {
+        this.permisos = permisos;
+    }
+
     public Pagina() {
+        this.permisos = new ArrayList<>();
     }
 
     public Pagina(Long id, String nombre, String url, Boolean hoja, String icono, Long idPadre, LocalDateTime fechaCrea, String usuarioCrea, Boolean activo) {
@@ -43,6 +58,7 @@ public class Pagina extends BaseEntity {
         this.setFechaCrea(fechaCrea);
         this.setUsuarioCrea(usuarioCrea);
         this.setActivo(activo);
+        this.permisos = new ArrayList<>();
     }
     public Pagina(String nombre, String url, Boolean hoja, String icono, Long idPadre, LocalDateTime fechaCrea, String usuarioCrea, Boolean activo) {
         this.nombre = nombre;
@@ -53,7 +69,9 @@ public class Pagina extends BaseEntity {
         this.setFechaCrea(fechaCrea);
         this.setUsuarioCrea(usuarioCrea);
         this.setActivo(activo);
+        this.permisos = new ArrayList<>();
     }
+
 
     public Long getId() {
         return id;

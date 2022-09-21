@@ -30,8 +30,8 @@
                 </p:panelGrid>
                 <h:panelGroup layout="block" style="text-align: right">
                     <p:commandButton value="Volver" ajax="false" immediate="true" action="usuarios.xhtml?faces-redirect=true" style="margin-right: 5px;" />
-                    <p:commandButton value="Nuevo" actionListener="#{usuariosView.nuevoUsuario()}" update="@form" rendered="#{viewHelper.hasPermission('UsuarioWrite')}" style="margin-right: 5px;" />
-                    <p:commandButton value="Guardar" update="usuarioForm:usuarioMessages" actionListener="#{usuariosView.guardarUsuario()}" rendered="#{viewHelper.hasPermission('UsuarioWrite')}">
+                    <p:commandButton value="Nuevo" actionListener="#{usuariosView.nuevoUsuario()}" update="@form" rendered="#{viewHelper.hasPermission('UsuariosWrite') and (not empty usuariosView.selectedUsuario.id)}" style="margin-right: 5px;" />
+                    <p:commandButton value="Guardar" update="usuarioForm:usuarioMessages" actionListener="#{usuariosView.guardarUsuario()}" rendered="#{viewHelper.hasPermission('UsuariosWrite')}">
                         <p:confirm header="Confirmación" message="¿Desea guardar los cambios?" icon="pi pi-exclamation-triangle"/>
                     </p:commandButton>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">

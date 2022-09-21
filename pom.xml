@@ -55,14 +55,6 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.hamcrest</groupId>-->
-        <!--            <artifactId>hamcrest-library</artifactId>-->
-        <!--            <version>2.2</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -75,12 +67,6 @@
             <version>4.7.0</version>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.mockito</groupId>-->
-        <!--            <artifactId>mockito-junit-jupiter</artifactId>-->
-        <!--            <version>4.7.0</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
@@ -109,17 +95,6 @@
             <version>3.1.4</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>pl.itcrowd.mock-contexts-extension</groupId>-->
-<!--            <artifactId>mock-contexts-extension-api</artifactId>-->
-<!--            <version>1.0.0</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>pl.itcrowd.mock-contexts-extension</groupId>-->
-<!--            <artifactId>mock-contexts-extension-impl</artifactId>-->
-<!--            <version>1.0.0</version>-->
-<!--        </dependency>-->
-
     </dependencies>
 
     <build>
@@ -176,24 +151,6 @@
             </plugin>
         </plugins>
     </build>
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>it-crowd.com.pl</id>-->
-<!--            <url>http://artifactory.itcrowd.pl/libs-release-local/</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--    </repositories>-->
-<!--    <pluginRepositories>-->
-<!--        <pluginRepository>-->
-<!--            <id>it-crowd.com.pl</id>-->
-<!--            <url>http://artifactory.itcrowd.pl/libs-release-local/</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </pluginRepository>-->
-<!--    </pluginRepositories>-->
     <profiles>
         <profile>
             <id>payara-remote</id>
