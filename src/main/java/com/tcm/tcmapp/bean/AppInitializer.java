@@ -19,6 +19,7 @@ import java.util.*;
 @Startup
 public class AppInitializer {
 
+    public static final String FILAS_TABLAS = "FILAS_TABLAS";
     final Logger logger = LoggerFactory.getLogger(AppInitializer.class.getSimpleName());
 
     @Inject
@@ -35,6 +36,9 @@ public class AppInitializer {
 
     @Inject
     PermisoDAO permisoDAO;
+
+    @Inject
+    GlobalConfigDAO configDAO;
 
     @Inject
     Pbkdf2PasswordHash passwordHash;
@@ -66,9 +70,18 @@ public class AppInitializer {
             crearPermisos();
         }
 
+        GlobalConfig configInfo = configDAO.findFirst();
+        if(Objects.isNull(configInfo)){
+            crearParametrosGlobales();
+        }
 
         logger.info("Datos de la aplicación inicializados");
 
+    }
+
+    private void crearParametrosGlobales() {
+        GlobalConfig globalConfig = new GlobalConfig(FILAS_TABLAS, null, 8L);
+        configDAO.save(globalConfig);
     }
 
 
@@ -79,6 +92,7 @@ public class AppInitializer {
         usuarioDAO.deleteAll();
         rolDAO.deleteAll();
         permisoDAO.deleteAll();
+        configDAO.deleteAll();
     }
 
     private void crearUsuariosRoles() {

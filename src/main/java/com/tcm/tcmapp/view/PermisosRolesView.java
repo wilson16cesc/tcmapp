@@ -1,6 +1,5 @@
 package com.tcm.tcmapp.view;
 
-import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.entity.Permiso;
 import com.tcm.tcmapp.entity.Rol;
 import com.tcm.tcmapp.service.PermisosService;

@@ -10,7 +10,7 @@
         <h:form id="permisosForm">
             <p:panel id="permisosPanel" header="Usuarios" style="width: 70%;">
                 <p:messages id="permisosMessages"/>
-                <p:dataTable value="#{permisosView.permisos}" var="permiso" rows="20" paginator="true" 
+                <p:dataTable value="#{permisosView.permisos}" var="permiso" rows="#{viewHelper.filasTablas}" paginator="true" 
                              paginatorPosition="bottom" widgetVar="tblUsuarios"
                              globalFilterOnly="true">
                     <f:facet name="header">

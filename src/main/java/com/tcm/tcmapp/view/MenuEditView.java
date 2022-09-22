@@ -1,10 +1,10 @@
 package com.tcm.tcmapp.view;
 
-import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
 import com.tcm.tcmapp.entity.Permiso;
+import com.tcm.tcmapp.service.IconosService;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.service.PermisosService;
 import org.omnifaces.util.Messages;
@@ -36,10 +36,10 @@ public class MenuEditView implements Serializable {
     PaginasService paginasService;
 
     @Inject
-    MenuCounter menuCounter;
+    IconosService iconosService;
 
     @Inject
-    DatosAplicacion datosAplicacion;
+    MenuCounter menuCounter;
 
     @Inject
     PermisosService permisosService;
@@ -63,13 +63,16 @@ public class MenuEditView implements Serializable {
         logger.info("Ejecutando metodo init - {}", this.getClass().getSimpleName());
         this.paginas = paginasService.getPaginasParaMenu();
         this.permisos = permisosService.findAllActive();
-        this.iconos = datosAplicacion.getIconos()
-                .stream().map(Icono::getNombre)
+        List<Icono> iconosAll = iconosService.findAllActive();
+        this.iconos = iconosAll.stream()
+                .map(Icono::getNombre)
                 .collect(Collectors.toList());
         inicializarMenu();
     }
 
     private void inicializarMenu() {
+        Pagina paginaCero = new Pagina(0L, "Raiz", null, false, null, -1L, null, null, true);
+        paginas.add(paginaCero);
         //todo:garantizar que el orden del arbol de menu sea siempre el mismo.
         // en ocasiones sale el nodo 'Item 16' arriba del 'Item 13' y otras veces a la inversa.
         List<Pagina> paginasNivel1 = this.paginas.stream()
@@ -78,16 +81,18 @@ public class MenuEditView implements Serializable {
                 .collect(Collectors.toList());
 
         menuRoot = new DefaultTreeNode<>();
-
-        paginasNivel1.forEach(pagina -> {
-            TreeNode<MenuInfo> menuItem
-                    = new DefaultTreeNode<>(MenuInfo.fromPagina(pagina));
-            menuItem.setExpanded(true);
-            menuRoot.getChildren().add(menuItem);
-            agregarHijos(pagina, menuItem);
-        });
+        DefaultTreeNode<MenuInfo> nodoCero =
+                new DefaultTreeNode<>(MenuInfo.fromPagina(paginaCero));
+        nodoCero.setExpanded(true);
+        menuRoot.getChildren().add(nodoCero);
+        agregarHijos(paginaCero, nodoCero);
     }
 
+    /**
+     * Agrega los elementos al arbol del menu basado en la información de las páginas. Metodo recursivo
+     * @param pagina información de la página
+     * @param node nodo a ser procesado
+     */
     private void agregarHijos(Pagina pagina, TreeNode<MenuInfo> node) {
         List<Pagina> hijos = this.paginas.stream()
                 .filter(p -> p.getIdPadre() == pagina.getId().longValue())
@@ -186,10 +191,10 @@ public class MenuEditView implements Serializable {
             TreeNode<MenuInfo> menuNode = new DefaultTreeNode<>(MenuInfo.fromPagina(paginaEditar));
             agregarHijo(this.menuRoot, paginaEditar.getIdPadre(), menuNode);
             //si la nueva es hoja dejarla seleccionada en la página
-            if (!paginaEditar.getHoja()) {
-                selectedNode = menuNode;
-                selectedPagina = paginaEditar;
-            }
+//            if (!paginaEditar.getHoja()) {
+//                selectedNode = menuNode;
+//                selectedPagina = paginaEditar;
+//            }
         } else { //si se está modificando
             paginaEditar.setEditado(Boolean.TRUE);
             selectedNode.getData().setIcon(paginaEditar.getIcono());

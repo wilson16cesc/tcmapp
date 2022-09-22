@@ -1,10 +1,12 @@
 package com.tcm.tcmapp.view;
 
-import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.entity.Icono;
 import com.tcm.tcmapp.entity.Pagina;
+import com.tcm.tcmapp.entity.Permiso;
+import com.tcm.tcmapp.service.IconosService;
 import com.tcm.tcmapp.service.PaginasService;
+import com.tcm.tcmapp.service.PermisosService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.omnifaces.util.Faces;
-import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -37,17 +38,19 @@ public class MenuEditViewTest extends MenuBaseTest {
     final MenuEditView menuEditView = new MenuEditView();
     @Mock
     private PaginasService paginasService;
-    @Mock
-    private DatosAplicacion datosAplicacion;
+
     @Mock
     private MenuCounter menuCounter;
     @Mock
     private PrimeFaces primeFacesMock;
-
+    @Mock
+    private PermisosService permisosService;
+    @Mock
+    private IconosService iconosService;
     @Mock
     private FacesContext facesContextMock;
+
     private List<Pagina> paginas;
-    private List<Icono> iconos;
     private TreeNode<MenuInfo> menuRoot;
 
     @Before
@@ -55,23 +58,29 @@ public class MenuEditViewTest extends MenuBaseTest {
         Map<String, Object> paginasAndMenu = cargarPaginasAndMenu();
         paginas = (List<Pagina>) paginasAndMenu.get(PAGINAS);
         menuRoot = (TreeNode<MenuInfo>) paginasAndMenu.get(MENU);
-        iconos = cargarIconos();
         PrimeFaces.setCurrent(primeFacesMock);
         Faces.setContext(facesContextMock);
     }
 
 
     @Test
-    public void dadoDatosDePaginas_cuandoInvocaGetMenuRoot_entoncesDevuelveDatosDelMenu() {
+    public void dadoDatosDePaginas_cuandoInicializaYConsultaMenuRoot_entoncesDevuelveDatosDelMenu() {
+        Permiso editarMenuRead = new Permiso("EditarMenuRead", "Permite leer la ventana 'Editar Menu'.");
+        Permiso editarMenuWrite = new Permiso("EditarMenuWrite", "Permite escribir en la ventana 'Editar Menu");
+        List<Permiso> permisos = Arrays.asList(editarMenuRead, editarMenuWrite);
         given(paginasService.getPaginasParaMenu()).willReturn(paginas);
+        given(permisosService.findAllActive()).willReturn(permisos);
+        given(iconosService.findAllActive()).willReturn(new ArrayList<>());
 
         menuEditView.init();
 
         TreeNode<MenuInfo> menuRootObtenido = menuEditView.getMenuRoot();
 
         verify(paginasService, times(1)).getPaginasParaMenu();
+        verify(permisosService, times(1)).findAllActive();
 
-        TreeNode<MenuInfo> menuItem1 = menuRootObtenido.getChildren().get(0);
+        TreeNode<MenuInfo> nodoCero = menuRootObtenido.getChildren().get(0);
+        TreeNode<MenuInfo> menuItem1 = nodoCero.getChildren().get(0);
         TreeNode<MenuInfo> menuItem2 = menuItem1.getChildren().get(0);
         TreeNode<MenuInfo> menuItem4 = menuItem2.getChildren().get(1);
 

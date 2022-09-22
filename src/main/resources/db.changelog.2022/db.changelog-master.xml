@@ -14,4 +14,5 @@
     <include file="db/changelog/2022/09/12-01-crea-vista-usuarios-roles-changelog.xml"/>
     <include file="db/changelog/2022/09/16-01-agregar-nombre-tabla-usuario-changelog.xml"/>
     <include file="db/changelog/2022/09/21-01-crear-relacion-paginas-permisos-changelog.xml"/>
+    <include file="db/changelog/2022/09/22-01-crea-tabla-parametros-globales-changelog.xml"/>
 </databaseChangeLog>

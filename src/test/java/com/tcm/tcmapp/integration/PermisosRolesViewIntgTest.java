@@ -1,6 +1,5 @@
 package com.tcm.tcmapp.integration;
 
-import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.dao.BaseDAO;
 import com.tcm.tcmapp.dao.IconoDAO;
 import com.tcm.tcmapp.dao.PermisoDAO;
@@ -79,7 +78,6 @@ public class PermisosRolesViewIntgTest {
                 .addClass(RolDAO.class)
                 .addClass(PermisoDAO.class)
                 .addClass(IconoDAO.class)
-                .addClass(DatosAplicacion.class)
                 .addClass(RolesService.class)
                 .addClass(PermisosRolesView.class)
                 .addClass(LoggerProducer.class)

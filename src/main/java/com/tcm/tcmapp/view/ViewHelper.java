@@ -1,5 +1,7 @@
 package com.tcm.tcmapp.view;
 
+import com.tcm.tcmapp.dao.GlobalConfigDAO;
+import com.tcm.tcmapp.entity.GlobalConfig;
 import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 import org.slf4j.Logger;
@@ -13,8 +15,13 @@ import javax.inject.Named;
 @Named
 public class ViewHelper implements Serializable {
 
+    public static final String FILAS_TABLAS = "FILAS_TABLAS";
+
     @Inject
     Logger logger;
+
+    @Inject
+    GlobalConfigDAO globalConfigDAO;
 
     @Resource(name = "com.tcm.dates.timezone")
     private String timeZone;
@@ -25,11 +32,12 @@ public class ViewHelper implements Serializable {
     @Resource(name = "com.tcm.dates.dateTimePattern")
     private String dateTimePattern;
 
+
     /**
      * Permite comprobar varios permisos separados por coma
      * @param commaSeparatedPermissions lista de permisos separados por coma, no
      * utilizar prefijo "permission:"
-     * @return
+     * @return true o false
      */
     public boolean hasPermissions(String commaSeparatedPermissions) {
         String[] permissions = commaSeparatedPermissions.split(",");
@@ -69,6 +77,10 @@ public class ViewHelper implements Serializable {
     public void setDateTimePattern(String dateTimePattern) {
         this.dateTimePattern = dateTimePattern;
     }
-    
-    
+
+    public Long getFilasTablas(){
+        GlobalConfig filasTablas = globalConfigDAO.findById(FILAS_TABLAS);
+        return filasTablas.getIntegerValue();
+    }
+
 }

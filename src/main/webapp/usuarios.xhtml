@@ -14,7 +14,7 @@
         <h:form id="usuariosForm">
             <p:panel id="usuariosPanel" header="Usuarios" style="width: 50%;">
                 <p:messages id="usuariosMessages"/>
-                <p:dataTable value="#{usuariosView.usuarios}" var="usuario" rows="20" paginator="true" paginatorPosition="bottom">
+                <p:dataTable value="#{usuariosView.usuarios}" var="usuario" rows="#{viewHelper.filasTablas}" paginator="true" paginatorPosition="bottom">
                     <p:column headerText="Id">
                         <h:outputText value="#{usuario.id}"/>
                     </p:column>

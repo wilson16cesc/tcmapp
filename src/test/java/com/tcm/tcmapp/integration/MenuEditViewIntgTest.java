@@ -1,10 +1,11 @@
 package com.tcm.tcmapp.integration;
 
-import com.tcm.tcmapp.bean.DatosAplicacion;
 import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.dao.*;
 import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.service.IconosService;
 import com.tcm.tcmapp.service.PaginasService;
+import com.tcm.tcmapp.service.PermisosService;
 import com.tcm.tcmapp.view.MenuEditView;
 import com.tcm.tcmapp.view.MenuInfo;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -57,14 +58,15 @@ public class MenuEditViewIntgTest {
                 .addClass(Permiso.class)
                 .addClass(BaseEntityIdentity.class)
                 .addClass(BaseEntity.class)
-                .addClass(PaginasService.class)
                 .addClass(PaginaDAO.class)
                 .addClass(BaseDAO.class)
                 .addClass(IconoDAO.class)
                 .addClass(RolDAO.class)
                 .addClass(PermisoDAO.class)
                 .addClass(MenuCounter.class)
-                .addClass(DatosAplicacion.class)
+                .addClass(PaginasService.class)
+                .addClass(PermisosService.class)
+                .addClass(IconosService.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(war.toString(true));
@@ -88,11 +90,13 @@ public class MenuEditViewIntgTest {
 
         TreeNode<MenuInfo> menuModel = menuEditView.getMenuRoot();
 
-        assertThat(menuModel.getChildren().size()).isEqualTo(3);
+        assertThat(menuModel.getChildren().size()).isEqualTo(1);
 
-        assertTrue(menuFirstLevelNames.contains(menuModel.getChildren().get(0).getData().getName()));
-        assertTrue(menuFirstLevelNames.contains(menuModel.getChildren().get(1).getData().getName()));
-        assertTrue(menuFirstLevelNames.contains(menuModel.getChildren().get(2).getData().getName()));
+        TreeNode<MenuInfo> nodoCero = menuModel.getChildren().get(0);
+
+        assertTrue(menuFirstLevelNames.contains(nodoCero.getChildren().get(0).getData().getName()));
+        assertTrue(menuFirstLevelNames.contains(nodoCero.getChildren().get(1).getData().getName()));
+        assertTrue(menuFirstLevelNames.contains(nodoCero.getChildren().get(2).getData().getName()));
     }
 
     /**

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1663882693219-1" author="Miguel_Figueroa2 (generated)">
+        <createTable tableName="glb_global_config">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_glb_global_config"/>
+            </column>
+            <column name="text_value" type="VARCHAR(5000)"/>
+            <column name="integer_value" type="BIGINT"/>
+            <column name="usuario_crea" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha_crea" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="usuario_edita" type="VARCHAR(100)"/>
+            <column name="fecha_edita" type="DATETIME"/>
+            <column name="activo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

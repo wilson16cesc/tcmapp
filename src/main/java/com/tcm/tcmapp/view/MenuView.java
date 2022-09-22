@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Named
-@SessionScoped
+@ViewScoped
 public class MenuView implements Serializable {
 
     public static final String ICON_PREFIX = "pi pi-";
