@@ -265,7 +265,8 @@ public class MenuEditView implements Serializable {
     }
     public List<Permiso> completePermiso(String query) {
         return this.permisos.stream()
-                .filter(permiso -> permiso.getNombre().contains(query))
+                .filter(permiso -> permiso.getNombre().toLowerCase()
+                        .contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
     public List<String> getIconos() {

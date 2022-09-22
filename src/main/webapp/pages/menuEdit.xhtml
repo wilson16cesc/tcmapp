@@ -8,6 +8,11 @@
                 xmlns:o="http://omnifaces.org/ui">
 
     <ui:define name="content">
+    <style>
+    	.ui-autocomplete-multiple-container {
+    		width: 200px;
+    	}
+    </style>
         <h:form id="editMenuForm">
             <p:panel id="menuEditPanel" header="Editar Menu" style="width: 80%;">
 <!--                <h:outputText value="viewHelper.hasPermission('EditarMenuRead') #{viewHelper.hasPermission('EditarMenuRead')}"/>
@@ -77,6 +82,8 @@
                             <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{icono}"/>
                         </p:column>
                     </p:autoComplete>
+                    <p:outputLabel value="Url" rendered="#{menuEditView.paginaEditar.hoja}"/>
+                    <p:inputText value="#{menuEditView.paginaEditar.url}" rendered="#{menuEditView.paginaEditar.hoja}" required="true" label="Url"/>  
                     <p:outputLabel value="Permisos"/>
                     <p:autoComplete id="autoPermisos" value="#{menuEditView.selectedPagina.permisos}" label="Permisos" unique="true"
                                     completeMethod="#{menuEditView.completePermiso}" multiple="true"
@@ -84,8 +91,6 @@
                                     forceSelection="true" scrollHeight="250">
                         <o:converter converterId="omnifaces.ListConverter" list="#{menuEditView.permisos}" />
                     </p:autoComplete>
-                    <p:outputLabel value="Url" rendered="#{menuEditView.paginaEditar.hoja}"/>
-                    <p:inputText value="#{menuEditView.paginaEditar.url}" rendered="#{menuEditView.paginaEditar.hoja}" required="true" label="Url"/>  
                 </p:panelGrid>
 
                 <div style="text-align: right;">
