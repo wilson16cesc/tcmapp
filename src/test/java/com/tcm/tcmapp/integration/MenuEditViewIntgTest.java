@@ -1,5 +1,7 @@
 package com.tcm.tcmapp.integration;
 
+import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
+import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
 import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.dao.*;
 import com.tcm.tcmapp.entity.*;
@@ -24,6 +26,7 @@ import org.primefaces.component.api.Confirmable;
 import org.primefaces.model.TreeNode;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -67,8 +70,10 @@ public class MenuEditViewIntgTest {
                 .addClass(PaginasService.class)
                 .addClass(PermisosService.class)
                 .addClass(IconosService.class)
+                .addClass(AuditFieldsInterceptor.class)
+                .addClass(AuditFieldsInterceptorImpl.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         //System.out.println(war.toString(true));
         return war;
     }

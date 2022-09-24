@@ -6,6 +6,7 @@
         <class>com.tcm.tcmapp.entity.Usuario</class>
         <class>com.tcm.tcmapp.entity.Rol</class>
         <class>com.tcm.tcmapp.entity.Icono</class>
+        <class>com.tcm.tcmapp.entity.GlobalConfig</class>
 <!--        <class>com.tcm.tcmapp.business.VUsuarioRol</class>-->
 
         <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>

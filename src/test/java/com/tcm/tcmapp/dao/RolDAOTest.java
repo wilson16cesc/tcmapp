@@ -1,5 +1,7 @@
 package com.tcm.tcmapp.dao;
 
+import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
+import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
 import com.tcm.tcmapp.entity.*;
 import com.tcm.tcmapp.logging.LoggerProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -16,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,8 +59,10 @@ public class RolDAOTest {
                 .addClass(RolDAO.class)
                 .addClass(PermisoDAO.class)
                 .addClass(LoggerProducer.class)
+                .addClass(AuditFieldsInterceptor.class)
+                .addClass(AuditFieldsInterceptorImpl.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         //System.out.println(war.toString(true));
         return war;
     }

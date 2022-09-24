@@ -6,7 +6,6 @@
 package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
-import com.tcm.tcmapp.entity.BaseEntity;
 
 import javax.ejb.Local;
 import javax.ejb.TransactionAttribute;
@@ -26,32 +25,18 @@ import java.util.List;
  * @author MFIGUEROAG
  */
 @Local
-public abstract class BaseDAO<T extends BaseEntity> {
+public abstract class BaseReadOnlyDAO<T> {
 
     private Class<T> entityClass;
 
     @PersistenceContext(unitName = "tcm-PU")
     private EntityManager em;
 
-    public BaseDAO() {
+    public BaseReadOnlyDAO() {
     }
 
     public void setEntityClass(Class<T> entityClass) {
         this.entityClass = entityClass;
-    }
-    @AuditFieldsInterceptor
-    public void save(T entity) {
-        getEntityManager().persist(entity);
-    }
-
-    @AuditFieldsInterceptor
-    public void update(T entity) {
-        getEntityManager().merge(entity);
-    }
-
-    public void delete(Object id) {
-        T entity = findById(id);
-        getEntityManager().remove(entity);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -102,26 +87,8 @@ public abstract class BaseDAO<T extends BaseEntity> {
         return resultList.get(0);
     }
 
-    public int deleteAll() {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaDelete<T> query = criteriaBuilder.createCriteriaDelete(entityClass);
-        return getEntityManager().createQuery(query).executeUpdate();
-    }
-
     protected EntityManager getEntityManager() {
         return em;
-    }
-
-    public void executeNativeQuery(String sql) {
-        getEntityManager().createNativeQuery("BEGIN " + sql + " END;").executeUpdate();
-    }
-
-    public void flush() {
-        em.flush();
-    }
-
-    public int executeJpqlUpdate(String jpql) {
-        return em.createQuery(jpql).executeUpdate();
     }
 
     public T findFirst() {

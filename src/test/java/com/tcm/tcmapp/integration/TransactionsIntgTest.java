@@ -1,5 +1,7 @@
 package com.tcm.tcmapp.integration;
 
+import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
+import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
 import com.tcm.tcmapp.bean.AppInitializer;
 import com.tcm.tcmapp.dao.*;
 import com.tcm.tcmapp.entity.*;
@@ -18,6 +20,8 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,8 +74,10 @@ public class TransactionsIntgTest {
                 .addClass(GlobalConfigDAO.class)
                 .addClass(AppInitializer.class)
                 .addClass(LoggerProducer.class)
+                .addClass(AuditFieldsInterceptor.class)
+                .addClass(AuditFieldsInterceptorImpl.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         return war;
     }
 

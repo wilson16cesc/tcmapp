@@ -1,23 +1,23 @@
 package com.tcm.tcmapp.entity;
 
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "app_iconos")
 public class Icono extends BaseEntityIdentity {
 
+    @Column(name = "nombre", nullable = false, unique = true)
+    private String nombre;
+
     public Icono() {
     }
-    
+
     public Icono(String nombre) {
         this.nombre = nombre;
     }
-    
-    @Column(name = "nombre", nullable = false, unique = true)
-    private String nombre;
 
     public String getNombre() {
         return nombre;
@@ -29,7 +29,7 @@ public class Icono extends BaseEntityIdentity {
 
     @Override
     public String toString() {
-        return "Icono{" + "nombre=" + nombre + '}';
+        return "Icono{" + "nombre=" + nombre + ", usuarioCrea=" + this.getUsuarioCrea() + ", fechaCrea=" + this.getFechaCrea() + '}';
     }
 
     @Override
@@ -53,6 +53,6 @@ public class Icono extends BaseEntityIdentity {
         final Icono other = (Icono) obj;
         return Objects.equals(this.nombre, other.nombre);
     }
-    
-    
+
+
 }

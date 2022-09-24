@@ -6,7 +6,7 @@ import javax.ejb.Stateless;
 import java.util.List;
 
 @Stateless
-public class VUsuarioRolDAO extends BaseDAO<VUsuarioRol> {
+public class VUsuarioRolDAO extends BaseReadOnlyDAO<VUsuarioRol> {
 
     public VUsuarioRolDAO() {
         super.setEntityClass(VUsuarioRol.class);

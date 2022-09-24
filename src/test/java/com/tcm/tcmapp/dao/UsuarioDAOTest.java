@@ -1,5 +1,7 @@
 package com.tcm.tcmapp.dao;
 
+import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
+import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
 import com.tcm.tcmapp.entity.*;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -15,6 +17,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -52,8 +55,10 @@ public class UsuarioDAOTest {
                 .addClass(UsuarioDAO.class)
                 .addClass(RolDAO.class)
                 .addClass(BaseDAO.class)
+                .addClass(AuditFieldsInterceptor.class)
+                .addClass(AuditFieldsInterceptorImpl.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         return war;
     }
 

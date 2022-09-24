@@ -1,5 +1,7 @@
 package com.tcm.tcmapp.integration;
 
+import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
+import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
 import com.tcm.tcmapp.dao.BaseDAO;
 import com.tcm.tcmapp.dao.IconoDAO;
 import com.tcm.tcmapp.dao.PaginaDAO;
@@ -7,6 +9,7 @@ import com.tcm.tcmapp.entity.*;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.view.MenuView;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.spi.TestDeployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -23,6 +26,7 @@ import org.primefaces.model.menu.MenuModel;
 
 import javax.inject.Inject;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-//@Ignore("Class not ready for tests")
+
 @RunWith(Arquillian.class)
 public class MenuViewIntgTest {
 
@@ -64,8 +68,10 @@ public class MenuViewIntgTest {
                 .addClass(PaginaDAO.class)
                 .addClass(BaseDAO.class)
                 .addClass(IconoDAO.class)
+                .addClass(AuditFieldsInterceptor.class)
+                .addClass(AuditFieldsInterceptorImpl.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         return war;
     }
 
@@ -88,7 +94,7 @@ public class MenuViewIntgTest {
     }
 
     @Test
-    @Ignore("Este test presenta errores cuando el bean tiene el scope @ViewScope, pero funciona bien con @SessionScope")
+    ///@Ignore("Este test presenta errores cuando el bean tiene el scope @ViewScope, pero funciona bien con @SessionScope")
     public void dadoDatosDePagina_cuandoInvocaGetMenuModel_entoncesRetornaContenidoDelMenu() {
         List<String> menuFirstLevelIds = Arrays.asList("1", "8", "12");
 

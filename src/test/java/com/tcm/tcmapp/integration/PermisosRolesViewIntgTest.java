@@ -1,5 +1,7 @@
 package com.tcm.tcmapp.integration;
 
+import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
+import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
 import com.tcm.tcmapp.dao.BaseDAO;
 import com.tcm.tcmapp.dao.IconoDAO;
 import com.tcm.tcmapp.dao.PermisoDAO;
@@ -28,6 +30,7 @@ import org.primefaces.model.DualListModel;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -82,8 +85,10 @@ public class PermisosRolesViewIntgTest {
                 .addClass(PermisosRolesView.class)
                 .addClass(LoggerProducer.class)
                 .addClass(PermisosService.class)
+                .addClass(AuditFieldsInterceptor.class)
+                .addClass(AuditFieldsInterceptorImpl.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         //System.out.println(war.toString(true));
         return war;
     }

@@ -222,7 +222,7 @@ public class MenuEditView implements Serializable {
         // tratar de colocarlos en la clase BaseEntity a ver si funciona
         paginasPorActualizar.forEach(pagina -> {
             pagina.setFechaEdita(LocalDateTime.now());
-            pagina.setUsuario_edita("mfigueroa");
+            pagina.setUsuarioEdita("mfigueroa");
             pagina.setEditado(Boolean.FALSE);
         });
         List<Pagina> paginasPorGuardar = new ArrayList<>();
