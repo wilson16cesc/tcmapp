@@ -10,14 +10,15 @@ import com.tcm.tcmapp.service.PermisosService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.omnifaces.util.Faces;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.slf4j.Logger;
 
 import javax.faces.context.FacesContext;
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -37,8 +38,9 @@ public class MenuEditViewTest extends MenuBaseTest {
     @InjectMocks
     final MenuEditView menuEditView = new MenuEditView();
     @Mock
+    Logger logger;
+    @Mock
     private PaginasService paginasService;
-
     @Mock
     private MenuCounter menuCounter;
     @Mock
@@ -49,7 +51,6 @@ public class MenuEditViewTest extends MenuBaseTest {
     private IconosService iconosService;
     @Mock
     private FacesContext facesContextMock;
-
     private List<Pagina> paginas;
     private TreeNode<MenuInfo> menuRoot;
 
@@ -84,8 +85,8 @@ public class MenuEditViewTest extends MenuBaseTest {
         TreeNode<MenuInfo> menuItem2 = menuItem1.getChildren().get(0);
         TreeNode<MenuInfo> menuItem4 = menuItem2.getChildren().get(1);
 
-        assertEquals(1, menuRootObtenido.getChildren().size());
-        assertEquals("Item 4", menuItem4.getData().getName());
+        assertThat(menuRootObtenido.getChildren().size()).isEqualTo(1);
+        assertThat(menuItem4.getData().getName()).isEqualTo("Item 4");
     }
 
     @Test
@@ -106,7 +107,7 @@ public class MenuEditViewTest extends MenuBaseTest {
         TreeNode<MenuInfo> menuItem2 = menuItem1.getChildren().get(0);
         TreeNode<MenuInfo> nuevoMenuItem = menuItem2.getChildren().get(2);
 
-        assertEquals("Item 5", nuevoMenuItem.getData().getName());
+        assertThat(nuevoMenuItem.getData().getName()).isEqualTo("Item 5");
 
     }
 
@@ -114,7 +115,7 @@ public class MenuEditViewTest extends MenuBaseTest {
     public void dadoMenuExistente_cuandoInvoqueGuardarMenu_entoncesGuardarOActualizarLasPaginas() {
         Pagina paginaParaActualizar = new Pagina(4L, "Item 4 actualizado", "http://item4.com", true, "save", 2L, LocalDateTime.now(), "mfigueroa", true);
         paginaParaActualizar.setEditado(true);
-        Pagina paginaParaInsertar = new Pagina("Item 5", "http://item5.com", true, "save", 2L, LocalDateTime.now(), "mfigueroa", true);
+        Pagina paginaParaInsertar = new Pagina(5L, "Item 5", "http://item5.com", true, "save", 2L, LocalDateTime.now(), "mfigueroa", true);
         paginaParaInsertar.setCreado(true);
         paginas.add(paginaParaInsertar);
         paginas.add(paginaParaActualizar);
@@ -124,8 +125,59 @@ public class MenuEditViewTest extends MenuBaseTest {
 
         menuEditView.guardarMenu();
 
-        verify(paginasService, times(1)).saveOrUpdateAll(Mockito.anyList());
+        ArgumentCaptor<List<Pagina>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+
+        verify(paginasService, times(1)).saveOrUpdateAll(argumentCaptor.capture());
+        List<Pagina> paginasGuardadas = argumentCaptor.getValue();
+        assertThat(paginasGuardadas).contains(paginaParaInsertar);
+        assertThat(paginasGuardadas).contains(paginaParaActualizar);
         verify(paginasService, times(1)).getPaginasParaMenu();
+    }
+
+    /**
+     * el siguiente test utiliza esta estructura de menú
+     * 0--1--2
+     * |      --3
+     * |      --4
+     */
+    @Test
+    public void dadasHojasConNuevosPermisos_cuandoInvoqueGuardarMenu_entoncesLosPermisosDebenPropagarseALasPaginasPadres() {
+        Pagina paginaParaInsertar = new Pagina(5L, "Item 5", "http://item5.com", true, "save", 2L, LocalDateTime.now(), "mfigueroa", true);
+        Permiso editarMenuRead = new Permiso("EditarMenuRead", "Permite leer la ventana 'Editar Menu'.");
+        Permiso editarMenuWrite = new Permiso("EditarMenuWrite", "Permite escribir en la ventana 'Editar Menu");
+        Permiso usuariosRead = new Permiso("UsuariosRead", "Tiene permiso de lectura en la ventana Usuarios");
+
+        paginas.forEach(pagina -> {
+            if (pagina.getId() == 1)
+                pagina.getPermisos().add(usuariosRead);
+        });
+
+        paginaParaInsertar.getPermisos().add(editarMenuWrite);
+        paginaParaInsertar.getPermisos().add(editarMenuRead);
+
+        paginaParaInsertar.setCreado(true);
+        paginas.add(paginaParaInsertar);
+
+        given(paginasService.getPaginasParaMenu()).willReturn(paginas);
+        menuEditView.setPaginas(paginas);
+
+        menuEditView.guardarMenu();
+
+        List<Pagina> paginasResult = menuEditView.getPaginas();
+        Pagina pagina1 = paginasResult.stream()
+                .filter(pagina -> pagina.getId() == 1)
+                .findFirst().orElse(new Pagina());
+
+        Pagina pagina2 = paginasResult.stream()
+                .filter(pagina -> pagina.getId() == 2)
+                .findFirst().orElse(new Pagina());
+
+        assertThat(pagina1.getPermisos()).contains(editarMenuRead);
+        assertThat(pagina1.getPermisos()).contains(editarMenuWrite);
+        assertThat(pagina1.getPermisos()).contains(usuariosRead);
+
+        assertThat(pagina2.getPermisos()).contains(editarMenuRead);
+        assertThat(pagina2.getPermisos()).contains(editarMenuWrite);
     }
 
     @Test
@@ -144,15 +196,14 @@ public class MenuEditViewTest extends MenuBaseTest {
         menuEditView.setIconos(cargarNombresIconos());
 
 
-        assertEquals(3, menuItem2.getChildCount());
+        assertThat(menuItem2.getChildCount()).isEqualTo(3);
 
         menuEditView.borrarNodoMenu();
 
         TreeNode<MenuInfo> menuRootModificado = menuEditView.getMenuRoot();
         TreeNode<MenuInfo> menuItemUno = menuRootModificado.getChildren().get(0);
         TreeNode<MenuInfo> menuItemDos = menuItemUno.getChildren().get(0);
-
-        assertEquals(2, menuItemDos.getChildCount());
+        assertThat(menuItemDos.getChildCount()).isEqualTo(2);
     }
 
     @Test
@@ -163,8 +214,8 @@ public class MenuEditViewTest extends MenuBaseTest {
 
         menuEditView.nuevoNodoMenu();
 
-        assertNull(menuEditView.getPaginaEditar().getId());
-        assertEquals(selectedPagina.getId(), menuEditView.getPaginaEditar().getIdPadre());
+        assertThat(menuEditView.getPaginaEditar().getId()).isNull();
+        assertThat(selectedPagina.getId()).isEqualTo(menuEditView.getPaginaEditar().getIdPadre());
         verify(primeFacesMock, times(1)).executeScript("PF('dlgCrearPagina').show();");
 
     }
@@ -181,9 +232,9 @@ public class MenuEditViewTest extends MenuBaseTest {
 
         menuEditView.agregarActualizarNodoMenu();
 
-        assertTrue(paginaModificada.getEditado());
-        assertEquals("Reportes", menuEditView.getSelectedNode().getData().getName());
-        assertEquals("plus", menuEditView.getSelectedNode().getData().getIcon());
+        assertThat(paginaModificada.getEditado()).isTrue();
+        assertThat(menuEditView.getSelectedNode().getData().getName()).isEqualTo("Reportes");
+        assertThat(menuEditView.getSelectedNode().getData().getIcon()).isEqualTo("plus");
     }
 
     @Test
@@ -192,9 +243,8 @@ public class MenuEditViewTest extends MenuBaseTest {
         menuEditView.setIconos(cargarNombresIconos());
 
         List<String> iconosFiltrados = menuEditView.completeIcono(criterioFiltro);
-
-        assertEquals(2, iconosFiltrados.size());
-        assertEquals("arrows-h", iconosFiltrados.get(0));
+        assertThat(iconosFiltrados.size()).isEqualTo(2);
+        assertThat(iconosFiltrados.get(0)).isEqualTo("arrows-h");
     }
 
     private List<Icono> cargarIconos() {

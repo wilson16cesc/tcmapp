@@ -12,25 +12,24 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Named
-@SessionScoped
+@ViewScoped
+//@SessionScoped
 public class MenuEditView implements Serializable {
 
-    final Logger logger = LoggerFactory.getLogger(MenuEditView.class.getSimpleName());
+    @Inject
+    Logger logger;
 
     @Inject
     PaginasService paginasService;
@@ -90,8 +89,9 @@ public class MenuEditView implements Serializable {
 
     /**
      * Agrega los elementos al arbol del menu basado en la información de las páginas. Metodo recursivo
+     *
      * @param pagina información de la página
-     * @param node nodo a ser procesado
+     * @param node   nodo a ser procesado
      */
     private void agregarHijos(Pagina pagina, TreeNode<MenuInfo> node) {
         List<Pagina> hijos = this.paginas.stream()
@@ -110,6 +110,7 @@ public class MenuEditView implements Serializable {
 
     /**
      * Agrega un nuevo elemento al menu. es un método de tipo Recursivo
+     *
      * @param menuTree  menú base
      * @param idPadre   id del nodo padre
      * @param nuevoHijo nodo a agregar
@@ -190,11 +191,9 @@ public class MenuEditView implements Serializable {
             this.paginas.add(paginaEditar);
             TreeNode<MenuInfo> menuNode = new DefaultTreeNode<>(MenuInfo.fromPagina(paginaEditar));
             agregarHijo(this.menuRoot, paginaEditar.getIdPadre(), menuNode);
-            //si la nueva es hoja dejarla seleccionada en la página
-//            if (!paginaEditar.getHoja()) {
-//                selectedNode = menuNode;
-//                selectedPagina = paginaEditar;
-//            }
+            selectedNode = menuNode;
+            selectedPagina = paginaEditar;
+
         } else { //si se está modificando
             paginaEditar.setEditado(Boolean.TRUE);
             selectedNode.getData().setIcon(paginaEditar.getIcono());
@@ -204,31 +203,28 @@ public class MenuEditView implements Serializable {
     }
 
     public void guardarMenu() {
-        List<Pagina> paginasPorCrear = paginas.stream()
-                .filter(Pagina::getCreado)
+        List<Pagina> paginasEditadas = paginas.stream()
+                .filter(pagina -> pagina.getCreado() || pagina.getEditado())
                 .collect(Collectors.toList());
-        //todo: colocar estos campos en el PrePersist de la entidad.
-        // tratar de colocarlos en la clase BaseEntity a ver si funciona
-        paginasPorCrear.forEach(pagina -> {
-            pagina.setFechaCrea(LocalDateTime.now());
-            pagina.setUsuarioCrea("mfigueroa");
+
+        paginasEditadas.forEach(pagina -> {
+            if (!pagina.getPermisos().isEmpty()) {
+                agregarPermisosPaginaPadre(pagina);
+            }
+        });
+
+        List<Pagina> paginasPorGuardar = paginas.stream()
+                .filter(pagina -> pagina.getCreado() || pagina.getEditado())
+                .collect(Collectors.toList());
+
+        paginasPorGuardar.forEach(pagina -> {
+            //System.out.println(Arrays.toString(pagina.getPermisos().toArray()));
             pagina.setActivo(true);
             pagina.setCreado(false);
+            pagina.setEditado(false);
         });
-        List<Pagina> paginasPorActualizar = paginas.stream()
-                .filter(Pagina::getEditado)
-                .collect(Collectors.toList());
-        //todo: colocar estos campos en el PrePersist de la entidad.
-        // tratar de colocarlos en la clase BaseEntity a ver si funciona
-        paginasPorActualizar.forEach(pagina -> {
-            pagina.setFechaEdita(LocalDateTime.now());
-            pagina.setUsuarioEdita("mfigueroa");
-            pagina.setEditado(Boolean.FALSE);
-        });
-        List<Pagina> paginasPorGuardar = new ArrayList<>();
-        paginasPorGuardar.addAll(paginasPorActualizar);
-        paginasPorGuardar.addAll(paginasPorCrear);
-        System.out.println("paginasPorGuardar: " + Arrays.toString(paginasPorGuardar.toArray()));
+
+        logger.info("paginasPorGuardar: " + Arrays.toString(paginasPorGuardar.toArray()));
         try {
             paginasService.saveOrUpdateAll(paginasPorGuardar);
             this.paginas = paginasService.getPaginasParaMenu();
@@ -238,6 +234,18 @@ public class MenuEditView implements Serializable {
         } catch (Exception e) {
             Messages.addError(null, "Error al guardar los datos", e);
             logger.error("Error al guardar datos del menú", e);
+        }
+    }
+
+    private void agregarPermisosPaginaPadre(Pagina pagina) {
+        Pagina padre = paginas.stream()
+                .filter(p -> p.getId().longValue() == pagina.getIdPadre())
+                .findFirst().orElse(new Pagina());
+        if (padre.getId() != 0) {
+            padre.getPermisos().removeAll(pagina.getPermisos());
+            padre.getPermisos().addAll(pagina.getPermisos());
+            padre.setEditado(true);
+            agregarPermisosPaginaPadre(padre);
         }
     }
 
@@ -268,12 +276,14 @@ public class MenuEditView implements Serializable {
                 .filter(icono -> icono.contains(query))
                 .collect(Collectors.toList());
     }
+
     public List<Permiso> completePermiso(String query) {
         return this.permisos.stream()
                 .filter(permiso -> permiso.getNombre().toLowerCase()
                         .contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
+
     public List<String> getIconos() {
         return iconos;
     }

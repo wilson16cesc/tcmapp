@@ -24,6 +24,7 @@ public class PaginasService {
     }
     public void saveOrUpdateAll(List<Pagina> paginas) {
         paginas.forEach(pagina -> {
+            pagina.getPermisos();
             paginaDAO.update(pagina);
         });
     }

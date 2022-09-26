@@ -5,6 +5,7 @@ import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
 import com.tcm.tcmapp.bean.MenuCounter;
 import com.tcm.tcmapp.dao.*;
 import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.logging.LoggerProducer;
 import com.tcm.tcmapp.service.IconosService;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.service.PermisosService;
@@ -72,6 +73,7 @@ public class MenuEditViewIntgTest {
                 .addClass(IconosService.class)
                 .addClass(AuditFieldsInterceptor.class)
                 .addClass(AuditFieldsInterceptorImpl.class)
+                .addClass(LoggerProducer.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         //System.out.println(war.toString(true));

@@ -1,6 +1,7 @@
 package com.tcm.tcmapp.view;
 
 import com.tcm.tcmapp.entity.Pagina;
+import com.tcm.tcmapp.entity.Permiso;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -24,6 +25,8 @@ public class MenuBaseTest {
         Map<String,Object> paginasAndMenuRoot = new HashMap<>();
 
         ArrayList<Pagina> paginasList = new ArrayList<>();
+        Pagina paginaCero = new Pagina(0L, "Raiz", null, false, null, -1L, null, null, true);
+        paginasList.add(paginaCero);
         Pagina pagina1 = new Pagina(1L, "Item 1", "http://item1.com", false, "save", 0L, LocalDateTime.now(), "mfigueroa", true);
         paginasList.add(pagina1);
             Pagina pagina2 = new Pagina(2L, "Item 2", "http://item2.com", false, "save", 1L, LocalDateTime.now(), "mfigueroa", true);

@@ -15,9 +15,6 @@
     </style>
         <h:form id="editMenuForm">
             <p:panel id="menuEditPanel" header="Editar Menu" style="width: 80%;">
-<!--                <h:outputText value="viewHelper.hasPermission('EditarMenuRead') #{viewHelper.hasPermission('EditarMenuRead')}"/>
-                <h:outputText value="viewHelper.hasPermission('EditarMenuWrite') #{viewHelper.hasPermission('EditarMenuWrite')}"/>-->
-
                 <p:messages id="menuEditMessages"/>
                 <p:panelGrid id="menuEditPanelGrid" columns="2" layout="grid" >
                     <p:tree id="editMenuTree" value="#{menuEditView.menuRoot}"  var="node" selectionMode="single" 
@@ -89,7 +86,7 @@
                     <p:outputLabel value="Url" rendered="#{menuEditView.paginaEditar.hoja}"/>
                     <p:inputText value="#{menuEditView.paginaEditar.url}" rendered="#{menuEditView.paginaEditar.hoja}" required="true" label="Url"/>  
                     <p:outputLabel value="Permisos"/>
-                    <p:autoComplete id="autoPermisos" value="#{menuEditView.selectedPagina.permisos}" label="Permisos" unique="true"
+                    <p:autoComplete id="autoPermisos" value="#{menuEditView.paginaEditar.permisos}" label="Permisos" unique="true"
                                     completeMethod="#{menuEditView.completePermiso}" multiple="true"
                                     var="permiso" itemLabel="#{permiso.nombre}" itemValue="#{permiso}"
                                     forceSelection="true" scrollHeight="250">
