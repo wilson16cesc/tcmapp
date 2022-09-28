@@ -74,10 +74,6 @@ public class MenuEditView implements Serializable {
         paginas.add(paginaCero);
         //todo:garantizar que el orden del arbol de menu sea siempre el mismo.
         // en ocasiones sale el nodo 'Item 16' arriba del 'Item 13' y otras veces a la inversa.
-        List<Pagina> paginasNivel1 = this.paginas.stream()
-                .filter(pagina -> pagina.getIdPadre() == 0L)
-                .sorted(Comparator.comparing(Pagina::getFechaCrea))
-                .collect(Collectors.toList());
 
         menuRoot = new DefaultTreeNode<>();
         DefaultTreeNode<MenuInfo> nodoCero =
@@ -89,7 +85,6 @@ public class MenuEditView implements Serializable {
 
     /**
      * Agrega los elementos al arbol del menu basado en la información de las páginas. Metodo recursivo
-     *
      * @param pagina información de la página
      * @param node   nodo a ser procesado
      */

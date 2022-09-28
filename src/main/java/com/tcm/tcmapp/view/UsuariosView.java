@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class UsuariosView implements Serializable {
 
     @Inject
     RolesService rolesService;
+
+    @Inject
+    private transient Pbkdf2PasswordHash passwordHash;
 
     private List<Usuario> usuarios;
     private List<Rol> roles;
@@ -66,6 +70,8 @@ public class UsuariosView implements Serializable {
                 .collect(Collectors.toList());
     }
     public void guardarUsuario(){
+        String encodedPassword = passwordHash.generate(selectedUsuario.getPassword().toCharArray());
+        selectedUsuario.setPassword(encodedPassword);
         usuariosService.update(selectedUsuario);
         Messages.addInfo(null, "Datos guardados correctamente");
     }

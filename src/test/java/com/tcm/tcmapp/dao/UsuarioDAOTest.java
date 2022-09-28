@@ -38,9 +38,6 @@ public class UsuarioDAOTest {
     @Inject
     RolDAO rolDAO;
 
-    @Inject
-    Pbkdf2PasswordHash passwordHash;
-
     @Deployment
     public static WebArchive createDeployment() {
         PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");

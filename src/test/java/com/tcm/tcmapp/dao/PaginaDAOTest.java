@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -89,6 +90,25 @@ public class PaginaDAOTest {
 
         assertThat(paginaResultado.getPermisos()).size().isEqualTo(2);
 
+    }
+
+    @Test
+    public void dadasPaginasConPermisos_cuandoConsulteTodasLasPaginas_debeDevolverLosPermisos(){
+        Permiso usuariosRead = new Permiso("UsuariosRead", "Tiene permiso de lectura en la ventana Usuarios");
+        Permiso usuariosWrite = new Permiso("UsuariosWrite", "Tiene permiso de escritura en la ventana Usuarios");
+        permisoDAO.save(usuariosRead);
+        permisoDAO.save(usuariosWrite);
+
+        Pagina pagina = new Pagina(3L, "Usuarios", "/pages/usuarios.xhtml", true, "user-edit", 2L, LocalDateTime.now(), "mfigueroa", true);
+        pagina.getPermisos().add(usuariosRead);
+        pagina.getPermisos().add(usuariosWrite);
+        paginaDAO.save(pagina);
+
+        List<Pagina> paginasAll = paginaDAO.findAllOrderByIdPadre();
+        Pagina paginaResult = paginasAll.get(0);
+
+        assertThat(paginaResult.getPermisos().size()).isEqualTo(2);
+        assertThat(paginaResult.getPermisos()).contains(usuariosRead);
     }
 
 }

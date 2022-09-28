@@ -31,15 +31,11 @@ public class IdentityStoreAuthentication implements IdentityStore {
 
     Map<String, String> users = new HashMap<>();
 
-    @PostConstruct
-    private void init() {
-        logger.info("Cargando datos para autenticación");
-        List<Usuario> userList = usuarioDAO.findAllActive();
-        userList.forEach(u -> 
-                users.put(u.getUsername(), u.getPassword())
-        );
-
-    }
+//    @PostConstruct
+//    private void init() {
+//
+//
+//    }
 
     @Override
     public int priority() {
@@ -52,6 +48,11 @@ public class IdentityStoreAuthentication implements IdentityStore {
     }
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
+        logger.info("Cargando datos para autenticación");
+        List<Usuario> userList = usuarioDAO.findAllActive();
+        userList.forEach(u -> 
+                users.put(u.getUsername(), u.getPassword())
+        );
         String storedPassword = users.get(credential.getCaller());
         char[] charArrayPassword = credential.getPassword().getValue();
         if (passwordHash.verify(charArrayPassword, storedPassword)) {

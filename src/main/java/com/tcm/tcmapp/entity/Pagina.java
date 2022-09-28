@@ -6,7 +6,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "seg_paginas")
-@NamedQueries({@NamedQuery(name = "Pagina.findAllOrderByIdPadre", query = "SELECT p FROM Pagina p WHERE p.activo = TRUE ORDER BY p.idPadre"),
+@NamedQueries({@NamedQuery(name = "Pagina.findAllOrderByIdPadre", query = "SELECT pag FROM Pagina pag LEFT JOIN FETCH pag.permisos WHERE pag.activo = TRUE ORDER BY pag.idPadre"),
     @NamedQuery(name="Pagina.findMaxId", query="SELECT MAX(p.id) FROM Pagina p")
 })
 public class Pagina extends BaseEntity {
