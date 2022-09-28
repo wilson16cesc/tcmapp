@@ -187,6 +187,7 @@ public class MenuEditView implements Serializable {
             TreeNode<MenuInfo> menuNode = new DefaultTreeNode<>(MenuInfo.fromPagina(paginaEditar));
             agregarHijo(this.menuRoot, paginaEditar.getIdPadre(), menuNode);
             selectedNode = menuNode;
+            selectedNode.setSelected(true);
             selectedPagina = paginaEditar;
 
         } else { //si se está modificando

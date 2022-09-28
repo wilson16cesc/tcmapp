@@ -41,7 +41,7 @@
 								                            
                         </p:panelGrid>
                         <h:panelGroup layout="block" rendered="#{viewHelper.hasPermission('EditarMenuWrite')}" style="text-align: right;padding-top: 5px;">
-                            <p:commandButton value="Borrar" style="margin-right: 5px;" actionListener="#{menuEditView.borrarNodoMenu()}" rendered="#{menuEditView.selectedPagina.creado and menuEditView.selectedNode.childCount eq 0}">
+                            <p:commandButton value="Borrar" style="margin-right: 5px;" actionListener="#{menuEditView.borrarNodoMenu()}" update="@form" rendered="#{menuEditView.selectedPagina.creado and menuEditView.selectedNode.childCount eq 0}">
                                 <p:confirm header="Confirmación" message="¿Está seguro que desea borrar este item de menú?" icon="pi pi-exclamation-triangle"/>
                             </p:commandButton>
                             <p:commandButton value="Editar Item" actionListener="#{menuEditView.editarNodoMenu()}" update="newPaginaForm"  rendered="#{not empty menuEditView.selectedPagina.nombre}" style="margin-right: 5px;"/>

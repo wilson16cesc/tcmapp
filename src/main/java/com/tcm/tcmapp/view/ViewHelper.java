@@ -2,11 +2,13 @@ package com.tcm.tcmapp.view;
 
 import com.tcm.tcmapp.dao.GlobalConfigDAO;
 import com.tcm.tcmapp.entity.GlobalConfig;
+import com.tcm.tcmapp.entity.Permiso;
 import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 import org.slf4j.Logger;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -53,7 +55,21 @@ public class ViewHelper implements Serializable {
     public boolean hasPermission(String permission) {
         return Faces.isUserInRole("perm:" + permission);
     }
-
+    /**
+     * Permite comprobar varios permisos pasados como una lista de Objetos
+     * @param permisos lista de objetos de tipo Permiso
+     * @return true o false dependiendo de si el usuario autenticado tiene alguno de los permisos
+     */
+    public boolean hasPermissions(List<Permiso> permisos) {
+        for (Permiso permiso : permisos) {
+            String permisoStr = "perm:" + permiso.getNombre();
+            boolean response = Faces.isUserInRole(permisoStr);
+            if (response) {
+                return true;
+            }
+        }
+        return false;
+    }
     public String getTimeZone() {
         return timeZone;
     }

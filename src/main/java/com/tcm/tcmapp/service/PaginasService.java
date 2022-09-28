@@ -14,7 +14,9 @@ public class PaginasService {
     PaginaDAO paginaDAO;
 
     public List<Pagina> getPaginasParaMenu() {
-        return paginaDAO.findAllOrderByIdPadre();
+        List<Pagina> paginas = paginaDAO.findAllOrderByIdPadre();
+        paginas.forEach(pagina -> pagina.getPermisos());
+        return paginas;
     }
 
     public void saveAll(List<Pagina> paginas) {

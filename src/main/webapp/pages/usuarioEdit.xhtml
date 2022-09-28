@@ -16,9 +16,9 @@
                     <p:outputLabel value="Usuario"/>
                     <p:inputText value="#{usuariosView.selectedUsuario.username}" required="true" label="Usuario" 
                                  disabled="#{not empty usuariosView.selectedUsuario.id}"/>
-                    <p:outputLabel value="Contraseña"/>
+                    <p:outputLabel value="Contraseña" rendered="#{empty usuariosView.selectedUsuario.id}"/>
                     <p:password value="#{usuariosView.selectedUsuario.password}" required="true" label="Contraseña" 
-                                 disabled="#{not empty usuariosView.selectedUsuario.id}"/>
+                                 rendered="#{empty usuariosView.selectedUsuario.id}"/>
                     <p:outputLabel value="Nombre"/>
                     <p:inputText value="#{usuariosView.selectedUsuario.nombre}" required="true" label="Nombre"/>
                     

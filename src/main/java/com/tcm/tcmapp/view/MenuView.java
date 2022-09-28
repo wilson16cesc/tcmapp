@@ -1,7 +1,6 @@
 package com.tcm.tcmapp.view;
 
 import com.tcm.tcmapp.entity.Pagina;
-import com.tcm.tcmapp.entity.Permiso;
 import com.tcm.tcmapp.security.SecurityHelper;
 import com.tcm.tcmapp.service.PaginasService;
 import org.primefaces.model.menu.DefaultMenuItem;
@@ -15,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.security.enterprise.SecurityContext;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
@@ -31,6 +31,13 @@ public class MenuView implements Serializable {
     PaginasService paginasService;
     @Inject
     SecurityHelper securityHelper;
+
+    @Inject
+    ViewHelper viewHelper;
+
+    @Inject
+    SecurityContext securityContext;
+
     private String name = "Miguel Figueroa";
     private MenuModel menuModel;
     private List<Pagina> paginas;
@@ -41,7 +48,7 @@ public class MenuView implements Serializable {
                 .collect(Collectors.toList());
         for (Pagina hijo : hijos) {
             //List<Permiso> permisosPagina = hijo.getPermisos();
-            //if (securityHelper.hasPermissions(permisosPagina)) {
+            if (viewHelper.hasPermissions(hijo.getPermisos())) {
                 String icono = ICON_PREFIX + hijo.getIcono();
                 if (hijo.getHoja()) {
                     DefaultMenuItem menuItem = DefaultMenuItem.builder()
@@ -49,6 +56,7 @@ public class MenuView implements Serializable {
                             .value(hijo.getNombre())
                             .icon(ICON_PREFIX + hijo.getIcono())
                             .outcome(hijo.getUrl().startsWith("/") ? hijo.getUrl() : null)
+                            .url(hijo.getUrl().startsWith("http") ? hijo.getUrl() : null)
                             .build();
                     submenu.getElements().add(menuItem);
                 } else {
@@ -60,7 +68,7 @@ public class MenuView implements Serializable {
                     submenu.getElements().add(newSubmenu);
                     agregarHijos(hijo, newSubmenu);
                 }
-            //}
+            }
         }
     }
 
@@ -77,14 +85,16 @@ public class MenuView implements Serializable {
         menuModel = new DefaultMenuModel();
 
         paginasNivel1.forEach(pagina -> {
-            String icono = ICON_PREFIX + pagina.getIcono();
-            DefaultSubMenu submenu = DefaultSubMenu.builder()
-                    .id(pagina.getId() + "")
-                    .label(pagina.getNombre())
-                    .icon(icono)
-                    .build();
-            menuModel.getElements().add(submenu);
-            agregarHijos(pagina, submenu);
+            if (viewHelper.hasPermissions(pagina.getPermisos())) {
+                String icono = ICON_PREFIX + pagina.getIcono();
+                DefaultSubMenu submenu = DefaultSubMenu.builder()
+                        .id(pagina.getId() + "")
+                        .label(pagina.getNombre())
+                        .icon(icono)
+                        .build();
+                menuModel.getElements().add(submenu);
+                agregarHijos(pagina, submenu);
+            }
         });
     }
 
