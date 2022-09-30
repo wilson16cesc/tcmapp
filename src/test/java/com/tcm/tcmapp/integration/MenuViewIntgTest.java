@@ -6,6 +6,8 @@ import com.tcm.tcmapp.dao.BaseDAO;
 import com.tcm.tcmapp.dao.IconoDAO;
 import com.tcm.tcmapp.dao.PaginaDAO;
 import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.logging.LoggerProducer;
+import com.tcm.tcmapp.security.SecurityHelper;
 import com.tcm.tcmapp.service.PaginasService;
 import com.tcm.tcmapp.view.MenuView;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -47,7 +49,6 @@ public class MenuViewIntgTest {
 
     @Inject
     Pbkdf2PasswordHash passwordHash;
-    //--trabajando en corregir los tests para probar el icono almacenado en la clase Pagina vista menuEdit.xhtml
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -70,6 +71,8 @@ public class MenuViewIntgTest {
                 .addClass(IconoDAO.class)
                 .addClass(AuditFieldsInterceptor.class)
                 .addClass(AuditFieldsInterceptorImpl.class)
+                .addClass(SecurityHelper.class)
+                .addClass(LoggerProducer.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         return war;

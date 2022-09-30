@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,6 +27,9 @@ public class MenuViewTest extends MenuBaseTest {
     private PaginasService paginasService;
 
     private List<Pagina> paginas;
+
+    @Mock
+    ViewHelper viewHelper;
 
     @InjectMocks
     private final MenuView menuView = new MenuView();
@@ -40,6 +44,7 @@ public class MenuViewTest extends MenuBaseTest {
     @Test
     public void dadoDatosDePaginas_cuandoInvocaGetMenuModel_entoncesDevuelveEstructuraDelMenu() {
         given(paginasService.getPaginasParaMenu()).willReturn(paginas);
+        given(viewHelper.hasPermissions(anyList())).willReturn(true);
 
         menuView.init();
         MenuModel menuModel = menuView.getMenuModel();

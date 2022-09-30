@@ -27,10 +27,7 @@ import static javax.security.enterprise.authentication.mechanism.http.Authentica
 public class LoginView {
 
     final Logger logger = LoggerFactory.getLogger(LoginView.class.getSimpleName());
-    @Inject
-    Pbkdf2PasswordHash passwordHash;
-    @Inject
-    UsuarioDAO usuarioDAO;
+
     @Inject
     private SecurityContext securityContext;
 
@@ -67,15 +64,6 @@ public class LoginView {
         }
 
     }
-
-//    private UsuarioDetalle obtenerDatosUsuario(Usuario usuario) {
-//        List<String> roles = usuario.getRoles().stream()
-//                .map(Rol::getNombre)
-//                .collect(Collectors.toList());
-//        return new UsuarioDetalle(usuario.getUsername(), usuario.getPassword(), roles);
-//    }
-
-    
 
     public String getUsername() {
         return username;

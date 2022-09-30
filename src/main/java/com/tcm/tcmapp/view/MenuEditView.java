@@ -14,18 +14,17 @@ import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Named
-@ViewScoped
-//@SessionScoped
+//@ViewScoped
+@SessionScoped
 public class MenuEditView implements Serializable {
 
     @Inject

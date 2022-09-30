@@ -29,8 +29,6 @@ public class MenuView implements Serializable {
     final Logger logger = LoggerFactory.getLogger(MenuView.class.getSimpleName());
     @Inject
     PaginasService paginasService;
-    @Inject
-    SecurityHelper securityHelper;
 
     @Inject
     ViewHelper viewHelper;
