@@ -1,11 +1,11 @@
 package com.tcm.tcmapp.view;
 
-import com.tcm.tcmapp.entity.Permiso;
-import com.tcm.tcmapp.entity.Rol;
-import com.tcm.tcmapp.service.PermisosService;
-import com.tcm.tcmapp.service.RolesService;
+import com.tcm.tcmapp.entity.security.Permiso;
+import com.tcm.tcmapp.entity.security.Rol;
+import com.tcm.tcmapp.service.security.PermisosService;
+import com.tcm.tcmapp.service.security.RolesService;
+import com.tcm.tcmapp.view.security.PermisosRolesView;
 import org.omnifaces.util.Faces;
-import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;

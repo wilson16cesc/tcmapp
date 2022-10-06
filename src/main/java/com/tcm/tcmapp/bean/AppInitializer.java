@@ -1,7 +1,17 @@
 package com.tcm.tcmapp.bean;
 
-import com.tcm.tcmapp.dao.*;
-import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.dao.shared.PaginaDAO;
+import com.tcm.tcmapp.dao.security.PermisoDAO;
+import com.tcm.tcmapp.dao.security.RolDAO;
+import com.tcm.tcmapp.dao.security.UsuarioDAO;
+import com.tcm.tcmapp.dao.shared.GlobalConfigDAO;
+import com.tcm.tcmapp.dao.shared.IconoDAO;
+import com.tcm.tcmapp.entity.shared.Pagina;
+import com.tcm.tcmapp.entity.security.Permiso;
+import com.tcm.tcmapp.entity.security.Rol;
+import com.tcm.tcmapp.entity.security.Usuario;
+import com.tcm.tcmapp.entity.shared.GlobalConfig;
+import com.tcm.tcmapp.entity.shared.Icono;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,13 +57,9 @@ public class AppInitializer {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void initializeApp() {
 
-        //eliminarDatosAplicacion();
+        eliminarDatosAplicacion();
 
         logger.info("Inicializando datos de la aplicación");
-        Pagina pagina = paginaDAO.findById(1L);
-        if (Objects.isNull(pagina)) {
-            crearPaginas();
-        }
 
         Icono icono = iconoDAO.findFirst();
         if (Objects.isNull(icono)) {
@@ -70,6 +76,11 @@ public class AppInitializer {
             crearPermisos();
         }
 
+        Pagina pagina = paginaDAO.findById(1L);
+        if (Objects.isNull(pagina)) {
+            crearPaginasConPermisos();
+        }
+
         GlobalConfig configInfo = configDAO.findFirst();
         if(Objects.isNull(configInfo)){
             crearParametrosGlobales();
@@ -80,7 +91,7 @@ public class AppInitializer {
     }
 
     private void crearParametrosGlobales() {
-        GlobalConfig globalConfig = new GlobalConfig(FILAS_TABLAS, null, 8L);
+        GlobalConfig globalConfig = new GlobalConfig(FILAS_TABLAS, null, 6L);
         configDAO.save(globalConfig);
     }
 
@@ -101,7 +112,7 @@ public class AppInitializer {
         Rol rolUser = new Rol("USER");
         rolDAO.save(rol1Admin);
         rolDAO.save(rolUser);
-        Usuario usuario1 = new Usuario("mfigueroa", passwordHash.generate("12345".toCharArray()), "Miguel Figueroa",
+        Usuario usuario1 = new Usuario("admin", passwordHash.generate("12345".toCharArray()), "Miguel Figueroa",
                 Arrays.asList(rol1Admin, rolUser));
         Usuario usuario2 = new Usuario("usuario", passwordHash.generate("12345".toCharArray()), "Pedro Perez",
                 Collections.singletonList(rolUser));
@@ -138,30 +149,45 @@ public class AppInitializer {
         rolDAO.update(userRol);
     }
 
-    private void crearPaginas() {
+    private void crearPaginasConPermisos() {
         logger.info("Creando páginas en la base de datos");
-        Pagina primero = new Pagina(1L, "Administracion", "http://item1.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(primero);
-        Pagina segundo = new Pagina(2L, "Seguridad", null, false, "user-edit", primero.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(segundo);
-//                Pagina tercero = new Pagina(3L, "Item 3", "http://item3.com", false, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-//                paginaDAO.save(tercero);
-        Pagina tercero = new Pagina(3L, "Usuarios", "/pages/usuarios.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(tercero);
-        Pagina cuarto = new Pagina(4L, "Permisos", "/pages/permisos.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(cuarto);
-        Pagina quinto = new Pagina(5L, "Roles Permisos", "/pages/permisosRoles.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(quinto);
-        Pagina sexto = new Pagina(6L, "Editar Menu", "/pages/menuEdit.xhtml", true, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(sexto);
 
-//                Pagina sexto = new Pagina(6L, "Item 6", "http://item6.com", false, "user-edit", segundo.getId(), LocalDateTime.now(), "mfigueroa", true);
-//                paginaDAO.save(sexto);
-//
-//                    paginaDAO.save(new Pagina(7L, "Permisos Roles", "/pages/permisosRoles.xhtml", true, "user-edit", sexto.getId(), LocalDateTime.now(), "mfigueroa", true));
+        Permiso editarMenuRead = permisoDAO.findByNombre("EditarMenuRead");
+        Permiso editarMenuWrite = permisoDAO.findByNombre("EditarMenuWrite");
+        Permiso permisosRolesRead = permisoDAO.findByNombre("PermisosRolesRead");
+        Permiso permisosRolesWrite = permisoDAO.findByNombre("PermisosRolesWrite");
+        Permiso usuariosRead = permisoDAO.findByNombre("UsuariosRead");
+        Permiso usuariosWrite = permisoDAO.findByNombre("UsuariosWrite");
+        Permiso rolesWrite = permisoDAO.findByNombre("RolesWrite");
+        Permiso permisosWrite = permisoDAO.findByNombre("PermisosWrite");
+        Permiso permisosRead = permisoDAO.findByNombre("PermisosRead");
 
+        Pagina administracion = new Pagina(1L, "Administracion", "http://item1.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
+        administracion.setPermisos(new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite, permisosRead, permisosWrite, usuariosRead, usuariosWrite, permisosRolesRead, permisosRolesWrite, rolesWrite)));
+        paginaDAO.save(administracion);
+
+        Pagina seguridad = new Pagina(2L, "Seguridad", null, false, "user-edit", administracion.getId(), LocalDateTime.now(), "mfigueroa", true);
+        seguridad.setPermisos(new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite, permisosRead, permisosWrite, usuariosRead, usuariosWrite, permisosRolesRead, permisosRolesWrite, rolesWrite)));
+        paginaDAO.save(seguridad);
+
+        Pagina usuarios = new Pagina(3L, "Usuarios", "/pages/security/usuarios.xhtml", true, "user-edit", seguridad.getId(), LocalDateTime.now(), "mfigueroa", true);
+        usuarios.setPermisos(new ArrayList<>(Arrays.asList(usuariosRead, usuariosWrite)));
+        paginaDAO.save(usuarios);
+
+        Pagina permisos = new Pagina(4L, "Permisos", "/pages/security/permisos.xhtml", true, "user-edit", seguridad.getId(), LocalDateTime.now(), "mfigueroa", true);
+        permisos.setPermisos(new ArrayList<>(Arrays.asList(permisosRead, permisosWrite)));
+        paginaDAO.save(permisos);
+
+        Pagina permisosRoles = new Pagina(5L, "Roles Permisos", "/pages/security/permisosRoles.xhtml", true, "user-edit", seguridad.getId(), LocalDateTime.now(), "mfigueroa", true);
+        permisosRoles.setPermisos(new ArrayList<>(Arrays.asList(permisosRolesRead, permisosRolesWrite)));
+        paginaDAO.save(permisosRoles);
+
+        Pagina menuEdit = new Pagina(6L, "Editar Menu", "/pages/menu/menuEdit.xhtml", true, "user-edit", seguridad.getId(), LocalDateTime.now(), "mfigueroa", true);
+        menuEdit.setPermisos(new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite)));
+        paginaDAO.save(menuEdit);
 
         Pagina octavo = new Pagina(8L, "Reportes Financieros", "http://item8.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
+        octavo.setPermisos(new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite)));
         paginaDAO.save(octavo);
 
         Pagina noveno = new Pagina(9L, "Item 9", "http://item9.com", false, "user-edit", octavo.getId(), LocalDateTime.now(), "mfigueroa", true);
@@ -170,20 +196,23 @@ public class AppInitializer {
         paginaDAO.save(new Pagina(10L, "Item 10", "http://item10.com", true, "user-edit", noveno.getId(), LocalDateTime.now(), "mfigueroa", true));
         paginaDAO.save(new Pagina(11L, "Item 11", "http://item11.com", true, "user-edit", noveno.getId(), LocalDateTime.now(), "mfigueroa", true));
 
-        Pagina doce = new Pagina(12L, "Registros Generales", "http://item12.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(doce);
 
-        Pagina trece = new Pagina(13L, "Item 13", "http://item13.com", false, "user-edit", doce.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(trece);
 
-        paginaDAO.save(new Pagina(14L, "Item 14", "http://item14.com", true, "user-edit", trece.getId(), LocalDateTime.now(), "mfigueroa", true));
-        paginaDAO.save(new Pagina(15L, "Item 15", "http://item15.com", true, "user-edit", trece.getId(), LocalDateTime.now(), "mfigueroa", true));
 
-        Pagina dieciseis = new Pagina(16L, "Item 16", "http://item16.com", false, "user-edit", doce.getId(), LocalDateTime.now(), "mfigueroa", true);
-        paginaDAO.save(dieciseis);
-
-        paginaDAO.save(new Pagina(17L, "Item 17", "http://item17.com", true, "user-edit", dieciseis.getId(), LocalDateTime.now(), "mfigueroa", true));
-        paginaDAO.save(new Pagina(18L, "Item 18", "http://item18.com", true, "user-edit", dieciseis.getId(), LocalDateTime.now(), "mfigueroa", true));
+//        Pagina doce = new Pagina(12L, "Registros Generales", "http://item12.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
+//        paginaDAO.save(doce);
+//
+//        Pagina trece = new Pagina(13L, "Item 13", "http://item13.com", false, "user-edit", doce.getId(), LocalDateTime.now(), "mfigueroa", true);
+//        paginaDAO.save(trece);
+//
+//        paginaDAO.save(new Pagina(14L, "Item 14", "http://item14.com", true, "user-edit", trece.getId(), LocalDateTime.now(), "mfigueroa", true));
+//        paginaDAO.save(new Pagina(15L, "Item 15", "http://item15.com", true, "user-edit", trece.getId(), LocalDateTime.now(), "mfigueroa", true));
+//
+//        Pagina dieciseis = new Pagina(16L, "Item 16", "http://item16.com", false, "user-edit", doce.getId(), LocalDateTime.now(), "mfigueroa", true);
+//        paginaDAO.save(dieciseis);
+//
+//        paginaDAO.save(new Pagina(17L, "Item 17", "http://item17.com", true, "user-edit", dieciseis.getId(), LocalDateTime.now(), "mfigueroa", true));
+//        paginaDAO.save(new Pagina(18L, "Item 18", "http://item18.com", true, "user-edit", dieciseis.getId(), LocalDateTime.now(), "mfigueroa", true));
     }
 
     public void crearIconos() {

@@ -12,26 +12,65 @@
     </servlet-mapping>
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Application pages</web-resource-name>
+            <web-resource-name>Home Page</web-resource-name>
             <url-pattern>/pages/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>
         </auth-constraint>
     </security-constraint>
-    <security-constraint>
-        <display-name>ReportsPageConstraint</display-name>
-        <web-resource-collection>
-            <web-resource-name>Edit Menu Page</web-resource-name>
-            <description/>
-            <url-pattern>/pages/menuEdit.xhtml</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <description/>
-            <role-name>perm:EditarMenuRead</role-name>
-            <role-name>perm:EditarMenuWrite</role-name>
-        </auth-constraint>     
-    </security-constraint>
+<!--    <security-constraint>-->
+<!--        <display-name>EditMenuPageConstraint</display-name>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>Edit Menu Page</web-resource-name>-->
+<!--            <description/>-->
+<!--            <url-pattern>/pages/menuEdit.xhtml</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <auth-constraint>-->
+<!--            <description/>-->
+<!--            <role-name>perm:EditarMenuRead</role-name>-->
+<!--            <role-name>perm:EditarMenuWrite</role-name>-->
+<!--        </auth-constraint>     -->
+<!--    </security-constraint>-->
+<!--    <security-constraint>-->
+<!--        <display-name>UsuariosPageConstraint</display-name>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>Usuarios Page</web-resource-name>-->
+<!--            <description/>-->
+<!--            <url-pattern>/pages/usuarios.xhtml</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <auth-constraint>-->
+<!--            <description/>-->
+<!--            <role-name>perm:EditarMenuRead</role-name>-->
+<!--            <role-name>perm:EditarMenuWrite</role-name>-->
+<!--        </auth-constraint>-->
+<!--    </security-constraint>-->
+<!--    <security-constraint>-->
+<!--        <display-name>EditMenuPageConstraint</display-name>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>Edit Menu Page</web-resource-name>-->
+<!--            <description/>-->
+<!--            <url-pattern>/pages/menuEdit.xhtml</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <auth-constraint>-->
+<!--            <description/>-->
+<!--            <role-name>perm:EditarMenuRead</role-name>-->
+<!--            <role-name>perm:EditarMenuWrite</role-name>-->
+<!--        </auth-constraint>-->
+<!--    </security-constraint>-->
+<!--    <security-constraint>-->
+<!--        <display-name>EditMenuPageConstraint</display-name>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>Edit Menu Page</web-resource-name>-->
+<!--            <description/>-->
+<!--            <url-pattern>/pages/menuEdit.xhtml</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <auth-constraint>-->
+<!--            <description/>-->
+<!--            <role-name>perm:EditarMenuRead</role-name>-->
+<!--            <role-name>perm:EditarMenuWrite</role-name>-->
+<!--        </auth-constraint>-->
+<!--    </security-constraint>-->
     <security-role>
         <role-name>USER</role-name>
     </security-role>

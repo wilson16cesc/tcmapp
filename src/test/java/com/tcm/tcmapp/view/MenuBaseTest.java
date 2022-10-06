@@ -1,7 +1,7 @@
 package com.tcm.tcmapp.view;
 
-import com.tcm.tcmapp.entity.Pagina;
-import com.tcm.tcmapp.entity.Permiso;
+import com.tcm.tcmapp.entity.shared.Pagina;
+import com.tcm.tcmapp.view.menu.MenuInfo;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 

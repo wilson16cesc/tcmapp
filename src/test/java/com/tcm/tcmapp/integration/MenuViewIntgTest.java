@@ -2,19 +2,23 @@ package com.tcm.tcmapp.integration;
 
 import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
 import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
-import com.tcm.tcmapp.dao.BaseDAO;
-import com.tcm.tcmapp.dao.IconoDAO;
-import com.tcm.tcmapp.dao.PaginaDAO;
-import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.dao.base.BaseDAO;
+import com.tcm.tcmapp.dao.shared.GlobalConfigDAO;
+import com.tcm.tcmapp.dao.shared.IconoDAO;
+import com.tcm.tcmapp.dao.shared.PaginaDAO;
+import com.tcm.tcmapp.entity.base.BaseEntity;
+import com.tcm.tcmapp.entity.base.BaseEntityIdentity;
+import com.tcm.tcmapp.entity.shared.GlobalConfig;
+import com.tcm.tcmapp.entity.shared.Pagina;
+import com.tcm.tcmapp.entity.security.Permiso;
+import com.tcm.tcmapp.entity.shared.Icono;
 import com.tcm.tcmapp.logging.LoggerProducer;
-import com.tcm.tcmapp.security.SecurityHelper;
-import com.tcm.tcmapp.service.PaginasService;
-import com.tcm.tcmapp.view.MenuView;
+import com.tcm.tcmapp.service.shared.PaginasService;
+import com.tcm.tcmapp.view.shared.MenuView;
+import com.tcm.tcmapp.view.shared.ViewHelper;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.spi.TestDeployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
@@ -23,6 +27,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.model.menu.MenuModel;
 
@@ -36,6 +41,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
 
 
 @RunWith(Arquillian.class)
@@ -50,11 +56,14 @@ public class MenuViewIntgTest {
     @Inject
     Pbkdf2PasswordHash passwordHash;
 
+    //ViewHelper viewHelper = Mockito.mock(ViewHelper.class);
+
     @Deployment
     public static WebArchive createDeployment() {
         PomEquippedResolveStage pomFile = Maven.resolver().loadPomFromFile("pom.xml");
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addAsLibraries(pomFile.resolve("org.assertj:assertj-core").withTransitivity().asFile())
+                .addAsLibraries(pomFile.resolve("org.mockito:mockito-core").withTransitivity().asFile())
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-api").withTransitivity().asFile())
                 .addAsLibraries(pomFile.resolve("org.slf4j:slf4j-simple").withTransitivity().asFile())
                 .addPackage(Confirmable.class.getPackage())
@@ -63,16 +72,18 @@ public class MenuViewIntgTest {
                 .addClass(Pagina.class)
                 .addClass(Permiso.class)
                 .addClass(Icono.class)
+                .addClass(GlobalConfig.class)
                 .addClass(BaseEntityIdentity.class)
                 .addClass(BaseEntity.class)
                 .addClass(PaginasService.class)
                 .addClass(PaginaDAO.class)
                 .addClass(BaseDAO.class)
                 .addClass(IconoDAO.class)
+                .addClass(GlobalConfigDAO.class)
                 .addClass(AuditFieldsInterceptor.class)
                 .addClass(AuditFieldsInterceptorImpl.class)
-                .addClass(SecurityHelper.class)
                 .addClass(LoggerProducer.class)
+                .addClass(ViewHelper.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"));
         return war;
@@ -82,6 +93,7 @@ public class MenuViewIntgTest {
     public void setUp() throws Exception {
         paginaDAO.deleteAll();
         crearPaginas();
+        //given(viewHelper.hasPermissions(Mockito.anyList())).willReturn(true);
     }
 
     @After
@@ -97,9 +109,10 @@ public class MenuViewIntgTest {
     }
 
     @Test
-    ///@Ignore("Este test presenta errores cuando el bean tiene el scope @ViewScope, pero funciona bien con @SessionScope")
+    @Ignore("Este test presenta errores cuando el bean tiene el scope @ViewScope, pero funciona bien con @SessionScope")
     public void dadoDatosDePagina_cuandoInvocaGetMenuModel_entoncesRetornaContenidoDelMenu() {
         List<String> menuFirstLevelIds = Arrays.asList("1", "8", "12");
+        //menuView.setViewHelper(viewHelper);
 
         MenuModel menuModel = menuView.getMenuModel();
 

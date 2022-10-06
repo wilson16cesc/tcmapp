@@ -1,12 +1,14 @@
 package com.tcm.tcmapp.view;
 
 import com.tcm.tcmapp.bean.MenuCounter;
-import com.tcm.tcmapp.entity.Icono;
-import com.tcm.tcmapp.entity.Pagina;
-import com.tcm.tcmapp.entity.Permiso;
-import com.tcm.tcmapp.service.IconosService;
-import com.tcm.tcmapp.service.PaginasService;
-import com.tcm.tcmapp.service.PermisosService;
+import com.tcm.tcmapp.entity.shared.Icono;
+import com.tcm.tcmapp.entity.shared.Pagina;
+import com.tcm.tcmapp.entity.security.Permiso;
+import com.tcm.tcmapp.service.shared.IconosService;
+import com.tcm.tcmapp.service.shared.PaginasService;
+import com.tcm.tcmapp.service.security.PermisosService;
+import com.tcm.tcmapp.view.menu.MenuEditView;
+import com.tcm.tcmapp.view.menu.MenuInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

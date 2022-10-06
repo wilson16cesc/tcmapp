@@ -1,6 +1,6 @@
 package com.tcm.tcmapp.bean;
 
-import com.tcm.tcmapp.dao.PaginaDAO;
+import com.tcm.tcmapp.dao.shared.PaginaDAO;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;

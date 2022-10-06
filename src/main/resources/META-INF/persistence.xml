@@ -1,12 +1,12 @@
 <persistence-unit name="tcm-PU" transaction-type="JTA">
     <jta-data-source>jdbc/tcm</jta-data-source>
     <properties>
-        <class>com.tcm.tcmapp.entity.Pagina</class>
-        <class>com.tcm.tcmapp.entity.Usuario</class>
-        <class>com.tcm.tcmapp.entity.Rol</class>
-        <class>com.tcm.tcmapp.entity.Icono</class>
-        <class>com.tcm.tcmapp.entity.Permiso</class>
-        <class>com.tcm.tcmapp.entity.VUsuarioRol</class>
+        <class>com.tcm.tcmapp.entity.shared.Pagina</class>
+        <class>com.tcm.tcmapp.entity.security.Usuario</class>
+        <class>com.tcm.tcmapp.entity.security.Rol</class>
+        <class>com.tcm.tcmapp.entity.shared.Icono</class>
+        <class>com.tcm.tcmapp.entity.security.Permiso</class>
+        <class>com.tcm.tcmapp.entity.security.VUsuarioRol</class>
 
         <property name="eclipselink.logging.level" value="FINE"/>
         <property name="eclipselink.logging.level.sql" value="FINE"/>

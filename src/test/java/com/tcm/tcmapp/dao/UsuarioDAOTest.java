@@ -2,11 +2,18 @@ package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
 import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
-import com.tcm.tcmapp.entity.*;
+import com.tcm.tcmapp.dao.base.BaseDAO;
+import com.tcm.tcmapp.dao.security.RolDAO;
+import com.tcm.tcmapp.dao.security.UsuarioDAO;
+import com.tcm.tcmapp.entity.base.BaseEntity;
+import com.tcm.tcmapp.entity.base.BaseEntityIdentity;
+import com.tcm.tcmapp.entity.shared.Pagina;
+import com.tcm.tcmapp.entity.security.Permiso;
+import com.tcm.tcmapp.entity.security.Rol;
+import com.tcm.tcmapp.entity.security.Usuario;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
@@ -16,11 +23,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

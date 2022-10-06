@@ -2,9 +2,11 @@ package com.tcm.tcmapp.dao;
 
 import com.tcm.tcmapp.audit.AuditFieldsInterceptor;
 import com.tcm.tcmapp.audit.AuditFieldsInterceptorImpl;
-import com.tcm.tcmapp.entity.BaseEntity;
-import com.tcm.tcmapp.entity.BaseEntityIdentity;
-import com.tcm.tcmapp.entity.Icono;
+import com.tcm.tcmapp.dao.base.BaseDAO;
+import com.tcm.tcmapp.dao.shared.IconoDAO;
+import com.tcm.tcmapp.entity.base.BaseEntity;
+import com.tcm.tcmapp.entity.base.BaseEntityIdentity;
+import com.tcm.tcmapp.entity.shared.Icono;
 import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -16,10 +18,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;

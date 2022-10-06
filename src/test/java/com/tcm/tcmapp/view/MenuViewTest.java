@@ -1,7 +1,9 @@
 package com.tcm.tcmapp.view;
 
-import com.tcm.tcmapp.entity.Pagina;
-import com.tcm.tcmapp.service.PaginasService;
+import com.tcm.tcmapp.entity.shared.Pagina;
+import com.tcm.tcmapp.service.shared.PaginasService;
+import com.tcm.tcmapp.view.shared.MenuView;
+import com.tcm.tcmapp.view.shared.ViewHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
