@@ -8,7 +8,10 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="content">
         <h:form id="usuariosForm">
-            <p:panel id="usuariosPanel" header="Usuarios" style="width: 90%;">
+            <p:panel id="usuariosPanel" style="width: 90%;">
+                <f:facet name="header" >
+                    <i class="pi pi-user" style="font-size: 1.5rem; margin-right: 5px;"></i> Usuarios
+                </f:facet>
                 <p:messages id="usuariosMessages"/>
                 <p:dataTable value="#{usuariosView.usuarios}" var="usuario" rows="20" paginator="true" 
                              paginatorPosition="bottom" widgetVar="tblUsuarios"

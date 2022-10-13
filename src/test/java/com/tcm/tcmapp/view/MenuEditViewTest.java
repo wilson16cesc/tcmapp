@@ -63,6 +63,7 @@ public class MenuEditViewTest extends MenuBaseTest {
         menuRoot = (TreeNode<MenuInfo>) paginasAndMenu.get(MENU);
         PrimeFaces.setCurrent(primeFacesMock);
         Faces.setContext(facesContextMock);
+
     }
 
 

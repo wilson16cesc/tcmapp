@@ -19,58 +19,60 @@
             <role-name>*</role-name>
         </auth-constraint>
     </security-constraint>
-<!--    <security-constraint>-->
-<!--        <display-name>EditMenuPageConstraint</display-name>-->
-<!--        <web-resource-collection>-->
-<!--            <web-resource-name>Edit Menu Page</web-resource-name>-->
-<!--            <description/>-->
-<!--            <url-pattern>/pages/menuEdit.xhtml</url-pattern>-->
-<!--        </web-resource-collection>-->
-<!--        <auth-constraint>-->
-<!--            <description/>-->
-<!--            <role-name>perm:EditarMenuRead</role-name>-->
-<!--            <role-name>perm:EditarMenuWrite</role-name>-->
-<!--        </auth-constraint>     -->
-<!--    </security-constraint>-->
-<!--    <security-constraint>-->
-<!--        <display-name>UsuariosPageConstraint</display-name>-->
-<!--        <web-resource-collection>-->
-<!--            <web-resource-name>Usuarios Page</web-resource-name>-->
-<!--            <description/>-->
-<!--            <url-pattern>/pages/usuarios.xhtml</url-pattern>-->
-<!--        </web-resource-collection>-->
-<!--        <auth-constraint>-->
-<!--            <description/>-->
-<!--            <role-name>perm:EditarMenuRead</role-name>-->
-<!--            <role-name>perm:EditarMenuWrite</role-name>-->
-<!--        </auth-constraint>-->
-<!--    </security-constraint>-->
-<!--    <security-constraint>-->
-<!--        <display-name>EditMenuPageConstraint</display-name>-->
-<!--        <web-resource-collection>-->
-<!--            <web-resource-name>Edit Menu Page</web-resource-name>-->
-<!--            <description/>-->
-<!--            <url-pattern>/pages/menuEdit.xhtml</url-pattern>-->
-<!--        </web-resource-collection>-->
-<!--        <auth-constraint>-->
-<!--            <description/>-->
-<!--            <role-name>perm:EditarMenuRead</role-name>-->
-<!--            <role-name>perm:EditarMenuWrite</role-name>-->
-<!--        </auth-constraint>-->
-<!--    </security-constraint>-->
-<!--    <security-constraint>-->
-<!--        <display-name>EditMenuPageConstraint</display-name>-->
-<!--        <web-resource-collection>-->
-<!--            <web-resource-name>Edit Menu Page</web-resource-name>-->
-<!--            <description/>-->
-<!--            <url-pattern>/pages/menuEdit.xhtml</url-pattern>-->
-<!--        </web-resource-collection>-->
-<!--        <auth-constraint>-->
-<!--            <description/>-->
-<!--            <role-name>perm:EditarMenuRead</role-name>-->
-<!--            <role-name>perm:EditarMenuWrite</role-name>-->
-<!--        </auth-constraint>-->
-<!--    </security-constraint>-->
+    <security-constraint>
+        <display-name>EditMenuPageConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Edit Menu Page</web-resource-name>
+            <description/>
+            <url-pattern>/pages/menu/menuEdit.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>perm:EditarMenuRead</role-name>
+            <role-name>perm:EditarMenuWrite</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>UsuariosPageConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Usuarios Page</web-resource-name>
+            <description/>
+            <url-pattern>/pages/security/usuarios.xhtml</url-pattern>
+            <url-pattern>/pages/security/usuarioEdit.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>perm:UsuariosRead</role-name>
+            <role-name>perm:UsuariosWrite</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>PermisosPageConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Permisos Page</web-resource-name>
+            <description/>
+            <url-pattern>/pages/security/permisos.xhtml</url-pattern>
+            <url-pattern>/pages/security/permisoEdit.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>perm:PermisosRead</role-name>
+            <role-name>perm:PermisosWrite</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>PermisosRolesPageConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Permisos Roles Page</web-resource-name>
+            <description/>
+            <url-pattern>/pages/security/permisosRoles.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>perm:PermisosRolesRead</role-name>
+            <role-name>perm:PermisosRolesWrite</role-name>
+        </auth-constraint>
+    </security-constraint>
     <security-role>
         <role-name>USER</role-name>
     </security-role>
@@ -120,6 +122,10 @@
     <welcome-file-list>
         <welcome-file>pages/home.xhtml</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/access_error.xhtml</location>
+    </error-page>
     <env-entry>
         <env-entry-name>com.tcm.dates.timezone</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>

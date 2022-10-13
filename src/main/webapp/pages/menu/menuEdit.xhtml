@@ -5,7 +5,8 @@
                 template="/WEB-INF/template/mainTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:o="http://omnifaces.org/ui">
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="content">
     <style>
     	.ui-autocomplete-multiple-container {
@@ -13,7 +14,10 @@
     	}
     </style>
         <h:form id="editMenuForm">
-            <p:panel id="menuEditPanel" header="Editar Menu" style="width: 80%;">
+            <p:panel id="menuEditPanel"  style="width: 80%;">
+                <f:facet name="header" >
+                    <i class="pi pi-sitemap" style="font-size: 1.5rem; margin-right: 5px;"></i> Editar Menu
+                </f:facet>                
                 <p:messages id="menuEditMessages"/>
                 <p:panelGrid id="menuEditPanelGrid" columns="2" layout="grid" >
                     <p:tree id="editMenuTree" value="#{menuEditView.menuRoot}"  var="node" selectionMode="single" 

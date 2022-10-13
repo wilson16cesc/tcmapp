@@ -41,7 +41,7 @@ public class PermisosView implements Serializable {
     }
 
     @PostConstruct
-    private void init() {
+    protected void init() {
         String accion = String.valueOf(Faces.getRequestParameter("accion"));
         logger.info("accion::: {}", accion);
         switch (accion) {

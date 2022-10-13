@@ -18,6 +18,13 @@ public class AuditFieldsInterceptorImpl implements Serializable {
     @Inject
     SecurityContext securityContext;
 
+    /**
+     * Método que intercepta los métodos de guardado de entidades para setear los valores de auditoría.
+     * (Ejemplo en la clase BaseDAO metodos save y update)
+     * @param context Contexto de Invocación del método
+     * @return
+     * @throws Exception
+     */
     @AroundInvoke
     public Object populateAutitFields(InvocationContext context) throws Exception {
         Principal callerPrincipal = securityContext.getCallerPrincipal();

@@ -69,12 +69,12 @@ public class Rol extends BaseEntityIdentity {
         return Objects.equals(this.nombre, other.nombre);
     }
 
-
-
     @Override
     public String toString() {
-        return "Rol{" +
-                "nombre='" + nombre + '\'' +
-                '}';
+        return "Rol{" + "nombre=" + nombre + '}';
     }
+
+
+
+
 }

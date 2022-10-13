@@ -45,9 +45,9 @@ public class UsuariosView implements Serializable {
     }
 
     @PostConstruct
-    private void init() {
+    protected void init() {
         String accion = String.valueOf(Faces.getRequestParameter("accion"));
-        logger.info("accion::: {}", accion);
+        logger.info("accion:{}", accion);
         switch (accion) {
             case "crear":
                 selectedUsuario = new Usuario();

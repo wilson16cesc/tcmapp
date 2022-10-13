@@ -19,6 +19,7 @@ public class LogoutView {
     public void logout() {
         try {
             Faces.getRequest().logout();
+            Faces.getRequest().getSession().invalidate();
             Faces.redirect(Faces.getRequestContextPath() + "/login.xhtml");
             Messages.addInfo(null, "Sesión cerrada correctamente");
             logger.info("Sesion cerrada correctamente");

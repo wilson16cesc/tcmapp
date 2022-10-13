@@ -196,23 +196,6 @@ public class AppInitializer {
         paginaDAO.save(new Pagina(10L, "Item 10", "http://item10.com", true, "user-edit", noveno.getId(), LocalDateTime.now(), "mfigueroa", true));
         paginaDAO.save(new Pagina(11L, "Item 11", "http://item11.com", true, "user-edit", noveno.getId(), LocalDateTime.now(), "mfigueroa", true));
 
-
-
-
-//        Pagina doce = new Pagina(12L, "Registros Generales", "http://item12.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
-//        paginaDAO.save(doce);
-//
-//        Pagina trece = new Pagina(13L, "Item 13", "http://item13.com", false, "user-edit", doce.getId(), LocalDateTime.now(), "mfigueroa", true);
-//        paginaDAO.save(trece);
-//
-//        paginaDAO.save(new Pagina(14L, "Item 14", "http://item14.com", true, "user-edit", trece.getId(), LocalDateTime.now(), "mfigueroa", true));
-//        paginaDAO.save(new Pagina(15L, "Item 15", "http://item15.com", true, "user-edit", trece.getId(), LocalDateTime.now(), "mfigueroa", true));
-//
-//        Pagina dieciseis = new Pagina(16L, "Item 16", "http://item16.com", false, "user-edit", doce.getId(), LocalDateTime.now(), "mfigueroa", true);
-//        paginaDAO.save(dieciseis);
-//
-//        paginaDAO.save(new Pagina(17L, "Item 17", "http://item17.com", true, "user-edit", dieciseis.getId(), LocalDateTime.now(), "mfigueroa", true));
-//        paginaDAO.save(new Pagina(18L, "Item 18", "http://item18.com", true, "user-edit", dieciseis.getId(), LocalDateTime.now(), "mfigueroa", true));
     }
 
     public void crearIconos() {
