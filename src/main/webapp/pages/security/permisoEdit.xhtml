@@ -13,6 +13,8 @@
                     <p:outputLabel value="Permiso"/>
                     <p:inputText value="#{permisosView.selectedPermiso.nombre}" required="true" label="Permiso" 
                                  disabled="#{not empty permisosView.selectedPermiso.id}"/>
+                    <p:outputLabel value="Descripción"/>
+                    <p:inputTextarea maxlength="250" value="#{permisosView.selectedPermiso.descripcion}" required="true" label="Descripcion" />
                     <p:outputLabel value="Activo"/>
                     <p:selectBooleanCheckbox value="#{permisosView.selectedPermiso.activo}" itemLabel="Activo"/>
                 </p:panelGrid>

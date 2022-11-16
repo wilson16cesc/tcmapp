@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1660948354873-1" author="Miguel_Figueroa2 (generated)">
+    <changeSet id="2022-09-01-10_1" author="Miguel_Figueroa2 (generated)">
         <createTable tableName="seg_accesos">
             <column name="id" type="VARCHAR(1)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_accesos"/>
@@ -26,7 +26,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1660948354873-2" author="Miguel_Figueroa2 (generated)">
+    <changeSet id="2022-09-01-10-2" author="Miguel_Figueroa2 (generated)">
         <createTable tableName="seg_paginas">
             <column autoIncrement="false" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_paginas"/>
@@ -55,7 +55,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1660948354873-3" author="Miguel_Figueroa2 (generated)">
+    <changeSet id="2022-09-01-10-3" author="Miguel_Figueroa2 (generated)">
         <createTable tableName="seg_roles_paginas">
             <column name="rol_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seg_roles_paginas"/>
@@ -68,23 +68,23 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1660948354873-4" author="Miguel_Figueroa2 (generated)">
+    <changeSet id="2022-09-01-10-4" author="Miguel_Figueroa2 (generated)">
         <addUniqueConstraint columnNames="nombre" constraintName="uc_seg_accesos_nombre" tableName="seg_accesos"/>
     </changeSet>
-    <changeSet id="1660948354873-5" author="Miguel_Figueroa2 (generated)">
+    <changeSet id="2022-09-01-10-5" author="Miguel_Figueroa2 (generated)">
         <addUniqueConstraint columnNames="nombre" constraintName="uc_seg_paginas_nombre" tableName="seg_paginas"/>
     </changeSet>
-    <changeSet id="1660948354873-6" author="Miguel_Figueroa2 (generated)">
+    <changeSet id="2022-09-01-10-6" author="Miguel_Figueroa2 (generated)">
         <addForeignKeyConstraint baseColumnNames="acceso_id" baseTableName="seg_roles_paginas"
                                  constraintName="FK_SEG_ROLES_PAGINAS_ON_ACCESO" referencedColumnNames="id"
                                  referencedTableName="seg_accesos"/>
     </changeSet>
-    <changeSet id="1660948354873-7" author="Miguel_Figueroa2 (generated)">
+    <changeSet id="2022-09-01-10-7" author="Miguel_Figueroa2 (generated)">
         <addForeignKeyConstraint baseColumnNames="pagina_id" baseTableName="seg_roles_paginas"
                                  constraintName="FK_SEG_ROLES_PAGINAS_ON_PAGINA" referencedColumnNames="id"
                                  referencedTableName="seg_paginas"/>
     </changeSet>
-    <changeSet id="1660948354873-8" author="Miguel_Figueroa2 (generated)">
+    <changeSet id="2022-09-01-10-8" author="Miguel_Figueroa2 (generated)">
         <addForeignKeyConstraint baseColumnNames="rol_id" baseTableName="seg_roles_paginas"
                                  constraintName="FK_SEG_ROLES_PAGINAS_ON_ROL" referencedColumnNames="id"
                                  referencedTableName="seg_roles"/>

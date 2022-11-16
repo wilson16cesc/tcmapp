@@ -28,6 +28,17 @@ public class Usuario extends BaseEntityIdentity {
 
     private List<Rol> roles = new ArrayList<>();
 
+    @Column(name = "email")
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Usuario() {
     }
 

@@ -70,8 +70,10 @@ public class UsuariosView implements Serializable {
                 .collect(Collectors.toList());
     }
     public void guardarUsuario(){
-        String encodedPassword = passwordHash.generate(selectedUsuario.getPassword().toCharArray());
-        selectedUsuario.setPassword(encodedPassword);
+        if(selectedUsuario.getId()==null){
+            String encodedPassword = passwordHash.generate(selectedUsuario.getPassword().toCharArray());
+            selectedUsuario.setPassword(encodedPassword);        
+        }
         usuariosService.update(selectedUsuario);
         Messages.addInfo(null, "Datos guardados correctamente");
     }
