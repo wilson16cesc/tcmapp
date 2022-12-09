@@ -55,7 +55,7 @@ public class LoginView {
                 break;
             case SEND_FAILURE:
                 logger.info("SEND_FAILURE");
-                Messages.addError(null, "Error de autenticación");
+                Messages.addError(null, "Datos inválidos.");
                 break;
             default:
                 break;

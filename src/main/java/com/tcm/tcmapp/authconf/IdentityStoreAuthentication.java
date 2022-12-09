@@ -28,12 +28,6 @@ public class IdentityStoreAuthentication implements IdentityStore {
 
     Map<String, String> users = new HashMap<>();
 
-//    @PostConstruct
-//    private void init() {
-//
-//
-//    }
-
     @Override
     public int priority() {
         return 70;
@@ -51,6 +45,8 @@ public class IdentityStoreAuthentication implements IdentityStore {
                 users.put(u.getUsername(), u.getPassword())
         );
         String storedPassword = users.get(credential.getCaller());
+        if(Objects.isNull(storedPassword))
+            return INVALID_RESULT;
         char[] charArrayPassword = credential.getPassword().getValue();
         if (passwordHash.verify(charArrayPassword, storedPassword)) {
             return new CredentialValidationResult(credential.getCaller());
