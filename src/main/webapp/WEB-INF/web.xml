@@ -116,16 +116,20 @@
     </mime-mapping>    
     <session-config>
         <session-timeout>
-            1
+            10
         </session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>pages/home.xhtml</welcome-file>
     </welcome-file-list>
-    <error-page>
+<!--    <error-page>
         <error-code>403</error-code>
         <location>/access_error.xhtml</location>
     </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/expired.xhtml</location>
+    </error-page>-->
     <env-entry>
         <env-entry-name>com.tcm.dates.timezone</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>

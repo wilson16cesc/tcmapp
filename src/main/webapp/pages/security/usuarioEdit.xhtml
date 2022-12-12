@@ -36,14 +36,26 @@
                     </p:inputText>                    
 
                     <p:outputLabel value="Activo"/>
-                    <p:selectBooleanCheckbox value="#{usuariosView.selectedUsuario.activo}" itemLabel="Activo"/>
+                     <p:selectBooleanButton onLabel="Si" offLabel="No" value="#{usuariosView.selectedUsuario.activo}"
+                                onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" />
+
                     <p:outputLabel value="Roles"/>
-                    <p:autoComplete id="autoRol" value="#{usuariosView.selectedUsuario.roles}" label="Rol" unique="true"
-                                    completeMethod="#{usuariosView.completeRol}" multiple="true"
-                                    var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol}"
-                                    forceSelection="true" scrollHeight="250">
-                        <o:converter converterId="omnifaces.ListConverter" list="#{usuariosView.roles}" />
-                    </p:autoComplete>
+
+                    <h:panelGroup id="rolesPanelGroup">
+                        <h:panelGroup >
+                            <p:pickList  value="#{usuariosView.rolesModel}" id="rolesPickList" var="rol" itemValue="#{rol}" itemLabel="#{rol.nombre} - #{rol.usuarioCrea}" 
+                                         transferOnCheckboxClick="false" >
+                                <o:converter converterId="omnifaces.ListIndexConverter" list="#{usuariosView.roles}" />
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Seleccionados</f:facet>
+        <!--                        <p:ajax event="transfer" listener="#{usuariosView.transfer()}"/>-->
+                                <p:column style="text-align: left;">
+                                    <h:outputText value="#{rol.nombre}"/>
+                                </p:column>
+                            </p:pickList>
+                        </h:panelGroup>
+                    </h:panelGroup>                    
+
                 </p:panelGrid>
                 <h:panelGroup layout="block" style="text-align: right">
                     <p:commandButton value="Volver" ajax="false" immediate="true" action="usuarios.xhtml?faces-redirect=true" style="margin-right: 5px;" />

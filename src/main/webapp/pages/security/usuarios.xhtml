@@ -35,7 +35,7 @@
                         <h:outputText value="#{usuario.nombre}"/>
                     </p:column>
                     <p:column headerText="Activo" width="5%">
-                        <h:outputText value="#{usuario.activo}"/>
+                        <h:outputText value="#{usuario.activo ? 'Si' : 'No'}"/>
                     </p:column>
                     <p:column headerText="Fecha Creación" width="30%">
                         <h:outputText value="#{usuario.fechaCrea}" >

@@ -15,9 +15,10 @@ import javax.inject.Named;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.primefaces.model.DualListModel;
 
 @Named
 @ViewScoped
@@ -37,6 +38,7 @@ public class UsuariosView implements Serializable {
     private List<Usuario> usuarios;
     private List<Rol> roles;
     private Usuario selectedUsuario;
+    private DualListModel<Rol> rolesModel;
 
     public UsuariosView() {
         usuarios = new ArrayList<>();
@@ -48,15 +50,16 @@ public class UsuariosView implements Serializable {
     protected void init() {
         String accion = String.valueOf(Faces.getRequestParameter("accion"));
         logger.info("accion:{}", accion);
+
         switch (accion) {
             case "crear":
-                selectedUsuario = new Usuario();
-                roles = rolesService.findAllActiveWithPermisos();
+                nuevoUsuario();
                 break;
             case "editar":
                 String userId = Faces.getRequestParameter("userId");
                 selectedUsuario = usuariosService.findById(Long.valueOf(userId));
-                roles = rolesService.findAllActiveWithPermisos();
+                loadRolesModel();
+                cargarRolesUsuario();
                 break;
             default:
                 usuarios = usuariosService.findAll();
@@ -64,17 +67,35 @@ public class UsuariosView implements Serializable {
         logger.info("Usuario: {}", selectedUsuario);
     }
 
-    public List<Rol> completeRol(String query) {
-        return roles.stream()
-                .filter(rol -> rol.getNombre().toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList());
+    private void loadRolesModel() {
+        roles = rolesService.findAllActiveWithPermisos();
+        rolesModel = new DualListModel<>(
+                new ArrayList<>(roles),
+                new ArrayList<>());
     }
-    public void guardarUsuario(){
-        if(selectedUsuario.getId()==null){
+
+    public void cargarRolesUsuario() {
+        logger.info("Roles del usuario: {} - {}",
+                selectedUsuario.getUsername(), Arrays.toString(selectedUsuario.getRoles().toArray()));
+
+        ArrayList<Rol> rolesOrigen = new ArrayList<>(roles);
+        rolesOrigen.removeAll(selectedUsuario.getRoles());
+        rolesModel = new DualListModel<>(
+                rolesOrigen,
+                new ArrayList<>(selectedUsuario.getRoles())
+        );
+
+    }
+
+    public void guardarUsuario() {
+        if (selectedUsuario.getId() == null) {
             String encodedPassword = passwordHash.generate(selectedUsuario.getPassword().toCharArray());
-            selectedUsuario.setPassword(encodedPassword);        
+            selectedUsuario.setPassword(encodedPassword);
         }
+        List<Rol> selectedRoles = rolesModel.getTarget();
+        selectedUsuario.setRoles(selectedRoles);
         usuariosService.update(selectedUsuario);
+        cargarRolesUsuario();
         Messages.addInfo(null, "Datos guardados correctamente");
     }
 
@@ -102,8 +123,18 @@ public class UsuariosView implements Serializable {
         this.roles = roles;
     }
 
-    public void nuevoUsuario(){
+    public DualListModel<Rol> getRolesModel() {
+        return rolesModel;
+    }
+
+    public void setRolesModel(DualListModel<Rol> rolesModel) {
+        this.rolesModel = rolesModel;
+    }
+
+    public void nuevoUsuario() {
         logger.info("ejecutando metodo: nuevoUsuario");
         selectedUsuario = new Usuario();
+        loadRolesModel();
     }
+
 }
