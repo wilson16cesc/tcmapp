@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.omnifaces.util.Faces;
+import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 
 import javax.faces.context.ExternalContext;
@@ -122,7 +123,7 @@ public class UsuariosViewTest {
         rolUsuario.setPermisos(Collections.singletonList(editarMenuRead));
         return Arrays.asList(rolAdmin, rolUsuario);
     }
-    @Test
+/*    @Test
     public void cuandoInvoqueCompleteRol_entoncesDebeDevolverListaFiltradaPorElCriterioDado(){
         Rol rolAdmin = new Rol("ADMIN");
         Rol rolUser = new Rol("USER");
@@ -131,11 +132,17 @@ public class UsuariosViewTest {
         List<Rol> listResult = usuariosView.completeRol("min");
 
         assertThat(listResult).contains(rolAdmin);
-    }
+    }*/
+
     @Test
     public void cuandoInvoqueGuardarUsuario_entoncesDebeEncriptarPasswordYActualizarUsuario(){
 
         Usuario selectedUsuario = new Usuario("username", "pass", "nombre", new ArrayList<>());
+        List<Rol> roles = obtenerRolesConPermisos();
+        DualListModel<Rol> rolesModel = new DualListModel<>(
+            new ArrayList<>(roles),
+            new ArrayList<>());
+        usuariosView.setRolesModel(rolesModel);
         usuariosView.setSelectedUsuario(selectedUsuario);
         usuariosView.guardarUsuario();
 

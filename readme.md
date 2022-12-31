@@ -1,0 +1,23 @@
+# TCM App
+
+## Ejecutar pruebas
+Para correr los tests se requiere tener un servidor Payara local corriendo con los puertos predeterminados.
+Se requiere crear los datasources en Payara por línea de comando como sigue: 
+```
+asadmin create-jdbc-connection-pool --datasourceclassname com.microsoft.sqlserver.jdbc.SQLServerDataSource --restype javax.sql.DataSource --property user=user_tcm:password=12345:url="jdbc:sqlserver://localhost\sqlexpress;DatabaseName=tcm;encrypt=true;trustServerCertificate=true;" TcmPool
+asadmin create-jdbc-connection-pool --connectionpoolid TcmPool jdbc/tcm
+
+asadmin create-jdbc-connection-pool --datasourceclassname org.h2.jdbcx.JdbcDataSource --restype javax.sql.DataSource --property user=sa:password=12345:url="jdbc:h2:mem:tcmtest;MODE=MSSQLServer" TcmTestPool
+asadmin create-jdbc-connection-pool --connectionpoolid TcmTestPool jdbc/tcmTest
+```
+Verificar si la conexión se creó correctamente con el siguiente comando:
+
+```
+asadmin ping-connection-pool TcmPool
+```
+
+Ahora puede ejecutar las pruebas con el comando:
+```
+mvn test
+```
+

@@ -190,27 +190,27 @@
                 </dependency>
             </dependencies>
         </profile>
-        <profile>
-            <id>payara-embedded</id>
-            <!--            <activation>-->
-            <!--                <activeByDefault>true</activeByDefault>-->
-            <!--            </activation>-->
-            <properties>
-                <skipTests>false</skipTests>
-            </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>fish.payara.arquillian</groupId>
-                    <artifactId>arquillian-payara-server-4-embedded</artifactId>
-                    <version>1.1</version>
-                </dependency>
-                <dependency>
-                    <groupId>fish.payara.extras</groupId>
-                    <artifactId>payara-embedded-all</artifactId>
-                    <version>5.2022.3</version>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
+<!--        <profile>-->
+<!--            <id>payara-embedded</id>-->
+<!--                        <activation>-->
+<!--                            <activeByDefault>true</activeByDefault>-->
+<!--                        </activation>-->
+<!--            <properties>-->
+<!--                <skipTests>false</skipTests>-->
+<!--            </properties>-->
+<!--            <dependencies>-->
+<!--                <dependency>-->
+<!--                    <groupId>fish.payara.arquillian</groupId>-->
+<!--                    <artifactId>arquillian-payara-server-4-embedded</artifactId>-->
+<!--                    <version>1.1</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>fish.payara.extras</groupId>-->
+<!--                    <artifactId>payara-embedded-all</artifactId>-->
+<!--                    <version>5.2022.3</version>-->
+<!--                    <scope>test</scope>-->
+<!--                </dependency>-->
+<!--            </dependencies>-->
+<!--        </profile>-->
     </profiles>
 </project>
