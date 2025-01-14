@@ -37,3 +37,13 @@ mvn liquibase:update
 ```
 docker-compose up payara
 ```
+Una vez inicializada la aplicación puede ingresar con los siguientes datos:
+```
+http://localhost:8080/tcm
+usuario: admin
+contraseña: 12345
+```
+Para detener la aplicación ejecute el siguiente comando:
+```
+docker-compose down
+```
