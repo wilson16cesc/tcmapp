@@ -1,0 +1,4 @@
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'tcm')
+BEGIN
+	CREATE DATABASE tcm;
+END

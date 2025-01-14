@@ -1,0 +1,21 @@
+services:
+  payara:
+    build: ./init/payara
+    ports:
+      - "8080:8080"  # HTTP port
+      - "4848:4848"  # Admin console port
+    volumes:
+      - ./init/payara/post-boot-commands.asadmin:/opt/payara/config/post-boot-commands.asadmin
+      - ./target/tcmapp.war:/opt/payara/deployments/tcm.war
+    environment:
+      - POSTBOOT_COMMANDS=/opt/payara/config/post-boot-commands.asadmin
+    depends_on:
+        - sqlserver_tcm
+    restart: unless-stopped
+
+
+  sqlserver_tcm:
+    build: ./init/sqlserver
+    container_name: sqlserver_tcm
+    ports:
+      - "1433:1433"

@@ -21,3 +21,19 @@ Ahora puede ejecutar las pruebas con el comando:
 mvn test
 ```
 
+## Inicializar aplicación en contenedores
+Para inicializar la aplicación en contenedores se requiere tener Docker y Docker Compose instalados en su máquina. Además se requiere tener Java 8 y Maven instalados.
+Una vez que tenga todo listo, ejecute los siguientes comandos en la raíz del proyecto:
+
+```
+mvn clean install -DskipTests
+```
+```
+docker-compose up sqlserver_tcm
+``` 
+```
+mvn liquibase:update
+```
+```
+docker-compose up payara
+```
