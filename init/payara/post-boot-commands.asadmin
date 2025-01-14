@@ -1,4 +1,4 @@
-# Create the JDBC connection pool for Postgres:
+# Create the JDBC connection pool for SQL Server:
 create-jdbc-connection-pool --datasourceclassname=com.microsoft.sqlserver.jdbc.SQLServerDataSource --restype=javax.sql.DataSource --property user=sa:password=Tcm2025++:Url="jdbc:sqlserver://sqlserver_tcm\:1433;databaseName=tcm;encrypt=true;trustServerCertificate=true" tcm-pool
 
 # Create the JDBC resource:
