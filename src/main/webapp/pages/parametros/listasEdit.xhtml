@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template/mainTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+        <p:panel id="ListasPanel" style="width: 70%;">
+            <f:facet name="header" >
+                <i class="pi pi-list" style="font-size: 1.5rem; margin-right: 5px;"></i> Listas
+            </f:facet>
+            <p:dataTable value="#{listasView.listas}" var="lista" rows="20" paginator="true"
+                         paginatorPosition="bottom" widgetVar="tbllistas"
+                         globalFilterOnly="true">
+                <p:column headerText="Id" width="8%">
+                    <h:outputText value="#{lista.id}"/>
+                </p:column>
+                <p:column headerText="Tipo Lista" width="10%" filterBy="#{lista.tipo_lista}">
+                    <h:outputText value="#{lista.tipo_lista}"/>
+                </p:column>
+                <p:column headerText="Código Lista" width="10%" filterBy="#{lista.cod_lista}">
+                    <h:outputText value="#{lista.cod_lista}"/>
+                </p:column>
+                <p:column headerText="Descripción" width="10%" filterBy="#{lista.descripcion}">
+                    <h:outputText value="#{lista.descripcion}"/>
+                </p:column>
+                <p:column headerText="Activo" width="5%">
+                    <h:outputText value="#{lista.activo ? 'Si' : 'No'}"/>
+                </p:column>
+            </p:dataTable>
+            <h:outputText value="#{listasView.prueba}"/>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
+

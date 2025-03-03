@@ -9,8 +9,13 @@
     <ui:define name="content">
         <h:form id="permisosForm">
             <p:panel id="permisosPanel" header="Usuarios" style="width: 70%;">
+                <h:panelGroup layout="block" style="margin-top: 5px; text-align: right;width: 70%;" rendered="#{viewHelper.hasPermission('PermisosWrite')}">
+                    <p:commandButton value="Nuevo" action="permisoEdit.xhtml">
+                        <f:param name="accion" value="crear"/>
+                    </p:commandButton>
+                </h:panelGroup>
                 <p:messages id="permisosMessages"/>
-                <p:dataTable value="#{permisosView.permisos}" var="permiso" rows="#{viewHelper.filasTablas}" paginator="true" 
+                <p:dataTable value="#{permisosView.permisos}" var="permiso" rows="#{viewHelper.filasTablas}" paginator="true"
                              paginatorPosition="bottom" widgetVar="tblUsuarios"
                              globalFilterOnly="true">
                     <f:facet name="header">
@@ -21,7 +26,7 @@
                                              placeholder="Digite valor buscado" />
                             </div>
                         </div>
-                    </f:facet>                
+                    </f:facet>
                     <p:column headerText="Id" width="8%">
                         <h:outputText value="#{permiso.id}"/>
                     </p:column>
@@ -45,11 +50,6 @@
                     </p:column>
                 </p:dataTable>
             </p:panel>
-            <h:panelGroup layout="block" style="margin-top: 5px; text-align: right;width: 70%;" rendered="#{viewHelper.hasPermission('PermisosWrite')}">
-                <p:commandButton value="Nuevo" action="permisoEdit.xhtml">
-                    <f:param name="accion" value="crear"/>
-                </p:commandButton>
-            </h:panelGroup>
         </h:form>
     </ui:define>
 

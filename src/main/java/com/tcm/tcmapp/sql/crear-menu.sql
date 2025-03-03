@@ -1,5 +1,4 @@
 
-
 SELECT TOP 100 * FROM dbo.seg_paginas order by id_padre;
 
 --delete from seg_paginas;

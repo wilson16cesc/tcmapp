@@ -131,8 +131,11 @@ public class AppInitializer {
         Permiso permisosWrite = new Permiso("PermisosWrite", "Tiene permiso de escritura en la ventana Roles");
         Permiso permisosRead = new Permiso("PermisosRead", "Tiene permiso de lectura en la ventana Permisos");
 
+        Permiso listasWrite = new Permiso("listasWrite", "Tiene permiso de escritura en la ventana listas");
+        Permiso listasRead = new Permiso("listasRead", "Tiene permiso de lectura en la ventana listas");
+
         List<Permiso> permisos = new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite, permisosRolesWrite,
-                permisosRolesRead, usuariosRead, usuariosWrite, rolesWrite, permisosRead, permisosWrite));
+                permisosRolesRead, usuariosRead, usuariosWrite, rolesWrite, permisosRead, permisosWrite, listasRead, listasWrite));
         permisos.forEach(permiso ->
                 permisoDAO.save(permiso)
         );
@@ -141,8 +144,8 @@ public class AppInitializer {
         Rol userRol = rolDAO.findFirstByNombre("USER");
 
         if (Objects.nonNull(adminRol) && Objects.nonNull(userRol)) {
-            adminRol.setPermisos(Arrays.asList(editarMenuWrite, permisosRolesWrite, usuariosWrite, rolesWrite, permisosRead, permisosWrite));
-            userRol.setPermisos(Arrays.asList(editarMenuRead, permisosRolesRead, usuariosRead, permisosRead));
+            adminRol.setPermisos(Arrays.asList(editarMenuWrite, permisosRolesWrite, usuariosWrite, rolesWrite, permisosRead, permisosWrite,listasRead,listasWrite));
+            userRol.setPermisos(Arrays.asList(editarMenuRead, permisosRolesRead, usuariosRead, permisosRead,listasRead, listasWrite));
         }
 
         rolDAO.update(adminRol);
@@ -161,6 +164,9 @@ public class AppInitializer {
         Permiso rolesWrite = permisoDAO.findByNombre("RolesWrite");
         Permiso permisosWrite = permisoDAO.findByNombre("PermisosWrite");
         Permiso permisosRead = permisoDAO.findByNombre("PermisosRead");
+
+        Permiso listasWrite = permisoDAO.findByNombre("listasWrite");
+        Permiso listasRead = permisoDAO.findByNombre("listasRead");
 
         Pagina administracion = new Pagina(1L, "Administracion", "http://item1.com", false, "user-edit", 0L, LocalDateTime.now(), "mfigueroa", true);
         administracion.setPermisos(new ArrayList<>(Arrays.asList(editarMenuRead, editarMenuWrite, permisosRead, permisosWrite, usuariosRead, usuariosWrite, permisosRolesRead, permisosRolesWrite, rolesWrite)));
@@ -195,6 +201,11 @@ public class AppInitializer {
 
         paginaDAO.save(new Pagina(10L, "Item 10", "http://item10.com", true, "user-edit", noveno.getId(), LocalDateTime.now(), "mfigueroa", true));
         paginaDAO.save(new Pagina(11L, "Item 11", "http://item11.com", true, "user-edit", noveno.getId(), LocalDateTime.now(), "mfigueroa", true));
+
+        //pagina de listas
+        Pagina listasEdit = new Pagina(12L, "Editar Listas", "/pages/parametros/listasEdit.xhtml", true, "user-edit", administracion.getId(), LocalDateTime.now(), "mfigueroa", true);
+        listasEdit.setPermisos(new ArrayList<>(Arrays.asList(listasRead, listasWrite)));
+        paginaDAO.save(listasEdit);
 
     }
 

@@ -19,4 +19,7 @@
     <include file="liquibase/2022-09/010-crear-relacion-paginas-permisos-changelog.xml"/>
     <include file="liquibase/2022-09/011-crea-tabla-parametros-globales-changelog.xml"/>
     <include file="liquibase/2022-10/012-agrega-columna-email-tabla-usuario-changelog.xml"/>
+
+    <include file="liquibase/2025-01/013-agrega-tabla-parametros-changelog.xml"/>
+    <include file="liquibase/2025-01/014-agrega-tabla-par_parametros-par_datos-changelog.xml" />
 </databaseChangeLog>
