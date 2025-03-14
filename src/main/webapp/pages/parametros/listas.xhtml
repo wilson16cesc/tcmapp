@@ -7,40 +7,60 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="content">
-        <p:panel id="ListasPanel" style="width: 70%;">
-            <f:facet name="header" >
-                <i class="pi pi-list" style="font-size: 1.5rem; margin-right: 5px;"></i> Listas
-            </f:facet>
-            <p:dataTable value="#{listasView.listas}" var="lista" rows="20" paginator="true"
-                         paginatorPosition="bottom" widgetVar="tbllistas"
-                         globalFilterOnly="true">
-                <f:facet name="header">
-                    <div class="flex align-items-center justify-content-between">
-                        <div>
-                            <h:outputText value="Buscar: "/>
-                            <p:inputText id="globalFilter" onkeyup="PF('tblUsuarios').filter()" style="width:15rem"
-                                         placeholder="Digite valor buscado" />
-                        </div>
-                    </div>
+        <h:form id="listasForm" enctype="multipart/form-data">
+            <p:panel id="ListasPanel" style="width: 70%;">
+                <f:facet name="header" >
+                    <i class="pi pi-list" style="font-size: 1.5rem; margin-right: 5px;"></i> Listas
                 </f:facet>
-                <p:column headerText="Id" width="8%">
-                    <h:outputText value="#{lista.id}"/>
-                </p:column>
-                <p:column headerText="Tipo Lista" width="10%" filterBy="#{lista.tipo_lista}">
-                    <h:outputText value="#{lista.tipo_lista}"/>
-                </p:column>
-                <p:column headerText="Código Lista" width="10%" filterBy="#{lista.cod_lista}">
-                    <h:outputText value="#{lista.cod_lista}"/>
-                </p:column>
-                <p:column headerText="Descripción" width="10%" filterBy="#{lista.descripcion}">
-                    <h:outputText value="#{lista.descripcion}"/>
-                </p:column>
-                <p:column headerText="Activo" width="5%">
-                    <h:outputText value="#{lista.activo ? 'Si' : 'No'}"/>
-                </p:column>
-            </p:dataTable>
-            <h:outputText value="#{listasView.prueba}"/>
-        </p:panel>
+
+                <h:panelGroup layout="block" style="margin: 5px 5px; padding:5px; text-align: left;width: 90%;">
+                    <p:commandButton value="Nuevo"  style="margin-right:5px" action="listasEdit.xhtml">
+                        <f:param name="accion" value="crear"/>
+                    </p:commandButton>
+                    <p:commandButton value="Cargar Excel" action="#{listasView.upload}" ajax="false" style="margin-right:5px" />
+                    <p:fileUpload value="#{listasView.file}" mode="simple" />
+                </h:panelGroup>
+
+                <p:growl id="messages" showDetail="true"/>
+                <p:dataTable value="#{listasView.listas}" var="lista" rows="20" paginator="true"
+                             paginatorPosition="bottom" widgetVar="tbllistas"
+                             globalFilterOnly="true">
+                    <f:facet name="header">
+                        <div class="flex align-items-center justify-content-between">
+                            <div>
+                                <h:outputText value="Buscar: "/>
+                                <p:inputText id="globalFilter" onkeyup="PF('tbllistas').filter()" style="width:15rem"
+                                             placeholder="Digite valor buscado" />
+                            </div>
+                        </div>
+                    </f:facet>
+                    <p:column headerText="Id" width="8%">
+                        <h:outputText value="#{lista.id}"/>
+                    </p:column>
+                    <p:column headerText="Nombre Lista" width="15%" filterBy="#{lista.tipo_lista}">
+                        <h:outputText value="#{lista.tipo_lista}"/>
+                    </p:column>
+                    <p:column headerText="Item de Lista" width="15%" filterBy="#{lista.cod_lista}">
+                        <h:outputText value="#{lista.cod_lista}"/>
+                    </p:column>
+                    <p:column headerText="Descripción" width="15%" filterBy="#{lista.descripcion}">
+                        <h:outputText value="#{lista.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Caracteristica" width="15%" filterBy="#{lista.caracteristica}">
+                        <h:outputText value="#{lista.caracteristica}"/>
+                    </p:column>
+                    <p:column headerText="Activo" width="10%">
+                        <h:outputText value="#{lista.activo ? 'Si' : 'No'}"/>
+                    </p:column>
+                    <p:column style="text-align: center;" width="14%">
+                        <p:commandButton icon="pi pi-pencil" action="listasEdit.xhtml" styleClass="rounded-button ui-button-flat" >
+                            <f:param name="userId" value="#{lista.id}"/>
+                            <f:param name="accion" value="editar"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
     </ui:define>
 
 </ui:composition>

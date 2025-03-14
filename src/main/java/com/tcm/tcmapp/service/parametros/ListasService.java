@@ -3,6 +3,7 @@ package com.tcm.tcmapp.service.parametros;
 
 import com.tcm.tcmapp.dao.parametros.ListasDAO;
 import com.tcm.tcmapp.entity.parametros.Listas;
+import com.tcm.tcmapp.entity.security.Usuario;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -26,4 +27,9 @@ public class ListasService {
     public void save(Listas lista){
         listasDAO.save(lista);
     }
+
+    public Listas findById(Long id) {
+        return listasDAO.findById(id);
+    }
+
 }

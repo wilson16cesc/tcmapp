@@ -19,8 +19,9 @@
             <column name="descripcion" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
+            <column name="caracteristica" type="VARCHAR(100)">
+            </column>
             <column name="desc_caracteristica" type="VARCHAR(100)">
-                <constraints nullable="false"/>
             </column>
             <column name="icono" type="VARCHAR(250)">
                 <constraints nullable="false"/>

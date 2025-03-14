@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template/mainTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+        <h:form id="parametrosForm">
+            <p:panel id="ParametrosPanel" style="width: 70%;">
+                <f:facet name="header" >
+                    <i class="pi pi-list" style="font-size: 1.5rem; margin-right: 5px;"></i> Parametros
+                </f:facet>
+                <h:panelGroup layout="block" style="margin: 5px 5px; padding:5px; text-align: left;width: 90%;">
+                    <p:commandButton value="Nuevo"  style="margin-right:5px" action="parametrosEdit.xhtml">
+                        <f:param name="accion" value="crear"/>
+                    </p:commandButton>
+                </h:panelGroup>
+
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:dataTable value="#{parametrosView.parametros}" var="parametro" rows="20" paginator="true"
+                             paginatorPosition="bottom" widgetVar="tblParametros"
+                             globalFilterOnly="true">
+                    <f:facet name="header">
+                        <div class="flex align-items-center justify-content-between">
+                            <div>
+                                <h:outputText value="Buscar: "/>
+                                <p:inputText id="globalFilter" onkeyup="PF('tblParametros').filter()" style="width:15rem"
+                                             placeholder="Digite valor buscado" />
+                            </div>
+                        </div>
+                    </f:facet>
+                    <p:column headerText="Id Parametro" width="8%">
+                        <h:outputText value="#{parametro.id}"/>
+                    </p:column>
+                    <p:column headerText="Nombre Parametro" width="15%" filterBy="#{parametro.tipo_parametro}">
+                        <h:outputText value="#{parametro.tipo_parametro}"/>
+                    </p:column>
+                    <p:column headerText="Còdigo Parametro" width="15%" filterBy="#{parametro.cod_parametro}">
+                        <h:outputText value="#{parametro.cod_parametro}"/>
+                    </p:column>
+                    <p:column headerText="Descripción" width="15%" filterBy="#{parametro.descripcion}">
+                        <h:outputText value="#{parametro.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Activo" width="10%">
+                        <h:outputText value="#{parametro.activo ? 'Si' : 'No'}"/>
+                    </p:column>
+                    <p:column style="text-align: center;" width="14%">
+
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -22,7 +22,10 @@ public class Listas extends BaseEntityIdentity {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
-    @Column(name = "desc_caracteristica", nullable = false)
+    @Column(name = "caracteristica", nullable = true)
+    private String caracteristica;
+
+    @Column(name = "desc_caracteristica", nullable = true)
     private String desc_caracteristica;
 
     @Column(name = "icono", nullable = false)
@@ -32,10 +35,11 @@ public class Listas extends BaseEntityIdentity {
 
     }
 
-    public Listas(String tipo_lista, String cod_lista, String descripcion, String desc_caracteristica, String icono) {
+    public Listas(String tipo_lista, String cod_lista, String descripcion, String caracteristica, String desc_caracteristica, String icono) {
         this.tipo_lista = tipo_lista;
         this.cod_lista = cod_lista;
         this.descripcion = descripcion;
+        this.caracteristica = caracteristica;
         this.desc_caracteristica = desc_caracteristica;
         this.icono = icono;
     }
@@ -64,6 +68,14 @@ public class Listas extends BaseEntityIdentity {
         this.descripcion = descripcion;
     }
 
+    public String getCaracteristica() {
+        return caracteristica;
+    }
+
+    public void setCaracteristica(String caracteristica) {
+        this.caracteristica = caracteristica;
+    }
+
     public String getDesc_caracteristica() {
         return desc_caracteristica;
     }
@@ -87,6 +99,7 @@ public class Listas extends BaseEntityIdentity {
                 "tipo_lista='" + tipo_lista + '\'' +
                 ", cod_lista='" + cod_lista + '\'' +
                 ", descripcion='" + descripcion + '\'' +
+                ", caracteristica='" + caracteristica + '\'' +
                 ", desc_caracteristica='" + desc_caracteristica + '\'' +
                 ", icono='" + icono + '\'' +
                 '}';
@@ -96,11 +109,11 @@ public class Listas extends BaseEntityIdentity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Listas listas = (Listas) o;
-        return Objects.equals(tipo_lista, listas.tipo_lista) && Objects.equals(cod_lista, listas.cod_lista) && Objects.equals(descripcion, listas.descripcion) && Objects.equals(desc_caracteristica, listas.desc_caracteristica) && Objects.equals(icono, listas.icono);
+        return Objects.equals(tipo_lista, listas.tipo_lista) && Objects.equals(cod_lista, listas.cod_lista) && Objects.equals(descripcion, listas.descripcion) && Objects.equals(caracteristica, listas.caracteristica) && Objects.equals(desc_caracteristica, listas.desc_caracteristica) && Objects.equals(icono, listas.icono);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tipo_lista, cod_lista, descripcion, desc_caracteristica, icono);
+        return Objects.hash(tipo_lista, cod_lista, descripcion, caracteristica, desc_caracteristica, icono);
     }
 }

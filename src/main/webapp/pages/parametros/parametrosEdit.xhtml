@@ -15,30 +15,24 @@
                 width: 250px;
             }
         </style>
-        <h:form id="listasForm">
-            <p:panel id="listasPanel" header="Listas" style="width: 70%;">
-                <p:messages id="listasMessages"/>
+        <h:form id="parametrosForm">
+            <p:panel id="parametrosPanel" header="Listas" style="width: 70%;">
+                <p:messages id="parametrosMessages"/>
                 <p:panelGrid columns="2" layout="grid" columnClasses="ui-g-4, ui-g-8">
-                    <p:outputLabel value="Tipo Lista"/>
-                    <p:inputText value="#{listasView.selectedLista.tipo_lista}" required="true" label="Tipo Lista"/>
-                    <p:outputLabel value="Código Lista"/>
-                    <p:inputText value="#{listasView.selectedLista.cod_lista}" required="true" label="Código Lista"/>
+                    <p:outputLabel value="Nombre Parametro"/>
+                    <p:inputText value="#{parametrosView.selectedParametro.tipo_parametro}" required="true" label="Nombre Parametro"/>
+                    <p:outputLabel value="Código Parametro"/>
+                    <p:inputText value="#{parametrosView.selectedParametro.cod_parametro}" required="true" label="Código Parametro"/>
                     <p:outputLabel value="Descripción"/>
-                    <p:inputText value="#{listasView.selectedLista.descripcion}" required="true" label="Descripción"/>
-                    <p:outputLabel value="Caracteristica"/>
-                    <p:inputText value="#{listasView.selectedLista.caracteristica}" required="true" label="Caracteristica"/>
-                    <p:outputLabel value="Descripción Caracteristica"/>
-                    <p:inputText value="#{listasView.selectedLista.desc_caracteristica}" required="true" label="Descripción Caracteristica"/>
-                    <p:outputLabel value="Icono"/>
-                    <p:inputText value="#{listasView.selectedLista.icono}" required="true" label="Icono"/>
+                    <p:inputText value="#{parametrosView.selectedParametro.descripcion}" required="true" label="Descripción"/>
                     <p:outputLabel value="Activo"/>
-                    <p:selectBooleanButton onLabel="Si" offLabel="No" value="#{listasView.selectedLista.activo}"
+                    <p:selectBooleanButton onLabel="Si" offLabel="No" value="#{parametrosView.selectedParametro.activo}"
                                            onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" />
 
                 </p:panelGrid>
                 <h:panelGroup layout="block" style="text-align: right">
-                    <p:commandButton value="Volver" ajax="false" immediate="true" action="listas.xhtml?faces-redirect=true" style="margin-right: 5px;" />
-                    <p:commandButton value="Guardar" update="@form" actionListener="#{listasView.guardarLista()}" >
+                    <p:commandButton value="Volver" ajax="false" immediate="true" action="parametros.xhtml?faces-redirect=true" style="margin-right: 5px;" />
+                    <p:commandButton value="Guardar" update="@form" actionListener="#{parametrosView.guardarParametros()}" >
                         <p:confirm header="Confirmación" message="¿Desea guardar los cambios?" icon="pi pi-exclamation-triangle"/>
                     </p:commandButton>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
@@ -51,4 +45,3 @@
     </ui:define>
 
 </ui:composition>
-
