@@ -1,0 +1,14 @@
+.styled-grid {
+    width: 50%;
+    border-collapse: collapse;
+}
+
+.styled-grid td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.styled-label {
+    font-weight: bold;
+    color: #2C3E50;
+}

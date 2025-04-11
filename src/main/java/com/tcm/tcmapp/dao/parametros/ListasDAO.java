@@ -1,8 +1,8 @@
 package com.tcm.tcmapp.dao.parametros;
 
 import com.tcm.tcmapp.dao.base.BaseDAO;
+import com.tcm.tcmapp.entity.parametros.Datos;
 import com.tcm.tcmapp.entity.parametros.Listas;
-import com.tcm.tcmapp.entity.security.Usuario;
 
 import javax.ejb.Stateless;
 

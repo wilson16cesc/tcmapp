@@ -32,10 +32,10 @@
     </changeSet>
     <changeSet id="2025-01-23-14_2" author="Wilson Rueda">
         <createTable tableName="par_dato">
-            <column name="id_parametro" type="BIGINT">
-                <constraints nullable="false"/>
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_par_dato"/>
             </column>
-            <column name="id" type="BIGINT">
+            <column name="id_parametro" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="codigo_dato" type="VARCHAR(100)">
@@ -44,15 +44,12 @@
             <column name="descripcion_dato" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column  name="valor_numerico" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="valor_texto" type="VARCHAR(500)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="valor_fecha" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
+            <column  name="valor_numerico" type="BIGINT" />
+
+            <column name="valor_texto" type="VARCHAR(500)" />
+
+            <column name="valor_fecha" type="DATETIME" />
+
             <column name="usuario_crea" type="VARCHAR(100)"/>
             <column name="fecha_crea" type="DATETIME">
                 <constraints nullable="false"/>

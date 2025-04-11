@@ -3,7 +3,7 @@ package com.tcm.tcmapp.service.parametros;
 
 import com.tcm.tcmapp.dao.parametros.ListasDAO;
 import com.tcm.tcmapp.entity.parametros.Listas;
-import com.tcm.tcmapp.entity.security.Usuario;
+
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

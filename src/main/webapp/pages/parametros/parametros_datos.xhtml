@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template/mainTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+        <h:form id="parametrosDatosForm">
+            <p:panel id="ParametrosDPanel" style="width: 70%;">
+                <f:facet name="header" >
+                    <i class="pi pi-list" style="font-size: 1.5rem; margin-right: 5px;"></i> Datos del Parametro
+                </f:facet>
+
+                <h:panelGroup layout="block" style="margin: 5px 5px; padding:5px; text-align: left;width: 90%;">
+                    <p:commandButton value="Nuevo"  style="margin-right:5px" onclick="PF('dialogDatos').show();">
+                        <f:param name="accion" value="crear"/>
+                        <f:param name="parametroId" value="#{parametrosView.selectedParametro.id}"/>
+                    </p:commandButton>
+                    <p:commandButton value="Volver" ajax="false" immediate="true" action="parametros.xhtml?faces-redirect=true" style="margin-right: 5px;" />
+                </h:panelGroup>
+
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:panelGrid columns="2" styleClass="styled-grid">
+                    <h:outputLabel value="Id Parametro:" />
+                    <p:outputLabel value="#{parametrosView.selectedParametro.id}" styleClass="styled-label" />
+                    <h:outputLabel value="Nombre Parametro:" />
+                    <p:outputLabel value="#{parametrosView.selectedParametro.tipo_parametro}" styleClass="styled-label" />
+
+                    <h:outputLabel value="Codigo Parametro:" />
+                    <p:outputLabel value="#{parametrosView.selectedParametro.cod_parametro}" styleClass="styled-label" />
+
+                    <h:outputLabel value="Descripciòn:" />
+                    <p:outputLabel value="#{parametrosView.selectedParametro.datos}" styleClass="styled-label" />
+                </p:panelGrid>
+                <p:separator />
+
+                <p:dataTable id="datosTable" value="#{parametrosView.selectedParametro.datos}" var="dato" rows="20" paginator="true"
+                             paginatorPosition="bottom" widgetVar="tblParDatos"
+                             globalFilterOnly="true">
+
+                    <p:column headerText="Id Dato" width="8%">
+                        <h:outputText value="#{dato.id}"/>
+                    </p:column>
+                    <p:column headerText="Nombre Dato" width="15%" filterBy="#{dato.codigo_dato}">
+                        <h:outputText value="#{dato.codigo_dato}"/>
+                    </p:column>
+
+                    <p:column headerText="Descripción Dato" width="15%" filterBy="#{dato.descripcion_dato}">
+                        <h:outputText value="#{dato.descripcion_dato}"/>
+                    </p:column>
+                    <p:column headerText="Accion" style="text-align: center;" width="14%">
+                        <p:commandButton icon="pi pi-pencil" onclick="PF('dialogDatos').show();" styleClass="rounded-button ui-button-flat" >
+                            <f:param name="datosId" value="#{dato.id}"/>
+                            <f:param name="parametroId" value="#{parametrosView.selectedParametro.id}"/>
+                            <f:param name="accion" value="editarDato"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+            </p:panel>
+        </h:form>
+
+        <!--Dialog para crear datos de los parametros -->
+        <p:dialog header="Formulario de Datos"
+                  widgetVar="dialogDatos"
+                  modal="true"
+                  closable="true"
+                  resizable="false"
+                  draggable="true"
+                  width="500"
+                  position="top">
+
+            <h:form id="formPopupDatos">
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <p:outputLabel value="Codigo Dato"/>
+                    <p:inputText value="#{parametrosView.selectedDato.codigo_dato}" required="true" label="Codigo Dato"/>
+                    <p:outputLabel value="Descripción Dato"/>
+                    <p:inputText value="#{parametrosView.selectedDato.descripcion_dato}" required="true" label="Descrión Dato"/>
+                    <p:outputLabel value="Valor Numerico"/>
+                    <p:inputText value="#{parametrosView.selectedDato.valor_numerico}" required="true" label="Valor Numerico"/>
+                    <p:outputLabel value="Valor Texto"/>
+                    <p:inputText value="#{parametrosView.selectedDato.valor_texto}" required="true" label="Valor Texto"/>
+                    <p:outputLabel value="Valor Fecha"/>
+                    <p:datePicker id="fecha" value="#{parametrosView.selectedDato.valor_fecha}" pattern="dd/MM/yyyy" showIcon="true" />
+                    <p:outputLabel value="Activo"/>
+                    <p:selectBooleanButton onLabel="Si" offLabel="No" value="#{parametrosView.selectedDato.activo}"
+                                           onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" />
+                </h:panelGrid>
+
+                <p:separator />
+
+                <p:commandButton value="Guardar"
+                                 action="#{parametrosView.guardarDato()}"
+                                 update=":parametrosDatosForm:datosTable"
+                                 oncomplete="PF('dialogDatos').hide();" />
+            </h:form>
+
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

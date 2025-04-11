@@ -2,7 +2,6 @@ package com.tcm.tcmapp.service.parametros;
 
 
 import com.tcm.tcmapp.dao.parametros.ParametrosDAO;
-import com.tcm.tcmapp.entity.parametros.Listas;
 import com.tcm.tcmapp.entity.parametros.Parametros;
 
 

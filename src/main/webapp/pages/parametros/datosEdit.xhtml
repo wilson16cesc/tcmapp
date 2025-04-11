@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template/mainTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:o="http://omnifaces.org/ui"
+
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <style>
+            .ui-autocomplete-multiple-container {
+                width: 250px;
+            }
+        </style>
+        <h:form id="datosForm">
+            <p:panel id="datosPanel" header="Datos de un parametro" style="width: 70%;">
+                <p:messages id="listasMessages"/>
+                <p:panelGrid columns="2" layout="grid" columnClasses="ui-g-4, ui-g-8">
+                    <p:outputLabel value="id parametros"/>
+                    <p:inputText value="#{datosView.selectedParametro.id}" required="true" label="Codigo Dato"/>
+                    <p:outputLabel value="Codigo Dato"/>
+                    <p:inputText value="#{datosView.selectedDato.codigo_dato}" required="true" label="Codigo Dato"/>
+                    <p:outputLabel value="Descripción Dato"/>
+                    <p:inputText value="#{datosView.selectedDato.descripcion_dato}" required="true" label="Descrión Dato"/>
+                    <p:outputLabel value="Valor Numerico"/>
+                    <p:inputText value="#{datosView.selectedDato.valor_numerico}" required="true" label="Valor Numerico"/>
+                    <p:outputLabel value="Valor Texto"/>
+                    <p:inputText value="#{datosView.selectedDato.valor_texto}" required="true" label="Valor Texto"/>
+                    <p:outputLabel value="Valor Fecha"/>
+                    <p:datePicker id="fecha" value="#{datosView.selectedDato.valor_fecha}" pattern="dd/MM/yyyy" showIcon="true" />
+                    <p:outputLabel value="Activo"/>
+                    <p:selectBooleanButton onLabel="Si" offLabel="No" value="#{datosView.selectedDato.activo}"
+                                           onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" />
+
+                </p:panelGrid>
+                <h:panelGroup layout="block" style="text-align: right">
+                    <p:commandButton value="Volver" ajax="false" immediate="true" action="parametros_datos.xhtml?faces-redirect=true" style="margin-right: 5px;" >
+                        <f:param name="parametroId" value="#{datosView.selectedParametro.id}"/>
+                    </p:commandButton>
+                    <p:commandButton value="Guardar" update="@form" actionListener="#{datosView.guardarDato()}" >
+                        <p:confirm header="Confirmación" message="¿Desea guardar los cambios?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+                    </p:confirmDialog>
+                </h:panelGroup>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

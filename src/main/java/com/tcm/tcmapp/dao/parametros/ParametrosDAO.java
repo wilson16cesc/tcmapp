@@ -1,7 +1,6 @@
 package com.tcm.tcmapp.dao.parametros;
 
 import com.tcm.tcmapp.dao.base.BaseDAO;
-import com.tcm.tcmapp.entity.parametros.Listas;
 import com.tcm.tcmapp.entity.parametros.Parametros;
 
 import javax.ejb.Stateless;

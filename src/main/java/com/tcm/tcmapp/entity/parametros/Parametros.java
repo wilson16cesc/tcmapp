@@ -2,10 +2,10 @@ package com.tcm.tcmapp.entity.parametros;
 
 import com.tcm.tcmapp.entity.base.BaseEntityIdentity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+
 
 @Entity
 @Table(name="par_parametros")
@@ -20,14 +20,16 @@ public class Parametros extends BaseEntityIdentity {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
+    @OneToMany(mappedBy = "id_parametro", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Datos> datos;
 
     public Parametros(){
 
     }
 
-    public Parametros(String tipo_parametro, String codigo_parametro, String descripcion) {
+    public Parametros(String tipo_parametro, String cod_parametro, String descripcion) {
         this.tipo_parametro = tipo_parametro;
-        this.cod_parametro = codigo_parametro;
+        this.cod_parametro = cod_parametro;
         this.descripcion = descripcion;
     }
 
@@ -55,11 +57,19 @@ public class Parametros extends BaseEntityIdentity {
         this.descripcion = descripcion;
     }
 
+    public List<Datos> getDatos() {
+        return datos;
+    }
+
+    public void setDatos(List<Datos> datos) {
+        this.datos = datos;
+    }
+
     @Override
     public String toString() {
         return "Parametros{" +
                 "tipo_parametro='" + tipo_parametro + '\'' +
-                ", codigo_parametro='" + cod_parametro + '\'' +
+                ", cod_parametro='" + cod_parametro + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 '}';
     }

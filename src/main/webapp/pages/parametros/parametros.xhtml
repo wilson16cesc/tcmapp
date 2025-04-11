@@ -48,7 +48,14 @@
                         <h:outputText value="#{parametro.activo ? 'Si' : 'No'}"/>
                     </p:column>
                     <p:column style="text-align: center;" width="14%">
-
+                            <p:commandButton icon="pi pi-pencil" action="parametrosEdit.xhtml" styleClass="rounded-button ui-button-flat" >
+                                <f:param name="parametroId" value="#{parametro.id}"/>
+                                <f:param name="accion" value="editar"/>
+                            </p:commandButton>
+                            <p:commandButton icon="pi pi-list" action="parametros_datos.xhtml" styleClass="rounded-button ui-button-flat" >
+                                <f:param name="parametroId" value="#{parametro.id}"/>
+                                <f:param name="accion" value="datos"/>
+                            </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </p:panel>

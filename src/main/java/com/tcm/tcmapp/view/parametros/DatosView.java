@@ -9,64 +9,59 @@ import org.omnifaces.util.Messages;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Named
 @ViewScoped
-public class ParametrosView implements Serializable {
-
-    @Inject
-    ParametrosService parametrosService;
+public class DatosView implements Serializable {
 
     @Inject
     DatosService datosService;
 
     @Inject
-    Logger logger;
+    ParametrosService parametrosService;
 
-    private List<Parametros> parametros;
+    @Inject
+    Logger logger;
 
     private Parametros selectedParametro;
 
     private Datos selectedDato;
 
-    public ParametrosView(){
-        parametros = new ArrayList<>();
-        selectedParametro = new Parametros();
-        selectedDato = new Datos();
-    }
+    private  String parametroId;
 
+
+    public DatosView(){
+        selectedDato = new Datos();
+        selectedParametro = new Parametros();
+    }
     @PostConstruct
     protected void init(){
         String accion = String.valueOf(Faces.getRequestParameter("accion"));
         logger.info("accion:{}", accion);
 
+        //parametroId = Faces.getRequestParameter("parametroId");
+        //selectedParametro = parametrosService.findById(Long.valueOf(parametroId));
+
         switch (accion) {
             case "crear":
-                nuevoParametro();
-                break;
-            case "editar":
-                String parametroId = Faces.getRequestParameter("parametroId");
+                parametroId = Faces.getRequestParameter("parametroId");
                 selectedParametro = parametrosService.findById(Long.valueOf(parametroId));
                 break;
-            case "datos":
-                String parametroIdDatos = Faces.getRequestParameter("parametroId");
-                selectedParametro = parametrosService.findById(Long.valueOf(parametroIdDatos));
-                break;
+            case "editar":
+                String datosId = Faces.getRequestParameter("datosId");
+                selectedDato = datosService.findById(Long.valueOf(datosId));
+                parametroId = Faces.getRequestParameter("parametroId");
+                selectedParametro = parametrosService.findById(Long.valueOf(parametroId));
+            break;
             default:
-                parametros = parametrosService.findAll();
+                //parametroId = Faces.getRequestParameter("parametroId");
+                //selectedParametro = parametrosService.findById(Long.valueOf(parametroId));
         }
-
-    }
-
-    public void guardarParametros() {
-        parametrosService.update(selectedParametro);
-        Messages.addInfo(null, "Datos guardados correctamente");
     }
 
     public void guardarDato() {
@@ -76,17 +71,12 @@ public class ParametrosView implements Serializable {
         Messages.addInfo(null, "Datos guardados correctamente");
     }
 
-    public void nuevoParametro() {
-        logger.info("ejecutando metodo: nuevoParametro");
-        selectedParametro = new Parametros();
+    public Datos getSelectedDato() {
+        return selectedDato;
     }
 
-    public List<Parametros> getParametros() {
-        return parametros;
-    }
-
-    public void setParametros(List<Parametros> parametros) {
-        this.parametros = parametros;
+    public void setSelectedDato(Datos selectedDato) {
+        this.selectedDato = selectedDato;
     }
 
     public Parametros getSelectedParametro() {
@@ -97,11 +87,5 @@ public class ParametrosView implements Serializable {
         this.selectedParametro = selectedParametro;
     }
 
-    public Datos getSelectedDato() {
-        return selectedDato;
-    }
 
-    public void setSelectedDato(Datos selectedDato) {
-        this.selectedDato = selectedDato;
-    }
 }
