@@ -13,11 +13,16 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 
 @Named
@@ -35,10 +40,14 @@ public class ListasView implements Serializable {
 
     private UploadedFile file;
 
+    private UploadedFile imagenLista;
+
+    private String rutaRelativa;
 
     public ListasView(){
         listas = new ArrayList<>();
         selectedLista = new Listas();
+        rutaRelativa = "";
     }
 
     @PostConstruct
@@ -60,6 +69,30 @@ public class ListasView implements Serializable {
     }
 
     public void guardarLista() {
+
+        rutaRelativa = " ";
+
+        if (imagenLista != null && imagenLista.getSize() > 0) {
+
+            try {
+                String directorioDestino = "/opt/tcmapp/imagenes/";
+                String nombreUnico = UUID.randomUUID() + "_" + imagenLista.getFileName();
+                Path rutaFinal = Paths.get(directorioDestino, nombreUnico);
+
+                // Guardar físicamente la imagen
+                Files.copy(imagenLista.getInputStream(), rutaFinal);
+
+                // Guardar la ruta relativa (ej: /imagenes/archivo.png)
+                rutaRelativa = "/imagenes/" + nombreUnico;
+
+                // Aquí llamarías a tu servicio o DAO para guardar en la BD
+                // datoDAO.guardarRutaImagen(rutaRelativa);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        selectedLista.setIcono(rutaRelativa);
         listasService.update(selectedLista);
         Messages.addInfo(null, "Datos guardados correctamente");
     }
@@ -100,8 +133,6 @@ public class ListasView implements Serializable {
                     } else {
                         lista.setDesc_caracteristica("");
                     }
-                    //lista.setCaracteristica(row.getCell(4).getStringCellValue());
-                    //lista.setDesc_caracteristica(row.getCell(5).getStringCellValue());
                     listasService.save(lista);
                 }
 
@@ -137,5 +168,21 @@ public class ListasView implements Serializable {
 
     public void setFile(UploadedFile file) {
         this.file = file;
+    }
+
+    public UploadedFile getImagenLista() {
+        return imagenLista;
+    }
+
+    public void setImagenLista(UploadedFile imagenLista) {
+        this.imagenLista = imagenLista;
+    }
+
+    public String getRutaRelativa() {
+        return rutaRelativa;
+    }
+
+    public void setRutaRelativa(String rutaRelativa) {
+        this.rutaRelativa = rutaRelativa;
     }
 }

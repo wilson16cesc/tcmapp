@@ -15,7 +15,7 @@
                 width: 250px;
             }
         </style>
-        <h:form id="listasForm">
+        <h:form id="listasForm" enctype="multipart/form-data">
             <p:panel id="listasPanel" header="Listas" style="width: 70%;">
                 <p:messages id="listasMessages"/>
                 <p:panelGrid columns="2" layout="grid" columnClasses="ui-g-4, ui-g-8">
@@ -30,7 +30,15 @@
                     <p:outputLabel value="Descripción Caracteristica"/>
                     <p:inputText value="#{listasView.selectedLista.desc_caracteristica}" required="true" label="Descripción Caracteristica"/>
                     <p:outputLabel value="Icono"/>
-                    <p:inputText value="#{listasView.selectedLista.icono}" required="true" label="Icono"/>
+                    <p:graphicImage value="#{listasView.imagenLista}" rendered="#{not empty listasView.imagenLista}" />
+                    <p:fileUpload
+                            value="#{listasView.imagenLista}"
+                            mode="simple"
+                            auto="false"
+                            allowTypes="/(\.|\/)(jpg|jpeg|png|gif)$/"
+                            sizeLimit="5000000"
+                            label="Subir imagen" />
+
                     <p:outputLabel value="Activo"/>
                     <p:selectBooleanButton onLabel="Si" offLabel="No" value="#{listasView.selectedLista.activo}"
                                            onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" />
